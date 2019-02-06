@@ -10,6 +10,12 @@
 \linespread{1.3}
 \author{Anita Kudaj}
 \title{Matematyczne modele wykorzystywane w systemach rekomendacji.}
+
+\newtheorem{df}{Definicja}
+\newtheorem{algorytm}{Algorytm}
+\newtheorem{przyklad}{Przykład}
+\newtheorem{metoda}{Metoda}
+\newtheorem{problem}{Problem}
 \begin{document}
 
 \maketitle
@@ -19,73 +25,123 @@
 \chapter{Wstęp}
 %TODO napiszemy na końcu
 \chapter{Preliminaria} %teorie, definicje, twierdzenia z innych działów - potrzebne do zrozumienia pracy
+\section{Definicje związane z rachunkiem prawdopodobieństwa}
+Przykładowe?
+\section{Definicje związane z algebrą liniową}
+Przykładowe?
+\section{Eksploracja danych i metody statystyczne użyte w regułach rekomendujących}
+1.Odległość euklidesowa 2.Podobieństwo kosinusów 3.Współczynnik korelacji Pearsona
+\\4.Faktoryzacja macierzy. 
+\\5.Term frequency 6.Term frequency inverse document frequency
+\\Co ponadto? -> Czy wymagane jest opisanie, np.: 
+\\-Grupowania: k-średnich
+\\-Klasyfikacje: Regresja liniowa, Metoda KNN, Drzewa decyzyjne
+
+\section{Definicje związane z metodami}
+1.Przedmiot 2.Użytkownik 3.Preferencje 4.Cecha/własność
+
+
 
 \chapter{Modele tworzenia rekomendacji}
-\subsection{Filtrowanie kolaboratywne (Collaborative filtering)}
-Słysząc od innych osób dobre opinie na temat ostatnio wydanej książki znanego pisarza, możemy zdecydować się na jej przeczytanie. Podobnie, poznając stwierdzenia, że ta sama książka jest katastrofą nie będziemy chcieli tracić pieniędzy na jej zakup oraz czasu na oddanie się lekturze. Możemy również otrzymać dwie sprzeczne opinie na temat tej samej pozycji. W każdym z przypadków słuchamy, analizujemy wartość uzyskanych ocen i ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
+\section{Filtrowanie kolaboratywne (Collaborative filtering)}
+
+\subsection{Problem}
+Rozważmy sytuację w której szukamy opinii na temat ostatnio wydanej książki znanego pisarza. Otrzymujemy dobre rekomendacje co  prawdopodobnie zachęci nas do jej przeczytania. Poznajemy stwierdzenia, że ta sama książka jest katastrofą co powoduje, że nie  chcemy tracić pieniędzy na jej zakup oraz czasu na oddanie się lekturze. W trzecim przypadku otrzymujemy dwie sprzeczne opinie na temat tej samej pozycji co powoduje, że wybór staje się trudniejszy. We wszystkich przypadkach analizujemy wartość uzyskanych ocen i ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
 \\
-\\Idea jaką rozważamy pod hasłem „filtrowanie kolaboratywne”  mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
-\\W rozważnej metodzie wyróżniamy dwa podstawowe typy:
+\subsection{Metoda}
+Metody rozwiązywania podobnych problemów często spotykane są w matematyce. 
+\\Jednym z przykładów jest \textbf{filtrowanie kolaboratywne}. W rozważnej metodzie wyróżniamy dwa podstawowe typy:
 \begin{itemize}
-\item filtorwanie kolaboratywne oparte na użytkowniku (user-based)
-\item filtrowanie kolaboratywne oparte na  elementach (item-based)
+\item filtrowanie kolaboratywne oparte na użytkowniku (ang. user-based)
+\item filtrowanie kolaboratywne oparte na  elementach (ang. item-based)
 \end{itemize}
-Mianownikiem wspólnym w obu przypadkach jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
+Cechą wspólną dla obu powyższych metod jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
 \\
-\subsubsection{Filtrowanie kolaboratywne oparte na użytkowniku}
-W typie filtrowania opartym na użytkowniku zakładamy, że osoby z podobnymi preferencjami w przeszłości będą podobnie wybierały w przyszłości.
-\\W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
+\subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
+
+Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
+
+\subsubsection{3.1.3.1 Algorytm}
+Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
+\begin{enumerate}
+\item Znalezienie podobieństwa między czytelnikami opierającego się na informacji o przeczytanych książkach. Najczęstszymi stosowanymi podejściami do obliczania szukanego podobieństwa są Metryka Euklidesowa i Współczynnik Korelacji Pearsona.
+\item Wyestymowanie ocen, które czytelnicy (w szczególności osoba dla której tworzymy rekomendację) mogliby wystawić dla nieprzeczytanych książek z rozważanego zbioru.
+\end{enumerate}
+W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
+\subsubsection{3.1.3.2 Przykład}
 Zakładamy, że tabela przedstawia oceny czytelników dla kilku wybranych książek oraz, że każda z zapytanych osób mogła wystawić ocenę z zakresu 1 -10. Istotne jest, że nie wszyscy zapytani wystawili ocenę dla każdej z książek:
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|} \hline
 Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
 \hline \hline 
 Wladza Absolutna & 6 & 3 & & 6 & 4 &  \\
-Drzewo Anioła &  & 6 & 6 & 5 & 6 &  \\
+Patrioci &  & 6 & 6 & 5 & 6 &  \\
 Proxima & 7 & 7 & 8 & 7 & 8 & 9 \\
-Bastion & 8 & 10 & 10 & 7 & 6 & 8 \\
-Teatr Świata & 9 & 6 & 6 & 6 & 6 &  \\
-Dżoker & 5 & 7 & 7 & 5 & 4 & 2 \\
+Strażacy & 8 & 10 & 10 & 7 & 6 & 8 \\
+Gra o Śmierć & 9 & 6 & 6 & 6 & 6 &  \\
+Cyrk & 5 & 7 & 7 & 5 & 4 & 2 \\
 \hline
 \end{tabular}
 \end{center}
-Kluczowym krokiem do zasugerowania książki osobie poszukującej nowej lektury jest znalezienie podobnych jej czytelników. Aby to zrobić najpierw, przy użyciu ocen jakie zostały wystawione dla konkretnych książek, należy policzyć podobieństwo między poszczególnymi użytkownikami. Następnie dla wszystkich użytkowników rozważone zostają książki, które nie są ocenione przez nich ale są ocenione przez innych. W ten sposób zostają obliczone noty jakie wybrana osoba mogłaby zaproponować dla książek, których nie czytała, a które chcemy jej przedstawić. Najczęstszymi podejściami stosowanymi w tej metodzie do obliczania szukanego podobieństwa są Metryka Euklidesowa i Współczynnik Korelacji Pearsona. W tym przykładzie zastosujemy pierwsze ze wspomnianych rozwiązań. Używając wzoru:
+W tym przykładzie zastosujemy pierwsze ze wspomnianych rozwiązań. Używając wzoru:
 \begin{center}
 $d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
 \end{center}
-obliczone zostają szukane odległości:
-\\
-\\(tabela z podobieństwami)
-\\
-\\Bazując na podobieństwach między poszczególnymi użytkownikami, przez obliczenie średniej ważonej, zostaje przewidziana ocena jaką Bartek zaproponuje dla książki „Władza Absolutna”. W poniższym równaniu wartość podobieństwa między Bartkiem i innymi użytkownikami została pomnożona przez ocenę jaką dany użytkownik wystawił dla książki „Władza Absolutna”. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
+obliczymy szukane odległości:
+
+(tabela)
+
+Bazując na podobieństwach między poszczególnymi użytkownikami, przez obliczenie średniej ważonej, zostaje przewidziana ocena jaką Bartek zaproponuje dla książki „Władza Absolutna”. W poniższym równaniu wartość podobieństwa między Bartkiem i innymi użytkownikami została pomnożona przez ocenę jaką dany użytkownik wystawił dla książki „Władza Absolutna”. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
 \\
 \\(obliczenie)
 \\
 \\Ostatecznie, gdy znane są oceny dla wszystkich książek dokonana zastaje rekomendacja dla naszego użytkownika.
 \\
 \\
-\subsubsection{Filtrowanie kolaboratywne oparte na  elementach}
+\subsection{Filtrowanie kolaboratywne oparte na  elementach}
 W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez  wartości podobieństwa między elementami.
-\\
-\\W tym przypadku podstawowe założenie mówi, że jeżeli użytkownik wybrał element A w przeszłości oraz element B jest podobna do A, to użytkownik będzie skłonny wybrać również element B.
-\\
-\\Podobnie jak w przypadku opartym na użytkowniku również i w tym należy wykonać dwa kroki. W kroku pierwszym zostaje obliczone prawdopodobieństwo występujące między elementami. Następnie na podstawie ocen wydanych już przez użytkownika dla podobnych elementów przewidziana zostaje ocena dla elementu nieocenionego.
-\\
-\\Najczęstszą miarą podobieństwa w tym przypadku jest podobieństwo kosinusów. Miara ta wyraża  podobieństwo miedzy n-wymiarowymi wektorami poprzez kąt między nimi w przestrzeni wektorowej. W tym przypadku wektorami są kolumny przedmiotów.
+\\W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
+\subsubsection{3.1.4.1 Algorytm}
+Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykonać dwa kroki.
+\begin{enumerate}
+\item Pierwszym etapem jest znalezienie podobieństw występujących między elementami. Najczęstszą miarą podobieństwa w tym przypadku jest podobieństwo kosinusów. Miara ta wyraża podobieństwo miedzy n-wymiarowymi wektorami poprzez kąt między nimi w przestrzeni wektorowej. Wraz ze wzrostem wartość kąta rośnie podobieństwo.
+\item Następnie, na podstawie wydanych przez użytkownika ocen, należy wyestymować noty dla elementów przez niego nieocenionych.
+\end{enumerate}
+
+\subsubsection{3.1.4.2 Przykład}
+Chcąc zastosować ten rodzaj filtrowania kolaboratywnego do rozważanego problemu i przewidzieć ocenę użytkownika dla pewnej wybranej książki należy na wstępie zdefiniować wszystkie książki podobne do wybranej. Można to zrobić używając wspomnianego wcześniej, podobieństwa kosinusów. W tym przypadku elementami wektorów są oceny wystawione przez użytkowników dla poszczególnych książek, np.: (7,7,8,7,8,9) dla książki "Proxima". Poniższa tabela przedstawia natomiast podobieństwa występujące między wszystkimi książkami obliczone za pomocą wzoru:
 \begin{center}
-$ sim (\vec{a},\vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\mid \vec{a} \mid \star \mid \vec{b} \mid }$
+$ sim (\vec{a},\vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\mid \vec{a} \mid \mid \vec{b} \mid }$
 \end{center}
-Warto dodać, że im mniejsza wartość kąta tym większe jest podobieństwo.
-\\
-\\Chcąc zastosować ten rodzaj filtrowania kolaboratywnego dla poprzedniego przykładu i przewidzieć ocenę użytkownika dla pewnej wybranej książki należy zdefiniować wszystkie książki podobne do wybranej za pomocą podobieństwa kosinusów. W kolejnym kroku przez policzenie sumy ważonej ocen dla książek podobnych do wybranej, które zostały wcześniej ocenione przez czytelnika, zostaje przewidziana ocena dla książki. Poniższa tabela przedstawia rozważane podobieństwa:
-\\
-\\(tabela powiązań między książkami)
-\\
-\\Znając rozważane podobieństwa można przewidzieć ocenę książki „Drzewo Anioła” licząc sumę ważoną ocen nadanych przez Kacpra podobnym książkom. Podobieństwo książki „Drzewo Anioła” i każdej z innych książek ocenianych przez Kacpra zostaje wymnożone przez oceny, które nadał konkretnym pozycjom. Następnie sumę wszystkich wyników i dzielimy przez sumę wszystkich podobieństw.
-\\
-\\(równanie)
-\\
-\subsubsection{Wady i zalety filtrowania kolaboratywnego}
+\begin{center}
+\footnotesize{
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+ & Władza Absolutna & Patrioci & Proxima & Strażacy & Gra o Śmierć & Cyrk \\
+\hline
+Władza & & & & & & \\
+Absolutna & 1 & 0.6339 & 0.7372 & 0.7195 & 0.8935 & 0.7599 \\
+\hline
+Patrioci & 0.6339 & 1 & 0.7951 & 0.8150 & 0.7977 & 0.8898 \\
+\hline
+Proxima & 0.7372 & 0.7951 & 1 & 0.9780 & 0.8586 & 0.9200 \\
+\hline
+Strażacy & 0.7195 & 0.8150 & 0.9780 & 1 & 0.8860 & 0.9681 \\
+\hline
+Gra o Śmierć & 0.8935 & 0.7977 & 0.8586 & 0.8860 & 1 & 0.9413 \\
+\hline
+Cyrk & 0.7599 & 0.8898 & 0.9200 & 0.9681 & 0.9413 & 1 \\
+\hline
+\end{tabular}
+}
+\end{center}
+Znając podobieństwa między pozycjami oraz noty wystawione przez Kacpra możemy więc wyestymować jak Kacper oceni inne pozycje z naszego spisu. 
+\\Rozważmy książkę "Patrioci". Ustalone podobieństwa między pozycją "Patrioci" a każdą z innych książek ocenianych przez Kacpra wymnożymy przez oceny, które nadał pozycjom. Następnie sumę iloczynów dzielimy przez sumę wszystkich podobieństw.
+\begin{center}
+$\frac{(0.7951 \cdot 9 + 0.8150 \cdot 8 + 0.8898 \cdot 2)}{(0.7951 + 0.8150 + 0.8898)} = 6.16 $
+\end{center}
+Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu Kacper książce "Patrioci" to $6.16$.
+Powtarzając powyższe obliczenia dla każdej z pozycji nieocenionych przez Kacpra otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania naszemu użytkownikowi.
+\subsection{Wady i zalety filtrowania kolaboratywnego}
 Mając przed sobą dwa typy filtrowania kolaboratywnego możemy zadać pytanie o efektywność, czy precyzyjność tego rozwiązania.
 \\Poniżej kilka wniosków i informacji, opartych na rozważaniach Christian Desrosiers i George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} które pozwalają dostrzec zalety i wady tego rozwiązania.
 \\ 
@@ -100,86 +156,196 @@ Z drugiej strony:
 \item Filtrowanie kolaboratywne jest kosztowne obliczeniowo, ponieważ wykorzystywane są tu informacje o użytkownikach, produktach oraz ocenach produktów przez użytkowników. 
 \item Podejście to zawodzi, kiedy istnieje potrzeba stworzenia rekomendacji dla nowego użytkownika o którego ocenach nie ma informacji.
 \item Zarówno metoda oparta na użytkownikach, jak i metoda oparta na elementach jest mało wiarygodna kiedy zasób danych na którym bazujemy jest mały.
-\item Kiedy brakuje nam informacji o podobieństwach między użytkownikami lub elementami nie jesteśmy w stanie odnaleźć rekomendacji bazując tylko na informacji o ocenach.
 \end{itemize}
 
-\subsubsection{Porównanie filtrowania kolaboratywnego opartego na użytkownikach i filtrowania kolaboratywnego opartego na elemtach:}
+\subsection{Porównanie filtrowania kolaboratywnego opartego na użytkownikach i filtrowania kolaboratywnego opartego na elemtach:}
 Warty rozważenie jest również fakt wyboru między rekomendacją opartą na użytkowniku, a rekomendacją opartą na elementach. Według Christian Desrosiers, George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} jest kilka obszarów, które należy rozważyć przed ostatecznym wyborem toku postępowania:
-\\
-\\
-\textbf{Precyzyjność:} Metodę wybieramy w zależności od stosunku między użytkownikami a przedmiotami w rozważanych danych. Mianowicie, jeżeli rozważany zbiór zawiera dużą liczbę użytkowników i jednocześnie mała liczbę elementów preferowanym rozwiązaniem jest metoda oparta na elementach.
-\\
-\textbf{Sprawność:} Złożoność rozważanych algorytmów zależy od stosunku między liczbą użytkowników, a liczbą elementów. Przyjmując O, U, E jako liczbę odpowiednio ocen, użytkowników i elementów zdefiniujmy 
+\begin{itemize}
+\item \textbf{Precyzyjność:} Metodę wybieramy w zależności od stosunku między użytkownikami a przedmiotami w rozważanych danych. Mianowicie, jeżeli rozważany zbiór zawiera dużą liczbę użytkowników i jednocześnie mała liczbę elementów preferowanym rozwiązaniem jest metoda oparta na elementach.
+\item \textbf{Sprawność:} Złożoność rozważanych algorytmów zależy od stosunku między liczbą użytkowników, a liczbą elementów. Przyjmując O, U, E jako liczbę odpowiednio ocen, użytkowników i elementów zdefiniujmy 
 $p = O/U$ i $q = O/E$. Wtedy też złożoność metody opartej na użytkownikach wyrażona zostaje przez $p^2/E$, a złożoność metody opartej na elementach przez $q^2/U$.
-\\
-\textbf{Stabilność:} Rozważając ten aspekt przed wyborem metody należy rozważyć co rośnie szybciej – liczba użytkowników, czy liczba elementów. Jeżeli liczba elementów wydaje się bardziej statyczna wtedy też lepszym wyborem jest metoda oparta na elementach i odwrotnie.
-\\
-\textbf{Uzasadnienie:} Pod tym względem lepszym wyborem będzie system rekomendacji oparty na elementach. W przypadku bowiem potrzeby wyjaśnienia naszej rekomendacji przedstawienie listy rozważanych elementów jest łatwiejsze niż przedstawienie listy użytkowników.
-\\
-\textbf{Serendipity:} Patrząc pod kontem możliwości wyszukiwania zaskakujących rekomendacji lepszym wyborem byłby system oparty na użytkowniku. Pozwala on bowiem dojść do znacznie ciekawszych wniosków niż system oparty na elementach.
-\\
+\item \textbf{Stabilność:} Rozważając ten aspekt przed wyborem metody należy rozważyć co wzrasta szybciej – liczba użytkowników, czy liczba elementów. Jeżeli liczba elementów wydaje się bardziej statyczna wtedy też lepszym wyborem jest metoda oparta na elementach i odwrotnie.
+\item \textbf{Uzasadnienie:} Pod tym względem lepszym wyborem będzie system rekomendacji oparty na elementach. W przypadku bowiem potrzeby wyjaśnienia naszej rekomendacji przedstawienie listy rozważanych elementów jest łatwiejsze niż przedstawienie listy użytkowników.
+\item \textbf{Serendipity:} Patrząc pod kontem możliwości wyszukiwania zaskakujących rekomendacji lepszym wyborem byłby system oparty na użytkowniku. Pozwala on bowiem dojść do znacznie ciekawszych wniosków niż system oparty na elementach.
+\end{itemize}
 
-\subsection{Systemy rekomendujące oparte na treści(Content-based recommender systems:}
-System rekomendacji filtrowania kolaboratywnego opiera się na informacji o ocenach przyznanych poszczególnym elementom w rozważanym zbiorze. Analizując przypadek osoby, która przyznała ocenę 5 dla wybranej książki można stwierdzić, że użytkownik ten miał na uwadze wiele czynników, na przykład: zawartą historię, gatunek, przedstawienie postaci, styl pisania autora. 
+
+\section{Systemy rekomendujące oparte na treści (Content-based recommender systems):}
+\subsection{Problem}
+Wspomniany wcześniej system rekomendacji filtrowania kolaboratywnego opiera się na informacji o ocenach przyznanych poszczególnym elementom w rozważanym zbiorze. Analizując jednak przypadek osoby, która przyznała ocenę 5 dla wybranej książki zauważmy, że użytkownik ten miał na uwadze wiele czynników, na przykład: zawartą historię, gatunek, styl pisania autora. 
 \\
-\\Systemy rekomendacji oparte na treści ukierunkowane są na spersonalizowany poziom użytkownika, rozważają jego indywidualne preferencje oraz treść produktu. Opierają się na obliczaniu podobieństw. Wykorzystywane są tutaj metody uczenia maszynowego, takie jak klasyfikacja.
+\subsection{Metoda i Algorytm}
+W tym przypadku rozwiązaniem matematycznym są systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowany poziom użytkownika, rozważają jego indywidualne preferencje oraz treść produktu. Analizie zostają poddane zestawy dokumentów i opisy przedmiotów, które wcześniej były oceniane przez użytkowników. Następnie bazując na cechach obiektów ocenianych przez kandydata zostaje zbudowany jego profil. Wspomniane metody opierają się na obliczaniu podobieństw oraz wykorzystują zadania uczenia maszynowego, takie jak klasyfikacja.
 \\
-\\W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie listy elementów, które mogę być odpowiednie użytkownikowi poprzedzone jest dwoma ważnymi krokami. Pierwszy krok to wygenerowanie informacji na temat naszego produktu, natomiast drugi to wygenerowanie profilu użytkownika oraz  rozpoznanie cech produktu dla niego odpowiednich.  
-\\ 
-\\Generowanie profilu produktu opiera się na znalezieniu cech go opisujących. Najczęściej spotykaną formą opisu produktów jest przedstawienie ich w przestrzeni wektorowej, gdzie wiersze są nazwami produktów, a wartości poszczególnych cech reprezentowane są w kolumnach. Warto zauważyć, że krok generowania profilu opiera się głownie na wybraniu najbardziej istotnych w rekomendacji atrybutów oraz ocenie ich względnej ważności względem produktu.
 \\
-\\Do generowania takiego profilu używany jest algorytm  TFIDF (z ang. TF – term frequency, IDF - inverse document frequency), który pozwala policzyć względną ważność powiązania cechy z przedmiotem. Algorytm ten został dokładnie opisany w rozdziale [numer rozdziału]. 
+W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie listy elementów, które mogę być odpowiednie użytkownikowi możemy przedstawić w trzech krokach:
+
+\begin{enumerate}
+\item \textbf{Wygenerowanie profilu produktu}
 \\
-\\Aby dokładnie przyjrzeć się metodom opartym na treści rozważmy, podobnie jak poprzednio, przykład oparty na książkach:
+W większość systemów rekomendacji opartych na treści można zauważyć użycie prostych modeli wyszukujących. Jednym z najbardziej popularnych jest Model Przestrzeni Wektorowej (\textit{ang. Vector Space Model}) z algorytmem TF-IDF (\textit{ang. TF – term frequency, IDF - inverse document frequency}). Jest to przestrzenna forma reprezentacji dokumentów. W modelu tym dokument jest reprezentowany przez wektor w przestrzeni n-wymiarowej, gdzie każdy z n wymiarów stanowi rozważaną cechę produktu.
+\\
+\\Formalnie rzecz ujmując każdy z dokumentów jest przedstawiony za pomocą wektora wag, gdzie waga w odpowiedni sposób wyraża zależność między dokumentem, a badanym terminem.
+\\
+\\Niech \begin{math} P = \{p_1, p_2,...,p_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}C = \{c_1, c_2,...,c_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} p_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} p_j = \{w_{1j}, w_{2j},...,w_{nj}\} \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} c_k \end{math} w dokumencie  \begin{math} p_j \end{math}.
+\\
+\\
+Do generowania profilu produktu używany jest wspomniany wcześniej algorytm \textbf{ TFIDF } pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy tu, że:
+\begin{itemize}
+\item rzadkie cechy są równie istotne jak częste (założenie IDF),
+\item kilkukrotne wystąpienie terminu w rozważanym dokumencie jest równie istotne jak pojedyncze (założenie TF),
+\item długość dokumentu (filmu, książki) nie ma znaczenia (założenie normalizacji).  
+\end{itemize}
+Możemy więc powiedzieć, że jeżeli termin występuje często w konkretnym przedmiocie rozważań (TF) i równocześnie rzadko w pozostałych elementach zboru (IDF) ma większe prawdopodobieństwo stać się jedną z istotnych cech rozważanych w temacie. Ponadto normalizacja wektorów wag pozwala zrównoważyć wartość wyników i umożliwia ich porównywanie w dalszej analizie.
+\\
+\\Powyższe założenia odzwierciedla funkcja TFIDF:
+\begin{center}
+\begin{math}
+TFIDF(t_k, d_j) = TF(c_k, p_j) * IDF,
+\end{math}
+\end{center}
+gdzie:
+\begin{itemize}
+\item \begin{math}TF(c_k, p_j)  \end{math} (macierz \textit{term frequency}) przedstawia odniesienie każdego z podanych terminów do każdego z badanych elementów:
+\begin{center}
+\begin{math}
+TF(c_k, p_j)=\frac{f_{k,j}}{\max_{z}f_{z,j}},
+\end{math}
+\end{center}
+$\max_{z}f_{z,j}$ - maksymalna w odniesieniu do wszystkich cech $c_z$, które pojawiły się w dokumencie $p_j$ częstotliwość wystąpień ($f_{z,j}$) 
+
+\item \begin{math}IDF \end{math} (\textit{inverse dokument frequency}) wyraża się formułą:
+\begin{center}
+\begin{math}IDF = \log \frac{N}{n_k} \end{math}
+\end{center}
+$N$ - całkowita liczba dokumentów w zbiorze,
+\\$n_k$ - liczba dokumentów w których cecha $c_k$ wystąpiła przynajmniej raz.
+\end{itemize}
+Ponadto w związku z założeniem o normalizacji wagi, które zostały uzyskane w wyniku \begin{math}
+TFIDF(t_k, d_j)
+\end{math} poddane zostaną metodzie transformacji kosinusowej: 
+\begin{center}
+\begin{math}
+w_{k,j} = \frac{TFIDF(t_k, d_j)}{\sqrt{\sum_{i=1}^{|T|}{TFIDF(t_i, d_j)}^2}}.
+\end{math}
+\end{center}
+Dodatkowo aby pokazać związki między poszczególnymi dokumentami warto posłużyć się miarą podobieństwa kosinusów:
+\begin{center}
+\begin{math}
+sim(p_i,p_j) = \frac{\sum_{i=k} w_{k,i}\cdot w_{k,j}}{\sqrt{\sum_{k=1}{w_{k,i}}^2} \cdot \sqrt{\sum_{k=1}{w_{k,j}}^2}}.
+\end{math}
+\end{center}
+
+
+\item \textbf{Wygenerowanie profilu użytkownika}
+\\W tym kroku stworzona zostaje macierz preferencji wyrażona za pomocą wektorów wag i dopasowana do treści produktu. 
+\item \textbf{Rozpoznanie cech produktu odpowiednich dla użytkownika}
+\\Proces rekomendacji bazuje na dopasowaniu cech profilu użytkownika i wartości opisujących treść obiektu. Rezultatem jest stwierdzenie czy rozważany kandydat jest zainteresowany analizowanym przedmiotem. Zainteresowanie użytkownika danym przedmiotem może zostać dostarczone na podstawie porównania podobieństw kosinusów.
+\end{enumerate}
+
+\subsection{Przykład}
+Aby dokładnie przyjrzeć się metodom opartym na treści rozważmy, podobnie jak poprzednio, przykład oparty na książkach:
+Tym razem stworzenie rekomendacji wymaga większej liczby faktów.
 \begin{center}
 \begin{tabular}{|r|r|} \hline
-Książka & Gatunek \\
-\hline \hline 
-Władza Absolutna & Powieść kryminalna  \\
-Drzewo Anioła & Proza współczesna \\
+\textbf{Książka} & \textbf{Gatunek} \\
+\hline 
+Władza Absolutna & Kryminał  \\
+\hline 
+Patrioci & Proza współczesna \\
+\hline 
 Proxima & Powieść fantastycznonaukowa \\
-Bastion & Horror\\
-Teatr Świata & Literatura faktu \\
-Dżoker & Powieść kryminalna \\
+\hline 
+Strażacy & Literatura faktu \\
+\hline 
+Gra o Śmierć & Romans \\
+\hline 
+Cyrk & Komedia \\
 \hline
 \end{tabular}
 \end{center}
-Tym razem stworzenie rekomendacji wymaga większej liczby faktów.
-\\Przez wykorzystanie algorytmu TFIDF stworzymy profil każdej z książek.
-Pierwszym etapem algorytmu jest stworzenie macierzy „term frequency”, której wypełnienie przedstawia odniesienie każdego z podanych terminów do każdej z książek. Załóżmy, że 1 oznacza iż książka reprezentuje cechy danego gatunku, natomiast 0 oznacza brak takich cech. 
-\\(tabela frequency)
-\\Następnym krokiem jest stworzenie „ inverse dokument frequency” przez wykorzystanie poniższej formuły:
+Przez wykorzystanie algorytmu TFIDF stworzymy profil każdej z książek.
+Pierwszym etapem algorytmu jest stworzenie macierzy „term frequency”. W tym przypadku jej wypełnienie przedstawia odniesienie każdego z podanych terminów do każdej z książek. Załóżmy, że 1 oznacza iż książka reprezentuje cechy danego gatunku, natomiast 0 oznacza brak takich cech. 
+\\
+\\
+\footnotesize{
+\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
+Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
+/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
+Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
+\hline \hline 
+Władza & &  &  &  &  & &  &  \\
+Absolutna & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+Patrioci & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+Proxima & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
+Strażacy & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+Gra & &  &  &  &  & &  &  \\
+o Śmierć & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+Cyrk & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+\hline
+\end{tabular}
+}
+\normalsize{
+\\
+\\Zbadajmy teraz "inverse dokument frequency".
 \begin{center}
-$IDF = \log \frac{x}{y}$
+\begin{math}IDF = \log \frac{N}{n_k} \end{math}
 \end{center}
-$x$ - całkowita liczba dokumentów
-\\$y$ - częstotliwość dokumentu
-\\W rozważanym przypadku x to liczba książek, natomiast y to całkowita liczba wystąpień „term frequency”, uzyskana dla wszystkich dokumentów.
-\\
-\\(tabela przeliczona)
-\\
-\\Ostatnim krokiem jest stworzenie macierzy TFIDF przez zastosowanie poniższej formuły:
+W rozważanym przypadku $N$ to liczba książek, natomiast $n_k$ to całkowita liczba wystąpień "term frequency", uzyskana dla wszystkich dokumentów.
+}
 \begin{center}
-$TF*IDF$
+\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
+Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
+minał & współ- &  fantastycz- & tura &  &  & akcji & \\
+ & czesna &  nonaukowa & faktu &  &  &  & \\
+\hline \hline 
+1.098612 & 1.098612 & 1.791759 & 1.791759 & 1.791759 & 1.791759 & 0.693147 & 1.791759 \\
+\hline
+\end{tabular}
 \end{center}
-(tabela po przemnożeniu)
-\\
-\\Po wygenerowaniu profilu przedmiotu należy wygenerować profil użytkownika. W tym kroku stworzona zostaje macierz preferencji dopasowana do treści produktu. Definiując bowiem cechy użytkownika wspólne z treścią produktu zostaje wygenerowany efektywniejszy sposób porównania użytkowników i przedmiotów, a w efekcie możliwym staje się obliczenie podobieństwo między nimi.
-\\Rozważając poniższy zbiór danych, który przedstawia informacje o czytelnikach i książkach. W poniższym zestawieniu 1 oznacza, że dana osoba przeczytała książkę, natomiast puste miejsce, że nie podjęła się lektury.
+\normalsize{Mając stworzona macierz "term frequency" oraz wektor "inverse dokument frequency" przejdźmy do ostatniego kroku i stwórzmy macierz TFIDF dla rozważanego przypadku:}
+\begin{center}
+
+\footnotesize{
+\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
+Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
+/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
+Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
+\hline 
+Władza & &  &  &  &  & &  &  \\
+Absolutna & 1.098612 & 0 & 0 & 0 & 0 & 0 & 0.693147 & 0 \\
+\hline
+Patrioci & 0 & 1.098612 & 0 & 0 & 0 & 0 & 0.693147 & 0 \\
+\hline
+Proxima & 0 & 1.098612 & 1.791759 & 0 & 0 & 0 & 0 & 0 \\
+\hline
+Strażacy & 0 & 0 & 0 &1.791759 & 0 & 0 & 0.693147 & 0 \\
+\hline
+Gra & &  &  &  &  & &  &  \\
+o Śmierć & 0 & 0 & 0 & 0 & 1.791759 & 0 & 0 & 1.791759 \\
+\hline
+Cyrk & 1.098612 & 0 & 0 & 0 & 0 & 1.791759 & 0 & 0\\
+\hline
+\end{tabular}
+}
+\end{center}
+\normalsize{
+Zakończyliśmy generowanie profilu przedmiotu, przejdźmy więc do wygenerowania profilu użytkownika. 
+\\Rozważmy zbiór danych, który przedstawia informacje o czytelnikach i książkach. W poniższym zestawieniu 1 oznacza, że dana osoba przeczytała książkę, natomiast puste miejsce, że nie podjęła się lektury.
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|} \hline
 Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
 \hline \hline 
 Władza Absolutna & 1 & 1 & & 1 & 1 &  \\
-Drzewo Anioła &  & 1 & 1 & 1 & 1 &  \\
+Patrioci &  & 1 & 1 & 1 & 1 &  \\
 Proxima & 1 & 1 & 1 & 1 & 1 & 1 \\
-Bastion & 1 & 1 & 1 & 1 & 1 & 1 \\
-Teatr Świata & 1 & 1 & 1 & 1 & 1 &  \\
-Dżoker & 1 & 1 & 1 & 1 & 1 & 1 \\
+Strażacy & 1 & 1 & 1 & 1 & 1 & 1 \\
+Gra o Śmierć & 1 & 1 & 1 & 1 & 1 &  \\
+Cyrk & 1 & 1 & 1 & 1 & 1 & 1 \\
 \hline
 \end{tabular}
 \end{center}
-Następnym krokiem jest tworzenie profilu użytkownika, który zostanie użyty do porównania z profilem przedmiotu. Profil użytkownika powinien zawierać więc jego preferencje dotyczące cech danego przedmiotu, w tym przypadku będą to preferencje dotyczące gatunku książki. Iloczyn skalarny zbudowany na TFIDF i macierzy preferencji użytkowników przedstawi powinowactwo każdego z użytkowników do każdego z rozważanych gatunków książki. 
+Profil użytkownika powinien zawierać jego preferencje dotyczące cech danego przedmiotu, w tym przypadku będą to preferencje dotyczące gatunku książki. Iloczyn skalarny zbudowany na TFIDF i macierzy preferencji użytkowników przedstawi powinowactwo każdego z użytkowników do każdego z rozważanych gatunków książki. 
 \\
 \\(macierz powinowactwa)
 \\
@@ -188,17 +354,82 @@ Następnym krokiem jest tworzenie profilu użytkownika, który zostanie użyty d
 \\(macierz zainteresowań)
 \\
 
-\subsubsection{Wady i zalety systemu rekomendującego opartego na treści}
-Podobnie jak wcześniej opisana metoda filtrowania tak i metoda oparta na treści posiada swoje wady i zalety.
-\\
-\\Zalety systemu: 
+\subsection{Wady i zalety systemu rekomendującego opartego na treści}
+Badacze Francesco Ricci, Lior Rokach, Bracha Shapira i Paul B. Kantor w swojej publikacji :"Recommender Systems
+Handbook" wyróżniają następujące zalety filtrowania opartego na treści: 
 \begin{itemize}
-\item Jest metodą ukierunkowaną na indywidualne rozważnie każdego użytkownika dzięki czemu jest lepsza niż filtrowanie kolaboratywne, w którym rekomendacja zostaje dokonana przez wzięcie pod uwagę ogół użytkowników.
-\item Dokładność systemu rekomendacji opartego na treści jest wyższa w porównaniu do podejścia kolaboratywnego działającego na ocenach.
-\item Systemy te są lepsze od filtrowania kolaboratywnego pod kątem tworzenia rekomendacji dla nowych użytkowników. Po otrzymaniu takiego użytkownika, którego preferencje nie są znane stworzenie rekomendacji nie jest w tym przypadku problemem. Istnieje bowiem możliwość szybkiego ustalenia cech elementu najbardziej dla niego odpowiednich. 
+\item \textbf{Niezależność użytkowników:} Jest metodą ukierunkowaną na indywidualne rozważnie każdego użytkownika, a budowanie jego profilu odbywa się na podstawie ocen, które zostały przez niego wydane. W metodzie filtrowania kolaboratywnego rekomendacja była dokonana po uwzględnieniu ocen innych użytkowników oraz znalezieniu użytkowników najbardziej podobnych pod względem preferencji.
+\item \textbf{Transparentność:} W celu przedstawienia zaproponowanej rekomendacji opartej na treści możemy przedstawić listę kontekstów, które zostały poddane analizie. Stanowią one listę wskaźników na podstawie których możemy ocenić wartość i prawdziwość rekomendacji. W przypadku filtrowania kolaboratywnego jedyną informacją jaka doprowadziła nas do reprezentowanych wniosków jest podobieństwo między nieznanymi użytkownikami, którzy charakteryzują się podobnym gustem.
+\item \textbf{Nowy przedmiot:} Systemy rekomendacji oparte na treści umożliwiają stworzenie rekomendacji przedmiotu, który nie został wcześniej oceniony przez użytkowników. Istnieje bowiem możliwość szybkiego ustalenia cech w rozważanych przez rekomendację aspektach. 
 \end{itemize}
+Niemniej jednak, rozważając ten rodzaj systemów rekomendujących możemy dostrzec następujące niedociągnięcia:
+\begin{itemize}
+\item \textbf{Ograniczona analiza treści:} Techniki rekomendacji oparte na treści posiadają ograniczenia w postaci liczby i typów cech, które są powiązane z rekomendowanymi obiektami. Przyporządkowanie pewnych kontekstów do przedmiotów może okazać się niewystarczające aby zbadać zainteresowania użytkowników.
+\item \textbf{Nadmierne wyspecjalizowanie:} Stosując rekomendacje oparte na treści nie posiadamy możliwości do odnalezienia wyjątkowo nieoczekiwanych wniosków. Systemy te sugerują bowiem przedmioty, których noty są wysokie w stosunku do profilu użytkownika, skąd wynikiem rekomendacji zawsze będą przedmioty podobne do tych przez użytkownika już ocenionych. Na tej podstawie też często zarzuca się rozważanym systemom niski poziom nowości przy dostarczaniu rekomendacji.
+ \item \textbf{Nowy użytkownik:} W przypadku użytkowników, gdzie możemy analizować dużą liczbę wystawionych ocen i dobrze zrozumieć ich preferencje stworzenie odpowiedniej rekomendacji nie stanowi problemu. Jednakże, gdy ocen jest tylko kilka lub użytkownik jest nowy system nie będzie w stanie stworzyć niezawodnej rekomendacji.
+\end{itemize} 
 
+\section{Systemy rekomendujące kontekstowe ( Context – aware recommender systems):}
 
+\subsection{Problem}
+Spersonalizowane systemy rekomendujące opierające się na  indywidualnym podejściu do użytkownika i tworzą  rekomendacje oparte na jego indywidualnych preferencjach. Należy jednak zauważyć, że na wybór tej samej osoby może mieć również wpływ miejsce, czas, nastrój, czy warunki w których aktualnie się znajduje. 
+
+\subsection{Metoda i Algorytm}
+Systemy rekomendujące kontekstowe są systemami rekomendującymi opartymi na treści w których zostaje uwzględniony dodatkowy wymiar zwany kontekstem.
+
+\begin{df}\textbf{(Kontekst)}
+\\Kontekstem w rozumieniu eksploracji danych nazywamy obecny stan użytkownika. Autorzy książki "Recommender Systems Handbook" definiują kontekst jako wydarzenie charakteryzujące etap życia użytkownika i wpływające na jego preferencje, status. Pod pojęciem tym kryje się nie tylko miejsce, czas, pogoda, dzień, ale także fakt, że użytkownik spędza czas samotnie lub w gronie innych osób, narodziny dziecka, zmiana pracy, małżeństwo. Wiedza na temat kontekstowych informacji pozwala zbudować wzorce i algorytmy w odniesieniu do konkretnych, istotnych danych.
+\end{df}
+Przykładem, który dobrze obrazuje podejście kontekstowe w tworzeniu rekomendacji są biura podroży, które w tworzeniu ofert uwzględniają sezon, miejsca, czas, sytuację finansowa klienta oraz czas, kiedy oferta zostaje przedstawiona. 
+\\
+\\Warto zauważyć również, że uprzednio opisane metody opierały się głownie na rozważaniu problemów dwu-wymiarowych. W tym podejściu, przez dodanie nowego wymiaru, jakim jest kontekst, zaczynamy rozważać problemy trój-wymiarowe:
+\begin{center}
+R: Użytkownik x element x kontekst $ \Rightarrow$ Rekomendacja
+\end{center}
+W modelu kontekstowym rekomendacje są generowane w dwóch krokach:
+\begin{enumerate}
+\item Metody systemów rekomendujących opartych na treści służące do wygenerowania listy rekomendacji bazującej na  preferencjach użytkownika.
+\item Odfiltrowanie rekomendacji, które odpowiadają przyjętemu kontekstowi.
+\\Wyróżniamy tutaj dwa warianty. W pierwszym etap filtrowania zostaje dokonany na końcu, natomiast w drugim filtrowanie jest etapem wstępnym do tworzenia rekomendacji.
+\\
+\\
+\textbf{Filtrowanie jako etap wstępny (ang. Pre-Filtering)}
+\\W tym podejściu informacje kontekstowe używane są do odfiltrowania najbardziej istotnyc    h informacji i skonstruowania dwuwymiarowego zbioru danych. Bardzo dużą zaletą tego podejścia jest możliwość implementacji w kolejnym kroku wcześniej opisanych metod rekomendacji. 
+\\
+\\ \textbf{Filtrowanie jako etap końcowy (ang. Post-Filtering)}
+\\Informacje o kontekście są ignorowane w wejściowych danych, a rekomendacja dokonywana jest na całym zbiorze. To w następnym kroku lista rekomendacji stworzona dla użytkownika jest zawężana przez uwzględnienie kontekstu.
+\end{enumerate}
+\subsection{Przykład}
+Wracając do przykładu rozważanego w przykładzie systemów rekomendacyjnych opartych na treści, gdzie oceny dla filmów generowano na podstawie wcześniej stworzonych profili przedmiotów i użytkowników dołóżmy kontekst.
+Niech kontekstem w tym przypadku będą procenty odzwierciedlające preferencje użytkownika do poszczególnych gatunków książek, czytanych w różnych porach roku.
+\\
+\\(tabela)(zostanie dodana po rozwikłaniu zagadki z metody wyżej)
+\\(tabelka)
+\\
+\\Na początku należy utworzyć profil użytkownika uwzględniający każdy z kontekstów i każdy z gatunków książek. 
+Iloczyn skalarny macierzy kontekstu i macierzy profilu użytkownika przedstawia preferencje użytkownika w stosunku do każdego z kontekstów.
+\\
+\\(tabela po iloczynie)
+\\
+\\Następnym krokiem jest przedstawienie rankingu książek uwzględniającego kontekst dla wybranego użytkownika.
+Do stworzenia takiego rankingu zostanie użyte, dobrze już znane w zakresie reguł rekomendacyjnych prawdopodobieństwo kosinusów.
+\\
+\\Podobieństwo kosinusów(matrix, item profile).
+\\
+\\Po uzyskaniu rankingu można przejść do zasugerowania odpowiedniej książki dla wybranego użytkownika. Oczywiście, w tym przypadku, uwzględniając rozważany kontekst.
+
+\subsection{Wady i zalety systemów rekomendujących kontekstowych}
+Metody kontekstowe są bardziej zaawansowane niż wcześniej omawiane systemy rekomendujące. Dzięki temu rekomendacje oparte na metodach kontekstowych:
+\begin{itemize}
+\item  zawsze pozostają w zgodzie z użytkownikiem i generują informacje uwzględniając jego aktualne potrzeby,
+\item  są najczęściej stosowane przy generowaniu rekomendacji w czasie rzeczywistym.
+\end{itemize}
+Podobnie jak w poprzednio rozważanych systemach rekomendujących również i w tym brak jednak serendipity i proponowania nowych, zaskakujących użytkownika rekomendacji. 
+\section{Hybrydowe systemy rekomedyjące ():}
+(Czy potrzebny mi jeszcze ten podrozdział?)
+
+\section{Systemy rekomendujące oparte na modelach():}
+(Czy potrzebny mi jeszcze ten podrozdział?)
 
 \chapter{Eksperymenty / cześć praktyczne}
 
