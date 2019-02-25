@@ -18,179 +18,375 @@
 \newtheorem{problem}{Problem}
 \begin{document}
 
-\maketitle
+
+\begin{titlepage}
+\begin{flushleft}
+\end{flushleft}
+\begin{center}
+\textsc{{\huge Politechnika \L\'odzka}}
+\end{center}
+\bigskip
+\bigskip
+\begin{center}
+\textsc{{\Large Wydzia\l\ Fizyki Technicznej, Informatyki i~Matematyki Stosowanej}}
+\end{center}
+\bigskip
+\bigskip
+\begin{Large}
+Kierunek: Matematyka Stosowana\\
+Specjalno\'s\'c: Analiza Danych w Biznesie i Logistyce
+\\
+\end{Large}
+\bigskip
+\bigskip
+\noindent\hrulefill
+\begin{center}
+{\textbf{{\Large Matematyczne modele wykorzystywane w systemach rekomendacji.}}}
+\end{center}
+\begin{flushright}
+{\large 
+Anita Kudaj
+\\
+Nr albumu: 
+220020
+\\}
+\end{flushright}
+\noindent\hrulefill
+\bigskip
+\bigskip
+\begin{center}
+{\large Praca magisterska
+\\napisana w Instytucie Matematyki Politechniki Łódzkiej\\ 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+Promotor: dr, mgr inż. Piotr Kowalski
+ }
+\end{center}
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\begin{center}
+{\textsc{\large \L\'od\'z, ?????}}
+\end{center}
+\end{titlepage}
+
 
 \tableofcontents
 
 \chapter{Wstęp}
 %TODO napiszemy na końcu
 \chapter{Preliminaria} %teorie, definicje, twierdzenia z innych działów - potrzebne do zrozumienia pracy
-\section{Definicje związane z rachunkiem prawdopodobieństwa}
-Przykładowe?
-\section{Definicje związane z algebrą liniową}
-Przykładowe?
-\section{Eksploracja danych i metody statystyczne użyte w regułach rekomendujących}
-1.Odległość euklidesowa 2.Podobieństwo kosinusów 3.Współczynnik korelacji Pearsona
-\\4.Faktoryzacja macierzy. 
-\\5.Term frequency 6.Term frequency inverse document frequency
-\\Co ponadto? -> Czy wymagane jest opisanie, np.: 
-\\-Grupowania: k-średnich
-\\-Klasyfikacje: Regresja liniowa, Metoda KNN, Drzewa decyzyjne
+\section{Elementy rachunku prawdopodobieństwa i statystyki}
+Niech $F$ oznacza $\sigma$ - algebrę podzbiorów z przestrzeni $\Omega$ oraz niech $X$ oznacza funkcję rzeczywistą określoną na przestrzeni $\Omega$, to znaczy: %Krzyśko - Wykład z teorii pstwa
+\begin{center}
+$X: \Omega \longrightarrow \mathbb{R}$.
+\end{center}
+\begin{df}\textbf{Zmienna losowa}%Krzyśko - Wykład z teorii pstwa
+\\Zmienną losową nazywamy funkcję $X$, która jest $F$ - mierzalna, to znaczy jeżeli dla każdego $a\in\mathbb{R}$ zachodzi:
+\begin{center}
+$\{\omega : X(\omega) < a\} = X^{-1}((-\infty,a))\in F$, 
+\end{center}
+gdzie $X^{-1}$ jest operacją przeciwobrazu zbioru przez funkcję $X$.
+\end{df}
 
-\section{Definicje związane z metodami}
+\begin{df}\textbf{Kowariancja}
+\\Kowariancją zmiennych losowych $X,Y$ nazywamy liczbę:
+\begin{center}
+$Cov(X,Y) = E[(X-E(X))(Y-E(Y))]$,
+\end{center}
+gdzie $E(X)$ oznacza wartość oczekiwaną zmiennej losowej $X$.
+\end{df}
+\begin{df}\textbf{Odchylenie standardowe}
+\\Wariancją zmiennej losowej $X$ nazywamy liczbę:
+\begin{center}
+$Var(X)=E([X-E(X)]^2)$,
+\end{center}
+jeżeli po prawej stronie równości wartość oczekiwana istnieje. 
+\\Odchyleniem standardowym zmiennej losowej $X$ nazywamy liczbę:
+\begin{center}
+$\sigma(X)=\sqrt{Var(X)}$.
+\end{center}
+\end{df}
+\begin{df}\textbf{Współczynnik korelacja}
+\\Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $X$ i $Y$ zdefiniowaną następująco:
+\begin{center}
+$\rho(x,Y) = \frac{Cov(X,Y)}{\sigma(X)\sigma(Y)}$.
+\end{center}
+\end{df}
+W statystyce do przedstawienia poziomu zależności liniowej między dwoma zmiennymi losowymi używamy Współczynnika Korelacji Pearsona.
+\begin{df}\textbf{Współczynnik Korelacji Pearsona}
+\\Niech $X,Y \in \mathbb{R}^n$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\{1,...,n\}$ oznaczają wartości prób losowych tych zmiennych. 
+\\Przez $\overline{x}$ i $\overline{y}$ oznaczmy:
+\begin{center}
+$\overline{x}=\frac{1}{n} \sum_{k=1}^n x_k$,
+\\$\overline{y}=\frac{1}{n} \sum_{k=1}^n y_k$.
+\end{center}
+Wówczas Współczynnikiem Korelacji Pearsona nazywamy:
+\begin{center}
+$\rho(X,Y) = \frac{\sum_{k=1}^n(x_k - \overline{x})(y_k - \overline{y})}{\sqrt{\sum_{k=1}^n(x_k - \overline{x})^2} \sqrt{\sum_{k=1}^n(y_k - \overline{y})^2 }}$.
+\end{center}
+\end{df}
+\section{Elementy algebry liniowej}
+\begin{df}\textbf{Iloczyn skalarny}
+\\Niech $U$ oznacza przestrzeń liniową nad ciałem $\mathbb{R}$. Iloczynem skalarnym nazywamy formę dwuliniową 
+\begin{center}
+$d: U \times U \longrightarrow \mathbb{R}$,
+\end{center}
+gdy:
+\begin{itemize}
+\item dla każdego $u \in U$ zachodzi:
+\begin{center}
+$d (u,u) \geq 0$
+\end{center}
+\item jest symetryczna, oznacza to, że dla dowolnych $u, v \in U$ zachodzi:
+\begin{center}
+$d(u,v)=d(v,u)$
+\end{center}
+\item $\d(u,u)=0 \Leftrightarrow u = \Theta_{U}$
+\end{itemize}
+Przestrzeń liniową $U$ nad ciałem liczb rzeczywistych z iloczynem skalarnym 
+\\$d: U \times U \longrightarrow \mathbb{R}$ nazywamy przestrzenią euklidesową.
+\end{df}
+%Larose -> odkrywanie wiedzy z danych
+\begin{df} \textbf{Miara odległości}
+\\Miarą odległości (funkcją odległości) nazywamy rzeczywistą funkcję $d$, która dla każdego $x, y, x \in \mathbb{R}^n$ spełnia warunki:
+\begin{itemize}
+\item $d(x,y)\geq 0$ 
+\item $d(x,y) = 0 \Leftrightarrow x = y$ 
+\item $d(x,y) = d(y,x)$
+\item $d(x,y) + d(y,z) \geq d(x,z)$
+\end{itemize}
+\end{df}
+
+\begin{df}\textbf{Odległość euklidesowa} %Spodzieja S.: Wstęp do analizy matematycznej funkcje jednej zmiennej.
+\\Niech $(x_1,x_2,...,x_n) \in \mathbb{R}^n $.
+Normą x nazywamy:
+\begin{center}
+$||x|| = \sqrt{x_{1}^{2} + ... + x_{n}^{2}}$.
+\end{center}
+Jeśli $x,y \in \mathbb{R}^n $ to liczbę:
+$||x-y||$ nazywamy odległością euklidesową punktów $x$ i $y$, gdzie:
+\begin{center}
+$(x-y) = (x_1-y_1,...,x_n-y_n)$.
+\end{center}
+\end{df}
+\begin{df}\textbf{Odległość kosinusowa} %https://pqstat.pl/?mod_f=macpod
+\\Niech $x,y \in \mathbb{R}^n $ (x,y są n-wymiarowymi wektorami). Odległością kosinusową nazywamy:
+\begin{center}
+$d(x,y) = 1 - sim (x,y)$, 
+\end{center}
+gdzie $sim (x,y)$ to współczynnik podobieństwa wektorów $x$ i $y$:
+\begin{center}
+$sim (x,y) = \frac{x \cdot y}{|x||y|}$,
+\end{center}
+zatem
+\begin{center}
+$sim (x,y) = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}$.
+\end{center}
+\end{df}
+
+\section{? Metody}
 1.Przedmiot 2.Użytkownik 3.Preferencje 4.Cecha/własność
+
+\chapter{Eksploracja danych w systemach rekomendujących}
+Większość systemów rekomendujących opiera swój rdzeń na algorytmach, które możemy rozumieć jako konkretne przypadki technik eksploracji danych. 
+\\Proces eksploracji danych składa się zazwyczaj z trzech kroków:
+\begin{enumerate}
+\item Preprocesing Danych,
+\item Analiza Danych,
+\item Interpretacja Wyników.
+\end{enumerate}
+W tym rozdziale zostaną przeanalizowane najważniejsze i najczęściej używane w regułach rekomendujących metody. Zaczniemy od miar podobieństw i redukcji wymiaru. W kolejnym etapie spojrzymy na metody klasyfikacji, grupowania i regresji, aby zakończyć interpretacją wyników i oceną błędów obliczeń.
+\section{Preprocesing danych}
+Przed przystąpieniem do kroku analizy dane wymagają przygotowania: wyczyszczenia, przefiltrowania, transformacji. Dopiero tak przygotowane dane mogą zostać poddane zadaniom uczenia maszynowego. W tej sekcji zostaną przedstawione problemy, które spotkamy przy tworzeniu reguł rekomendujących.
+\subsection{Miary podobieństwa}
+W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństwach i odległości w danych.
+\\Najprostszym i jednocześnie najczęściej używanym podejściem jest tu \textbf{Odległość Euklidesowa}:
+\begin{center}
+$d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2}$, 
+\end{center}
+gdzie $n$ oznacza liczbę atrybutów elementów $x$ i $y$ przy czym $x_k$ oznacza k-ty atrybut elementu $x$. 
+\\Innym przykładem jest \textbf{Odległość Minkowkskiego}, która jest uogólnioną wersją Odległości Euklidesowej:
+\begin{center}
+$d(x,y) = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}$.
+\end{center}
+W zależności od wartości stopnia odległości $r$ Odległość Minkowkskiego przyjmuje konkretne nazwy:
+\begin{itemize}
+\item $r=1$ - Odległość Manhatan (norma $L_1$),
+\item $r=2$ - wspomniana wcześniej Odległość Euklidesowa,
+\item $r \longrightarrow \infty $ - supremum ( norma $L_{max}$, norma $L_{\infty}$). 
+\end{itemize}
+Kolejnym podejściem, gdzie poszczególne elementy są postrzegane jako $n$ - wymiarowe wektory, a podobieństwo między nimi jest obliczane na podstawie konta, który tworzą jest \textbf{podobieństwo kosinusów}:
+\begin{center}
+$cos(x_u, x_v) = \frac{x_u^{T}x_v}{||x_u|| ||x_v||}$,
+\end{center}
+gdzie $x_u$ i $x_v$ oznaczają wektory preferencji użytkowników $u$ oraz $v$.
+\\Inną miarą jest \textbf{Korelacja Pearsona}, zdefiniowana następująco:
+\begin{center}
+$\rho(u,v) = \frac{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)(r_{vi}-\overline{r}_v)}{\sqrt{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)^2 \sum_{i\in I_{uv}}(r_{vi}-\overline{r}_v)^2}}$
+\end{center}
+$I_{uv}$ oznacza w tym przypadku zbiór elementów, które zostały ocenione przez użytkownika $u$ i użytkownika $v$, $r_{ui}$ natomiast ocenę elementu $i$ przez użytkownika $u$.
+\\\textbf{Indeks Jaccarda (Współczynnik podobieństwa Jaccarda)} to kolejny wskaźnik opisujący podobieństwo. Jeżeli oznaczymy przez $A$ i $B$ wektory to:
+\begin{center}
+$J(A,B)=\frac{|A\cap B|}{|A \cup B|}$.
+\end{center}
+Z racji tego, że użytkowników i elementy możemy przedstawić za pomocą wektorów łatwo zastosować współczynnik Jaccarda do obliczania podobieństwa.
+
+\subsection{Redukcja wymiaru}
+\subsubsection{PCA}
+\subsubsection{Singular Value Decomposition}
+\section{Metody eksploracji danych}
+\subsection{k - najbliższych sąsiadów}%Larose -> odkrywanie wiedzy z danych (na podstawie)
+Algorytm k - najbliższych sąsiadów jest przykładem uczenia maszynowego, gdzie klasyfikacja nowych elementów zostaje przeprowadzona na podstawie porównania z najbardziej podobnymi jej obiektami.
+\\
+\\Niech dany będzie zbiór obserwacji w przestrzeni $\mathbb{R}^{n+1}$ z których każda składa się ze zmiennych objaśniających $x_1, ...,x_n$ i zmiennej objaśnianej $y$, obserwacja $d$ o znanych wartościach $x_1, ...,x_n$ do których chcemy przyporządkować wartość $y$ oraz $k\in \mathbb{N}$.
+\\W pierwszym kroku zostają porównane wartość zmiennych $x_1, ...,x_n$ obserwacji $d$ z wartościami tych zmiennych we wszystkich innych obserwacjach. Następnie zostaje wybrane $k$ obserwacji najbliższych obserwacji $d$. Ostatecznie na podstawie zmiennych objaśnianych, które odpowiadają obserwacjom w wybranej grupie obliczona zostaje średnia wartość $y$. Na podstawie tej wartości obserwacja $d$ uzyskuje odpowiednią prognozę przyporządkowania.
+\\
+\\Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne?
+\\Wykorzystywane są tutaj miary odległości z których najczęściej stosowaną jest odległość euklidesowa.
+\subsection{k-średnich}%Larose -> odkrywanie wiedzy z danych (na podstawie)
+Algorytm k-średnich jest prostym i zarazem efektywnym algorytmem grupowania.
+\\W pierwszym kroku zostaje ustalona liczba grup, na jaką dane zostaną rozdzielone ($k \in \mathbb{N}$). Następnie wybierając $k$ początkowych rekordów ustalamy środek każdej z grup. Pozostałe rekordy zostają przyporządkowane do każdej grupy poprzez wybór najmniejszej odległości od wszystkich środków. W kolejnym kroku dla każdej z $k$ grup odnajdujemy położenie nowego centroidu (najczęściej przez obliczenie średniej wartości) i znów powtarzamy przyporządkowanie pozostałych rekordów. Mechanizm powtarzamy do momentu, gdy otrzymamy zadowalający wynik lub, gdy środki przestaną zmieniać swoje położenie.
+ \\centroidy
+ \\sse
+\subsection{drzewa decyzyjne}
+\subsection{regresja wielowymiarowa - logistyczna - ?}
+\subsection{sztuczna sieć neuronowa - ?}
+\subsection{Support Vector Machines - ?}
+\section{Szacowanie Błędów Obliczeń}
+\subsection{Ocena Dokładności Metody}%RecommenderSystemsHandbook
+Kolejna kwestia często poruszana w regułach rekomendujących to dokładność przewidywań. Jak oceniamy, czy uzyskany przez nas wynik jest wystarczająco dokładny? 
+\\Załóżmy, że dla użytkownika $u$ i elementu $i$ ze zbioru testowego $P$ dostarczamy predykcję $\widehat{r_{(u,i)}}$. Aby ocenić jakość wyniku należy porównać ją ze znaną wartością $r_{(u,i)}$.
+\\
+\\Najczęściej używanymi miarami dokładności modelu są:
+\begin{itemize}
+\item \textbf{Średni Błąd (Mean Error)}
+\begin{center}
+$ME = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})$   
+\end{center}
+
+\item \textbf{Średni Błąd Bezwzględny (Mean Absolute Error)}
+\begin{center}
+$MAD = \frac{1}{|P|}\sum_{(u,i)\in P}|\widehat{r_{(u,i)}}-r_{(u,i)}|$   
+\end{center}
+
+\item \textbf{Średni Błąd Kwadratowy (Mean Squared Error)}
+\begin{center}
+$MSE = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})^2$   
+\end{center}
+\end{itemize}
+Funkcja kwadratowa jest funkcją monotoniczną co pozwala na dość częste zastępowanie średniego błędu kwadratowego przez średnią kwadratową błędów \textbf{(Root Mean Squared Error (RMSE))}.
+\begin{center}
+$RMSE = \sqrt{MSE}$
+\end{center} 
+\textbf{Normalized RMSE (NRMSE)} oraz \textbf{Normalized MAE (NMAE)} są znormalizownymi, przez użycie zakresu wartości $r_{max} - r_{min}$, wersjami błędów RMSE i MAE.
+\\Kolejnym rodzajem powszechnie używanego błędu jest \textbf{Average RMSE}, który pozwala na użycie sum ważonych. Niech $w_i>0$ będzie wagę dla elementu $i$ i $\sum w_i = 1$. 
+\begin{center}
+$ARMSE = \sqrt{\sum_{(u,i)\in P}w_{i}(\widehat{r_{(u,i)}}-r_{(u,i)})^2}$ 
+\end{center}
+
+\subsection{Ocena Precyzji Użyteczności}
+W regułach rekomendujących częstymi są przypadki, gdzie systemy nie będą przewidywać konkretnych preferencji użytkownika, jak oceny ale samo prawdopodobieństwo podjęcia przez użytkownika akcji.
+\\Oceniając taki model wybieramy przykładowego użytkownika i ukrywamy kilka wybranych przez niego elementów aby spróbować przewidzieć zestaw elementów jakie użytkownik będzie chciał wybrać. W poniższej tabeli zostały zaprezentowane rezultaty jakie są możliwe do otrzymania przy przeprowadzaniu takiego testu:
+\begin{center}
+\begin{tabular}{|r|r|r|} \hline
+ & Zarekomendowane & Niezarekomendowane  \\
+\hline 
+Wybrane & prawda-pozytywnie & fałsz-negatywnie \\
+przez użytkownika &(pp)&(fn) \\
+\hline
+Niewybrane & fałsz-pozytywnie & prawda-negatywnie \\
+przez użytkownika &(fp)&(pn) \\
+\hline
+\end{tabular}
+\end{center}
+Zakładamy, że elementy nieużyte przez użytkownika nie zostałyby użyte również w przypadku gdy zostałyby zarekomendowane. Założenie to może okazać się jednak błędne, ponieważ w wyniku rekomendacji możemy otrzymać interesujące propozycje, których użytkownik nie brał pod uwagę. Jest to powód dlaczego wynik $fp$ jest bardzo często przeszacowany.
+\\W celu porównania algorytmów możemy posłużyć się następującymi statystykami:
+\begin{center}
+Precyzja (ang. Precision) $= \frac{|pp|}{|pp|+|fp|}$, %czy liczność w tym przypadku może zostać zapisana przez | | 
+\\\textit{Wskaźnik pp (ang. Recall / True Positive Rate)} $ = \frac{|pp|}{|pp|+|fn|}$,
+\\\textit{Wskaźnik fp (ang. False Positive Rate)} $ = \frac{|fp|}{|fp|+|pn|}$.
+\end{center}
+Często jednak jest tu obserwowana zależność, która pokazuje, że przy wydłużaniu się listy rekomendacji rośnie wartość \textit{wskaźnika pp} i jednocześnie maleje \textit{precyzja}. Dla stałej długości listy rekomendacji porównanie precyzji algorytmów jest jak najbardziej miarodajne. Niemniej jednak porównanie precyzji, gdzie długości list rekomendacji są różne jest często bardzo trudne. Zostaje zatem wyznaczona krzywa przedstawiająca kompromis między \textit{wskaźnikiem pp} i \textit{precyzją}, lub między \textit{wskaźnikiem pp} i \textit{wskaźnikiem fp}. Formalnie pierwsza krzywa jest nazywana \textbf{krzywą precyzji (ang. precision - recall curve)} natomiast druga \textbf{krzywą ROC (ang. Receiver Operating Characteristic)}.
+
+\subsection{Ocena Rankingów}
+W poprzedniej sekcji została omówiona metoda wyboru odpowiedniego modelu rekomendującego. Każdy z takich modeli kończy się przedstawieniem pewnej listy rekomendowanych elementów. Często jednak również kolejność elementów jest bardzo ważna i ma duży wpływ na wybory użytkowników.
+\\W tej części zostaną zaprezentowane metody służące do oceny otrzymanych na podstawie modelu rankingów i pomagające zapewnić odpowiedni porządek rekomendowanych elementów. Jeżeli elementy posiadają oceny (np. użytkowników) intuicyjnym jest stworzyć ranking przez uporządkowanie tych ocen w malejący sposób. W przypadku gdy jednak nie mamy takich danych lub nie jest odpowiednie tworzenie takiego rankingu użyjemy \textbf{znormalizowanej miary opartej na odległości (ang. Normalized Distance-based Performance Measure (NDPM): }
+\\
+\\Niech $r_{ui}$ będzie rankingiem odniesienia i $\widehat{r}_{ui}$ rankingiem stworzonym przez wybrany system rekomendującym $n_u$ elementów $i$ użytkownikowi $u$. 
+\\Ponadto niech:
+\begin{center}
+$C^{+} = \sum_{i<j} sgn(r_{ui} - r_{uj})sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$
+\\$C^{-} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})sgn(\widehat{r}_{uj}-\widehat{r}_{ui})$
+\\$C^{u} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})$
+\\$C^{s} = \sum_{i<j} sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$
+\\$C^{0}=C^{u}-(C^{+}-C^{-})$, gdzie
+\end{center}
+$C^{u}$ jest liczbą par dla których ranking referencyjny okazuje się lepszą możliwością, 
+\\$C^{+}$ i $C^{-}$ to liczba par z poprawną i niepoprawną kolejnością,
+\\$C^{0}$ jest liczbą par dla których ranking referencyjny nie jest wiążący, kiedy ranking systemu rekomendującego jest.
+\\
+\\Ostatecznie NDPM definiujemy w następujący sposób:
+\begin{center}
+$NDPM = \frac{C^{-} + 0.5 C^{0}}{C^{u}}$
+\end{center}
+Powiązania w rankingu referencyjnym pojawiają się naturalnie, kiedy znamy preferencje użytkownika (np. przydziela on oceny). Czasami jednak rankingi są bardziej specyficzne (np. kiedy dajemy użytkownikowi wybór między dwoma elementami). Wtedy też system rekomendujący nie powinien tworzyć rankingu klasyfikując jedne elementy wyżej niż inne. W takich przypadkach przychodzą nam z pomocą 
+\\\textbf{miara Kendall's $\tau$}:
+\begin{center}
+$\tau = \frac{C^{+} - C^{-} }{\sqrt{C^{u}}\sqrt{C^{s}}}$
+\end{center}
+oraz \textbf{miara Spearman's $\rho$}:
+\begin{center}
+$\rho = \frac{1}{n_{u}}\frac{\sum_i (r_{iu} - \overline{r})(\widehat{r}_{iu}-\overline{\widehat{r}})}{\sigma(r)\sigma(\widehat{r})}$,
+\end{center}
+gdzie $\overline{r}$ i $\overline{\widehat{r}}$ oznaczają średnie, natomiast $\sigma(r)$ i $\sigma(\widehat{r})$ odchylenia standardowe.
+\begin{df}\textbf{? Term frequency}
+
+\end{df}
+\begin{df}\textbf{? Inverse document frequency}
+
+\end{df}
+\begin{df}\textbf{? Faktoryzacja macierzy}
+
+\end{df}
+
+
+
 
 
 
 \chapter{Modele tworzenia rekomendacji}
-\section{Filtrowanie kolaboratywne (Collaborative filtering)}
-
-\subsection{Problem}
-Rozważmy sytuację w której szukamy opinii na temat ostatnio wydanej książki znanego pisarza. Otrzymujemy dobre rekomendacje co  prawdopodobnie zachęci nas do jej przeczytania. Poznajemy stwierdzenia, że ta sama książka jest katastrofą co powoduje, że nie  chcemy tracić pieniędzy na jej zakup oraz czasu na oddanie się lekturze. W trzecim przypadku otrzymujemy dwie sprzeczne opinie na temat tej samej pozycji co powoduje, że wybór staje się trudniejszy. We wszystkich przypadkach analizujemy wartość uzyskanych ocen i ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
-\\
-\subsection{Metoda}
-Metody rozwiązywania podobnych problemów często spotykane są w matematyce. 
-\\Jednym z przykładów jest \textbf{filtrowanie kolaboratywne}. W rozważnej metodzie wyróżniamy dwa podstawowe typy:
-\begin{itemize}
-\item filtrowanie kolaboratywne oparte na użytkowniku (ang. user-based)
-\item filtrowanie kolaboratywne oparte na  elementach (ang. item-based)
-\end{itemize}
-Cechą wspólną dla obu powyższych metod jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
-\\
-\subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
-
-Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
-
-\subsubsection{3.1.3.1 Algorytm}
-Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
-\begin{enumerate}
-\item Znalezienie podobieństwa między czytelnikami opierającego się na informacji o przeczytanych książkach. Najczęstszymi stosowanymi podejściami do obliczania szukanego podobieństwa są Metryka Euklidesowa i Współczynnik Korelacji Pearsona.
-\item Wyestymowanie ocen, które czytelnicy (w szczególności osoba dla której tworzymy rekomendację) mogliby wystawić dla nieprzeczytanych książek z rozważanego zbioru.
-\end{enumerate}
-W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
-\subsubsection{3.1.3.2 Przykład}
-Zakładamy, że tabela przedstawia oceny czytelników dla kilku wybranych książek oraz, że każda z zapytanych osób mogła wystawić ocenę z zakresu 1 -10. Istotne jest, że nie wszyscy zapytani wystawili ocenę dla każdej z książek:
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|r|} \hline
-Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
-\hline \hline 
-Wladza Absolutna & 6 & 3 & & 6 & 4 &  \\
-Patrioci &  & 6 & 6 & 5 & 6 &  \\
-Proxima & 7 & 7 & 8 & 7 & 8 & 9 \\
-Strażacy & 8 & 10 & 10 & 7 & 6 & 8 \\
-Gra o Śmierć & 9 & 6 & 6 & 6 & 6 &  \\
-Cyrk & 5 & 7 & 7 & 5 & 4 & 2 \\
-\hline
-\end{tabular}
-\end{center}
-W tym przykładzie zastosujemy pierwsze ze wspomnianych rozwiązań. Używając wzoru:
-\begin{center}
-$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
-\end{center}
-obliczymy szukane odległości:
-
-(tabela)
-
-Bazując na podobieństwach między poszczególnymi użytkownikami, przez obliczenie średniej ważonej, zostaje przewidziana ocena jaką Bartek zaproponuje dla książki „Władza Absolutna”. W poniższym równaniu wartość podobieństwa między Bartkiem i innymi użytkownikami została pomnożona przez ocenę jaką dany użytkownik wystawił dla książki „Władza Absolutna”. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
-\\
-\\(obliczenie)
-\\
-\\Ostatecznie, gdy znane są oceny dla wszystkich książek dokonana zastaje rekomendacja dla naszego użytkownika.
-\\
-\\
-\subsection{Filtrowanie kolaboratywne oparte na  elementach}
-W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez  wartości podobieństwa między elementami.
-\\W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
-\subsubsection{3.1.4.1 Algorytm}
-Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykonać dwa kroki.
-\begin{enumerate}
-\item Pierwszym etapem jest znalezienie podobieństw występujących między elementami. Najczęstszą miarą podobieństwa w tym przypadku jest podobieństwo kosinusów. Miara ta wyraża podobieństwo miedzy n-wymiarowymi wektorami poprzez kąt między nimi w przestrzeni wektorowej. Wraz ze wzrostem wartość kąta rośnie podobieństwo.
-\item Następnie, na podstawie wydanych przez użytkownika ocen, należy wyestymować noty dla elementów przez niego nieocenionych.
-\end{enumerate}
-
-\subsubsection{3.1.4.2 Przykład}
-Chcąc zastosować ten rodzaj filtrowania kolaboratywnego do rozważanego problemu i przewidzieć ocenę użytkownika dla pewnej wybranej książki należy na wstępie zdefiniować wszystkie książki podobne do wybranej. Można to zrobić używając wspomnianego wcześniej, podobieństwa kosinusów. W tym przypadku elementami wektorów są oceny wystawione przez użytkowników dla poszczególnych książek, np.: (7,7,8,7,8,9) dla książki "Proxima". Poniższa tabela przedstawia natomiast podobieństwa występujące między wszystkimi książkami obliczone za pomocą wzoru:
-\begin{center}
-$ sim (\vec{a},\vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\mid \vec{a} \mid \mid \vec{b} \mid }$
-\end{center}
-\begin{center}
-\footnotesize{
-\begin{tabular}{|r|r|r|r|r|r|r|} \hline
- & Władza Absolutna & Patrioci & Proxima & Strażacy & Gra o Śmierć & Cyrk \\
-\hline
-Władza & & & & & & \\
-Absolutna & 1 & 0.6339 & 0.7372 & 0.7195 & 0.8935 & 0.7599 \\
-\hline
-Patrioci & 0.6339 & 1 & 0.7951 & 0.8150 & 0.7977 & 0.8898 \\
-\hline
-Proxima & 0.7372 & 0.7951 & 1 & 0.9780 & 0.8586 & 0.9200 \\
-\hline
-Strażacy & 0.7195 & 0.8150 & 0.9780 & 1 & 0.8860 & 0.9681 \\
-\hline
-Gra o Śmierć & 0.8935 & 0.7977 & 0.8586 & 0.8860 & 1 & 0.9413 \\
-\hline
-Cyrk & 0.7599 & 0.8898 & 0.9200 & 0.9681 & 0.9413 & 1 \\
-\hline
-\end{tabular}
-}
-\end{center}
-Znając podobieństwa między pozycjami oraz noty wystawione przez Kacpra możemy więc wyestymować jak Kacper oceni inne pozycje z naszego spisu. 
-\\Rozważmy książkę "Patrioci". Ustalone podobieństwa między pozycją "Patrioci" a każdą z innych książek ocenianych przez Kacpra wymnożymy przez oceny, które nadał pozycjom. Następnie sumę iloczynów dzielimy przez sumę wszystkich podobieństw.
-\begin{center}
-$\frac{(0.7951 \cdot 9 + 0.8150 \cdot 8 + 0.8898 \cdot 2)}{(0.7951 + 0.8150 + 0.8898)} = 6.16 $
-\end{center}
-Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu Kacper książce "Patrioci" to $6.16$.
-Powtarzając powyższe obliczenia dla każdej z pozycji nieocenionych przez Kacpra otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania naszemu użytkownikowi.
-\subsection{Wady i zalety filtrowania kolaboratywnego}
-Mając przed sobą dwa typy filtrowania kolaboratywnego możemy zadać pytanie o efektywność, czy precyzyjność tego rozwiązania.
-\\Poniżej kilka wniosków i informacji, opartych na rozważaniach Christian Desrosiers i George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} które pozwalają dostrzec zalety i wady tego rozwiązania.
-\\ 
-\\Zalety:
-\begin{itemize}
-\item Opisywane podejście tworzenia rekomendacji jest intuicyjne i łatwe implementacji zarówno w przypadku metody opartej na użytkownikach jak i metody opartej na elementach. 
-\item Metody filtrowania kolaboratywnego pozwalają ponadto na zwięzłe i intuicyjne wyjaśnienie obliczeń prognostycznych, które wykonujemy.
-\item W rozważanych metodach filtrowania nie są wykorzystywane informacje o zawartości produktów, czy informacje o profilu użytkownika. Kiedy wiec wzrośnie liczba ocen dla konkretnego produktu zmianie ulegnie jedynie wartość podobieństwa między elementami.
-\end{itemize}
-Z drugiej strony:
-\begin{itemize}
-\item Filtrowanie kolaboratywne jest kosztowne obliczeniowo, ponieważ wykorzystywane są tu informacje o użytkownikach, produktach oraz ocenach produktów przez użytkowników. 
-\item Podejście to zawodzi, kiedy istnieje potrzeba stworzenia rekomendacji dla nowego użytkownika o którego ocenach nie ma informacji.
-\item Zarówno metoda oparta na użytkownikach, jak i metoda oparta na elementach jest mało wiarygodna kiedy zasób danych na którym bazujemy jest mały.
-\end{itemize}
-
-\subsection{Porównanie filtrowania kolaboratywnego opartego na użytkownikach i filtrowania kolaboratywnego opartego na elemtach:}
-Warty rozważenie jest również fakt wyboru między rekomendacją opartą na użytkowniku, a rekomendacją opartą na elementach. Według Christian Desrosiers, George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} jest kilka obszarów, które należy rozważyć przed ostatecznym wyborem toku postępowania:
-\begin{itemize}
-\item \textbf{Precyzyjność:} Metodę wybieramy w zależności od stosunku między użytkownikami a przedmiotami w rozważanych danych. Mianowicie, jeżeli rozważany zbiór zawiera dużą liczbę użytkowników i jednocześnie mała liczbę elementów preferowanym rozwiązaniem jest metoda oparta na elementach.
-\item \textbf{Sprawność:} Złożoność rozważanych algorytmów zależy od stosunku między liczbą użytkowników, a liczbą elementów. Przyjmując O, U, E jako liczbę odpowiednio ocen, użytkowników i elementów zdefiniujmy 
-$p = O/U$ i $q = O/E$. Wtedy też złożoność metody opartej na użytkownikach wyrażona zostaje przez $p^2/E$, a złożoność metody opartej na elementach przez $q^2/U$.
-\item \textbf{Stabilność:} Rozważając ten aspekt przed wyborem metody należy rozważyć co wzrasta szybciej – liczba użytkowników, czy liczba elementów. Jeżeli liczba elementów wydaje się bardziej statyczna wtedy też lepszym wyborem jest metoda oparta na elementach i odwrotnie.
-\item \textbf{Uzasadnienie:} Pod tym względem lepszym wyborem będzie system rekomendacji oparty na elementach. W przypadku bowiem potrzeby wyjaśnienia naszej rekomendacji przedstawienie listy rozważanych elementów jest łatwiejsze niż przedstawienie listy użytkowników.
-\item \textbf{Serendipity:} Patrząc pod kontem możliwości wyszukiwania zaskakujących rekomendacji lepszym wyborem byłby system oparty na użytkowniku. Pozwala on bowiem dojść do znacznie ciekawszych wniosków niż system oparty na elementach.
-\end{itemize}
+Systemy rekomendujące mogą zostać podzielone na systemy oparte na kontekście i systemy oparte na użytkownikach. W pierwszym przypadku eksploracja danych jest dokonywana pod względem zawartych w treści rozważanego elementu cech. Główne założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B. W systemach opartych na użytkownikach badaniu podlegają natomiast zależności, które występują między produktami, a użytkownikami. Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
 
 
 \section{Systemy rekomendujące oparte na treści (Content-based recommender systems):}
 \subsection{Problem}
-Wspomniany wcześniej system rekomendacji filtrowania kolaboratywnego opiera się na informacji o ocenach przyznanych poszczególnym elementom w rozważanym zbiorze. Analizując jednak przypadek osoby, która przyznała ocenę 5 dla wybranej książki zauważmy, że użytkownik ten miał na uwadze wiele czynników, na przykład: zawartą historię, gatunek, styl pisania autora. 
-\\
-\subsection{Metoda i Algorytm}
-W tym przypadku rozwiązaniem matematycznym są systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowany poziom użytkownika, rozważają jego indywidualne preferencje oraz treść produktu. Analizie zostają poddane zestawy dokumentów i opisy przedmiotów, które wcześniej były oceniane przez użytkowników. Następnie bazując na cechach obiektów ocenianych przez kandydata zostaje zbudowany jego profil. Wspomniane metody opierają się na obliczaniu podobieństw oraz wykorzystują zadania uczenia maszynowego, takie jak klasyfikacja.
+Rozważmy sytuację w której szukamy przyjemnej lektury na zimowy wieczór. Zaczynamy od przeglądania tytułów wśród interesujących nas gatunków. Następnie spojrzymy zapewne na oceny jakie inni czytelnicy wydali na temat danej pozycji. Analizując wartość uzyskanych ocen ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
+
+\subsection{Algorytm}
+Metody rozwiązywania podobnych problemów często spotykane są w matematyce. Jednym z przykładów są systemy oparte na treści, które wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treści produktu. Głównym celem tej metody jest scharakteryzowanie cech, które użytkownik ceni, a następnie zasugerowanie mu produktów, które te cechy posiadają. Wspomniana metoda opiera się na obliczaniu podobieństw oraz wykorzystuje zadania uczenia maszynowego, takie jak klasyfikacja.
 \\
 \\
 W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie listy elementów, które mogę być odpowiednie użytkownikowi możemy przedstawić w trzech krokach:
-
 \begin{enumerate}
-\item \textbf{Wygenerowanie profilu produktu}
-\\
-W większość systemów rekomendacji opartych na treści można zauważyć użycie prostych modeli wyszukujących. Jednym z najbardziej popularnych jest Model Przestrzeni Wektorowej (\textit{ang. Vector Space Model}) z algorytmem TF-IDF (\textit{ang. TF – term frequency, IDF - inverse document frequency}). Jest to przestrzenna forma reprezentacji dokumentów. W modelu tym dokument jest reprezentowany przez wektor w przestrzeni n-wymiarowej, gdzie każdy z n wymiarów stanowi rozważaną cechę produktu.
+\item{Wygenerowanie profilu produktu}
+\item{Wygenerowanie profilu użytkownika}
+\item{Rozpoznanie cech produktu odpowiednich dla użytkownika}
+\end{enumerate}
+
+
+\subsection{Wygenerowanie profilu produktu}
+W większość systemów rekomendacji opartych na treści można zauważyć użycie prostych modeli wyszukujących. Jednym z najbardziej popularnych jest Model Przestrzeni Wektorowej (\textit{ang. Vector Space Model}) z algorytmem TF-IDF (\textit{ang. TF – term frequency, IDF - inverse document frequency}). Jest to przestrzenna forma reprezentacji dokumentów, gdzie dokument $i$ jest reprezentowany przez wektor w przestrzeni n-wymiarowej $x_{i}$, a każdy z $n$ wymiarów stanowi rozważaną cechę produktu. Dla danych w formie dokumentów tekstowych cechami, które pomagają scharakteryzować temat dokumentu, np. artykułu na stronie internetowej są słowa. Dla każdego ze słów zostaje obliczona wartość funkcji TFIDF (została ona dokładnie omówiona poniżej). W końcowym etapie słowa, które otrzymały najwyższe wyniki zostają uznane za charakteryzujące rozważany dokument.
 \\
 \\Formalnie rzecz ujmując każdy z dokumentów jest przedstawiony za pomocą wektora wag, gdzie waga w odpowiedni sposób wyraża zależność między dokumentem, a badanym terminem.
 \\
-\\Niech \begin{math} P = \{p_1, p_2,...,p_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}C = \{c_1, c_2,...,c_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} p_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} p_j = \{w_{1j}, w_{2j},...,w_{nj}\} \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} c_k \end{math} w dokumencie  \begin{math} p_j \end{math}.
+\\Niech \begin{math} P = \{p_1, p_2,...,p_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}C = \{c_1, c_2,...,c_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} p_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} p_j = [w_{1j}, w_{2j},...,w_{nj}] \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} c_k \end{math} w dokumencie  \begin{math} p_j \end{math}.
 \\
 \\
-Do generowania profilu produktu używany jest wspomniany wcześniej algorytm \textbf{ TFIDF } pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy tu, że:
+Do generowania profilu produktu używany jest wspomniany wcześniej algorytm TFIDF pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy tu, że:
 \begin{itemize}
 \item rzadkie cechy są równie istotne jak częste (założenie IDF),
 \item kilkukrotne wystąpienie terminu w rozważanym dokumencie jest równie istotne jak pojedyncze (założenie TF),
@@ -229,23 +425,27 @@ TFIDF(t_k, d_j)
 w_{k,j} = \frac{TFIDF(t_k, d_j)}{\sqrt{\sum_{i=1}^{|T|}{TFIDF(t_i, d_j)}^2}}.
 \end{math}
 \end{center}
-Dodatkowo aby pokazać związki między poszczególnymi dokumentami warto posłużyć się miarą podobieństwa kosinusów:
+Tak wygenerowany został zbiór słów, które są reprezentacją danego dokumentu oraz jego tematu. Ostatnim krokiem przed zarekomendowaniem pozycji czytelnikom jest wyestymowanie podobieństw występujących między poszczególnymi dokumentami. Naturalnymi miarami odległości, które można tu wykorzystać są:
+\begin{itemize}
+\item współczynnik Jaccarda mierzący odległość między zbiorami słów,
+\item podobieństwa kosinusów mierzące odległość między wektorami:
+
 \begin{center}
 \begin{math}
 sim(p_i,p_j) = \frac{\sum_{i=k} w_{k,i}\cdot w_{k,j}}{\sqrt{\sum_{k=1}{w_{k,i}}^2} \cdot \sqrt{\sum_{k=1}{w_{k,j}}^2}}.
 \end{math}
 \end{center}
+Przy estymowaniu odległości kosinusów między dwoma dokumentami elementami wektora są słowa, które zostały wybrane na podstawie wcześniej przeprowadzonego algorytmu. W wektorze tym wartość $1$ oznacza, że słowo pojawiło się w zbiorze opisującym dokument, natomiast $0$ oznacza sytuację przeciwną.
+\end{itemize}
 
-
-\item \textbf{Wygenerowanie profilu użytkownika}
-\\W tym kroku stworzona zostaje macierz preferencji wyrażona za pomocą wektorów wag i dopasowana do treści produktu. 
-\item \textbf{Rozpoznanie cech produktu odpowiednich dla użytkownika}
-\\Proces rekomendacji bazuje na dopasowaniu cech profilu użytkownika i wartości opisujących treść obiektu. Rezultatem jest stwierdzenie czy rozważany kandydat jest zainteresowany analizowanym przedmiotem. Zainteresowanie użytkownika danym przedmiotem może zostać dostarczone na podstawie porównania podobieństw kosinusów.
-\end{enumerate}
+\subsection{Wygenerowanie profilu użytkownika}
+Przy generowaniu wektora opisującego rozważane dokumenty należy uwzględnić komponenty opisujące preferencje użytkowników. Dla każdego użytkownika $u$ przedstawiamy jego preferencje w postaci wektora $x_u$, gdzie użytkownik pozycjonuje element $i$ poprzez wektor cech $x_i$.
+\subsection{Rozpoznanie cech produktu odpowiednich dla użytkownika} 
+Proces rekomendacji bazuje na dopasowaniu cech profilu użytkownika i wartości opisujących treść obiektu. Rezultatem jest stwierdzenie czy rozważany kandydat jest zainteresowany analizowanym przedmiotem. Zainteresowanie użytkownika danym przedmiotem można wyestymować używając podobieństwa cosinusów. Rozważmy dokument, gdzie użytkownik wyraża zainteresowanie większością cech w wektorze $x_i$ opisującym dokument $i$. Otrzymamy cosinus kąta między użytkownikiem i dokumentem będący dodatnim ułamkiem. Oznacza to, że kąt będzie bliski $0^{o}$ a tym samym odległość między wektorami będzie mała. W przypadku przeciwnym otrzymamy cosinus bliski zeru lub mniejszy od zera, oznacza to kąt należący do przedziału $(90^{o};180^{o})$ oraz małe podobieństwo między rozważanymi wektorami.
 
 \subsection{Przykład}
-Aby dokładnie przyjrzeć się metodom opartym na treści rozważmy, podobnie jak poprzednio, przykład oparty na książkach:
-Tym razem stworzenie rekomendacji wymaga większej liczby faktów.
+Aby dokładnie przyjrzeć się metodom opartym na treści rozważmy wcześniej przytoczony problem oparty na książkach.
+Poniższa tabela przedstawia tytuły kilku randomowo wybranych książek wraz z gatunkami.
 \begin{center}
 \begin{tabular}{|r|r|} \hline
 \textbf{Książka} & \textbf{Gatunek} \\
@@ -346,15 +546,34 @@ Cyrk & 1 & 1 & 1 & 1 & 1 & 1 \\
 \end{tabular}
 \end{center}
 Profil użytkownika powinien zawierać jego preferencje dotyczące cech danego przedmiotu, w tym przypadku będą to preferencje dotyczące gatunku książki. Iloczyn skalarny zbudowany na TFIDF i macierzy preferencji użytkowników przedstawi powinowactwo każdego z użytkowników do każdego z rozważanych gatunków książki. 
-\\
-\\(macierz powinowactwa)
-\\
-\\Kolejnym krokiem po wygenerowaniu profilu przedmiotu i profilu użytkownika jest przedstawienie w jakim stopniu każdy z użytkowników będzie zainteresowany każdą z książek. Do tego wykorzystane zostanie, wcześniej już wspomniane, podobieństwo kosinusów.
+\begin{center}
+\footnotesize{
+\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
+Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
+/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
+Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
+\hline 
+Anna &    2.197224 &  1.098612 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 1.3862944 & 1.791759 \\
+\hline
+Maciej &  2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
+\hline
+Bartek &  1.098612 &  2.197224 &  1.791759 &  1.791759 & 1.791759  & 1.791759  & 1.3862944 & 1.791759 \\
+\hline
+Ewa &     2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
+\hline
+Sandra &  2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
+\hline
+Kacper &  1.098612 &  1.098612 &  1.791759 &  1.791759 & 0 & 1.791759 & 0.6931472 & 0\\
+\hline
+\end{tabular}
+}
+\end{center}
+Kolejnym krokiem po wygenerowaniu profilu przedmiotu i profilu użytkownika jest przedstawienie w jakim stopniu każdy z użytkowników będzie zainteresowany każdą z książek. Do tego wykorzystane zostanie, wcześniej już wspomniane, podobieństwo kosinusów.
 \\
 \\(macierz zainteresowań)
 \\
 
-\subsection{Wady i zalety systemu rekomendującego opartego na treści}
+\subsection{????????Wady i zalety systemu rekomendującego opartego na treści}
 Badacze Francesco Ricci, Lior Rokach, Bracha Shapira i Paul B. Kantor w swojej publikacji :"Recommender Systems
 Handbook" wyróżniają następujące zalety filtrowania opartego na treści: 
 \begin{itemize}
@@ -369,12 +588,132 @@ Niemniej jednak, rozważając ten rodzaj systemów rekomendujących możemy dost
  \item \textbf{Nowy użytkownik:} W przypadku użytkowników, gdzie możemy analizować dużą liczbę wystawionych ocen i dobrze zrozumieć ich preferencje stworzenie odpowiedniej rekomendacji nie stanowi problemu. Jednakże, gdy ocen jest tylko kilka lub użytkownik jest nowy system nie będzie w stanie stworzyć niezawodnej rekomendacji.
 \end{itemize} 
 
+\section{Filtrowanie kolaboratywne (Collaborative filtering)}
+
+Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A. Wyróżniamy dwa podstawowe typy filtrowania kolaboratywnego:
+\begin{itemize}
+\item filtrowanie kolaboratywne oparte na użytkowniku (ang. user-based)
+\item filtrowanie kolaboratywne oparte na  elementach (ang. item-based)
+\end{itemize}
+Cechą wspólną dla obu powyższych metod jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
+\\Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach kontekstowych. Rekomendację są dokonywane tylko na podstawie ocen. Dzięki temu systemowi możemy również dokonywać rekomendacji na przestrzeni kilku kontekstów, co pozwala uniknąć nam konkretne wyspecjalizowanej przestrzeni obecnej w metodach kontekstowych.
+\subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
+
+
+\subsubsection{Algorytm}
+Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
+\begin{enumerate}
+\item Znalezienie podobieństwa między czytelnikami opierającego się na informacji o przeczytanych książkach. Najczęstszymi stosowanymi podejściami do obliczania szukanego podobieństwa są Metryka Euklidesowa i Współczynnik Korelacji Pearsona.
+\item Wyestymowanie ocen, które czytelnicy (w szczególności osoba dla której tworzymy rekomendację) mogliby wystawić dla nieprzeczytanych książek z rozważanego zbioru.
+\end{enumerate}
+W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
+\subsubsection{3.1.3.2 Przykład}
+Zakładamy, że tabela przedstawia oceny czytelników dla kilku wybranych książek oraz, że każda z zapytanych osób mogła wystawić ocenę z zakresu 1 -10. Istotne jest, że nie wszyscy zapytani wystawili ocenę dla każdej z książek:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
+\hline \hline 
+Wladza Absolutna & 6 & 3 & & 6 & 4 &  \\
+Patrioci &  & 6 & 6 & 5 & 6 &  \\
+Proxima & 7 & 7 & 8 & 7 & 8 & 9 \\
+Strażacy & 8 & 10 & 10 & 7 & 6 & 8 \\
+Gra o Śmierć & 9 & 6 & 6 & 6 & 6 &  \\
+Cyrk & 5 & 7 & 7 & 5 & 4 & 2 \\
+\hline
+\end{tabular}
+\end{center}
+W tym przykładzie zastosujemy pierwsze ze wspomnianych rozwiązań. Używając wzoru:
+\begin{center}
+$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
+\end{center}
+obliczymy szukane odległości:
+
+(tabela)
+
+Bazując na podobieństwach między poszczególnymi użytkownikami, przez obliczenie średniej ważonej, zostaje przewidziana ocena jaką Bartek zaproponuje dla książki „Władza Absolutna”. W poniższym równaniu wartość podobieństwa między Bartkiem i innymi użytkownikami została pomnożona przez ocenę jaką dany użytkownik wystawił dla książki „Władza Absolutna”. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
+\\
+\\(obliczenie)
+\\
+\\Ostatecznie, gdy znane są oceny dla wszystkich książek dokonana zastaje rekomendacja dla naszego użytkownika.
+\\
+\\
+\subsection{Filtrowanie kolaboratywne oparte na  elementach}
+W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez  wartości podobieństwa między elementami.
+\\W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
+\subsubsection{Algorytm}
+Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykonać dwa kroki.
+\begin{enumerate}
+\item Pierwszym etapem jest znalezienie podobieństw występujących między elementami. Najczęstszą miarą podobieństwa w tym przypadku jest podobieństwo kosinusów. Miara ta wyraża podobieństwo miedzy n-wymiarowymi wektorami poprzez kąt między nimi w przestrzeni wektorowej. Wraz ze wzrostem wartość kąta rośnie podobieństwo.
+\item Następnie, na podstawie wydanych przez użytkownika ocen, należy wyestymować noty dla elementów przez niego nieocenionych.
+\end{enumerate}
+
+\subsubsection{Przykład}
+Chcąc zastosować ten rodzaj filtrowania kolaboratywnego do rozważanego problemu i przewidzieć ocenę użytkownika dla pewnej wybranej książki należy na wstępie zdefiniować wszystkie książki podobne do wybranej. Można to zrobić używając wspomnianego wcześniej, podobieństwa kosinusów. W tym przypadku elementami wektorów są oceny wystawione przez użytkowników dla poszczególnych książek, np.: (7,7,8,7,8,9) dla książki "Proxima". Poniższa tabela przedstawia natomiast podobieństwa występujące między wszystkimi książkami obliczone za pomocą wzoru:
+\begin{center}
+$ sim (\vec{a},\vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\mid \vec{a} \mid \mid \vec{b} \mid }$
+\end{center}
+\begin{center}
+\footnotesize{
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+ & Władza Absolutna & Patrioci & Proxima & Strażacy & Gra o Śmierć & Cyrk \\
+\hline
+Władza & & & & & & \\
+Absolutna & 1 & 0.6339 & 0.7372 & 0.7195 & 0.8935 & 0.7599 \\
+\hline
+Patrioci & 0.6339 & 1 & 0.7951 & 0.8150 & 0.7977 & 0.8898 \\
+\hline
+Proxima & 0.7372 & 0.7951 & 1 & 0.9780 & 0.8586 & 0.9200 \\
+\hline
+Strażacy & 0.7195 & 0.8150 & 0.9780 & 1 & 0.8860 & 0.9681 \\
+\hline
+Gra o Śmierć & 0.8935 & 0.7977 & 0.8586 & 0.8860 & 1 & 0.9413 \\
+\hline
+Cyrk & 0.7599 & 0.8898 & 0.9200 & 0.9681 & 0.9413 & 1 \\
+\hline
+\end{tabular}
+}
+\end{center}
+Znając podobieństwa między pozycjami oraz noty wystawione przez Kacpra możemy więc wyestymować jak Kacper oceni inne pozycje z naszego spisu. 
+\\Rozważmy książkę "Patrioci". Ustalone podobieństwa między pozycją "Patrioci" a każdą z innych książek ocenianych przez Kacpra wymnożymy przez oceny, które nadał pozycjom. Następnie sumę iloczynów dzielimy przez sumę wszystkich podobieństw.
+\begin{center}
+$\frac{(0.7951 \cdot 9 + 0.8150 \cdot 8 + 0.8898 \cdot 2)}{(0.7951 + 0.8150 + 0.8898)} = 6.16 $
+\end{center}
+Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu Kacper książce "Patrioci" to $6.16$.
+Powtarzając powyższe obliczenia dla każdej z pozycji nieocenionych przez Kacpra otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania naszemu użytkownikowi.
+\subsection{????Wady i zalety filtrowania kolaboratywnego}
+Mając przed sobą dwa typy filtrowania kolaboratywnego możemy zadać pytanie o efektywność, czy precyzyjność tego rozwiązania.
+\\Poniżej kilka wniosków i informacji, opartych na rozważaniach Christian Desrosiers i George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} które pozwalają dostrzec zalety i wady tego rozwiązania.
+\\ 
+\\Zalety:
+\begin{itemize}
+\item Opisywane podejście tworzenia rekomendacji jest intuicyjne i łatwe implementacji zarówno w przypadku metody opartej na użytkownikach jak i metody opartej na elementach. 
+\item Metody filtrowania kolaboratywnego pozwalają ponadto na zwięzłe i intuicyjne wyjaśnienie obliczeń prognostycznych, które wykonujemy.
+\item W rozważanych metodach filtrowania nie są wykorzystywane informacje o zawartości produktów, czy informacje o profilu użytkownika. Kiedy wiec wzrośnie liczba ocen dla konkretnego produktu zmianie ulegnie jedynie wartość podobieństwa między elementami.
+\end{itemize}
+Z drugiej strony:
+\begin{itemize}
+\item Filtrowanie kolaboratywne jest kosztowne obliczeniowo, ponieważ wykorzystywane są tu informacje o użytkownikach, produktach oraz ocenach produktów przez użytkowników. 
+\item Podejście to zawodzi, kiedy istnieje potrzeba stworzenia rekomendacji dla nowego użytkownika o którego ocenach nie ma informacji.
+\item Zarówno metoda oparta na użytkownikach, jak i metoda oparta na elementach jest mało wiarygodna kiedy zasób danych na którym bazujemy jest mały.
+\end{itemize}
+
+\subsection{????Porównanie filtrowania kolaboratywnego opartego na użytkownikach i filtrowania kolaboratywnego opartego na elemtach:}
+Warty rozważenie jest również fakt wyboru między rekomendacją opartą na użytkowniku, a rekomendacją opartą na elementach. Według Christian Desrosiers, George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} jest kilka obszarów, które należy rozważyć przed ostatecznym wyborem toku postępowania:
+\begin{itemize}
+\item \textbf{Precyzyjność:} Metodę wybieramy w zależności od stosunku między użytkownikami a przedmiotami w rozważanych danych. Mianowicie, jeżeli rozważany zbiór zawiera dużą liczbę użytkowników i jednocześnie mała liczbę elementów preferowanym rozwiązaniem jest metoda oparta na elementach.
+\item \textbf{Sprawność:} Złożoność rozważanych algorytmów zależy od stosunku między liczbą użytkowników, a liczbą elementów. Przyjmując O, U, E jako liczbę odpowiednio ocen, użytkowników i elementów zdefiniujmy 
+$p = O/U$ i $q = O/E$. Wtedy też złożoność metody opartej na użytkownikach wyrażona zostaje przez $p^2/E$, a złożoność metody opartej na elementach przez $q^2/U$.
+\item \textbf{Stabilność:} Rozważając ten aspekt przed wyborem metody należy rozważyć co wzrasta szybciej – liczba użytkowników, czy liczba elementów. Jeżeli liczba elementów wydaje się bardziej statyczna wtedy też lepszym wyborem jest metoda oparta na elementach i odwrotnie.
+\item \textbf{Uzasadnienie:} Pod tym względem lepszym wyborem będzie system rekomendacji oparty na elementach. W przypadku bowiem potrzeby wyjaśnienia naszej rekomendacji przedstawienie listy rozważanych elementów jest łatwiejsze niż przedstawienie listy użytkowników.
+\item \textbf{Serendipity:} Patrząc pod kontem możliwości wyszukiwania zaskakujących rekomendacji lepszym wyborem byłby system oparty na użytkowniku. Pozwala on bowiem dojść do znacznie ciekawszych wniosków niż system oparty na elementach.
+\end{itemize}
+
+
+
+
 \section{Systemy rekomendujące kontekstowe ( Context – aware recommender systems):}
 
-\subsection{Problem}
-Spersonalizowane systemy rekomendujące opierające się na  indywidualnym podejściu do użytkownika i tworzą  rekomendacje oparte na jego indywidualnych preferencjach. Należy jednak zauważyć, że na wybór tej samej osoby może mieć również wpływ miejsce, czas, nastrój, czy warunki w których aktualnie się znajduje. 
-
-\subsection{Metoda i Algorytm}
+\subsection{Algorytm}
 Systemy rekomendujące kontekstowe są systemami rekomendującymi opartymi na treści w których zostaje uwzględniony dodatkowy wymiar zwany kontekstem.
 
 \begin{df}\textbf{(Kontekst)}
@@ -418,14 +757,14 @@ Do stworzenia takiego rankingu zostanie użyte, dobrze już znane w zakresie reg
 \\
 \\Po uzyskaniu rankingu można przejść do zasugerowania odpowiedniej książki dla wybranego użytkownika. Oczywiście, w tym przypadku, uwzględniając rozważany kontekst.
 
-\subsection{Wady i zalety systemów rekomendujących kontekstowych}
+\subsection{???Wady i zalety systemów rekomendujących kontekstowych}
 Metody kontekstowe są bardziej zaawansowane niż wcześniej omawiane systemy rekomendujące. Dzięki temu rekomendacje oparte na metodach kontekstowych:
 \begin{itemize}
 \item  zawsze pozostają w zgodzie z użytkownikiem i generują informacje uwzględniając jego aktualne potrzeby,
 \item  są najczęściej stosowane przy generowaniu rekomendacji w czasie rzeczywistym.
 \end{itemize}
 Podobnie jak w poprzednio rozważanych systemach rekomendujących również i w tym brak jednak serendipity i proponowania nowych, zaskakujących użytkownika rekomendacji. 
-\section{Hybrydowe systemy rekomedyjące ():}
+\section{Hybrydowe systemy rekomendujące ():}
 (Czy potrzebny mi jeszcze ten podrozdział?)
 
 \section{Systemy rekomendujące oparte na modelach():}
@@ -436,7 +775,7 @@ Podobnie jak w poprzednio rozważanych systemach rekomendujących również i w 
 \chapter{Podsumowanie}
 %TODO napiszemy na koncu
 
-Korzystając z \citep[Rozdział 3, akapit 4]{ricci2015recommender}
+
 
 \nocite{*} %TODO remove
 \bibliographystyle{plain}
