@@ -12,10 +12,14 @@
 \title{Matematyczne modele wykorzystywane w systemach rekomendacji.}
 
 \newtheorem{df}{Definicja}
+\newtheorem{tw}{Twierdzenie}
+\newtheorem{dw}{Dowód}
 \newtheorem{algorytm}{Algorytm}
 \newtheorem{przyklad}{Przykład}
 \newtheorem{metoda}{Metoda}
 \newtheorem{problem}{Problem}
+
+\usepackage{graphicx}
 \begin{document}
 
 
@@ -188,6 +192,36 @@ $sim (x,y) = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}
 \end{center}
 \end{df}
 
+\begin{df}\textbf{Transformacja ortogonalna}
+\end{df}
+\begin{df}\textbf{Macierz korelacji}
+\end{df}
+\begin{df}\textbf{Macierz ortogonalna}
+\end{df}
+\begin{df}\textbf{Macierz diagonalna}
+\end{df}
+\begin{df}\textbf{Dekompozycja macierzy?}
+\end{df}
+\begin{df}\textbf{Macierz odwrotna}
+\end{df}
+\begin{df}\textbf{Macierz transponowana}
+\end{df}
+\begin{df}\textbf{Macierz nieosobliwa}
+\end{df}
+\begin{df}\textbf{Macierz osobliwa}
+\end{df}
+\begin{df}\textbf{Sprzężenie hermitowskie}
+\end{df}
+\begin{df}\textbf{Ślad macierzy}
+\end{df}
+\begin{df}\textbf{Rząd macierzy}
+\end{df}
+\begin{df}\textbf{Zakres macierzy}
+\end{df}
+\begin{df}\textbf{Jądro macierzy}
+\end{df}
+\begin{df}\textbf{Przestrzeń generowana przez układ wektorów}
+\end{df}
 \section{? Metody}
 1.Przedmiot 2.Użytkownik 3.Preferencje 4.Cecha/własność
 
@@ -236,8 +270,192 @@ $J(A,B)=\frac{|A\cap B|}{|A \cup B|}$.
 Z racji tego, że użytkowników i elementy możemy przedstawić za pomocą wektorów łatwo zastosować współczynnik Jaccarda do obliczania podobieństwa.
 
 \subsection{Redukcja wymiaru}
-\subsubsection{PCA}
-\subsubsection{Singular Value Decomposition}
+\subsubsection{Analiza Głównych Składowych}
+
+\begin{df}\textbf{Analiza Głównych Składowych (ang. Principal Component Analysis (PCA))}
+\\Analizą głównych składowych nazywamy procedurę statystyczną, która polega na ortogonalnej transformacji układu badanych zmiennych $X$ w zbiór nowych zmiennych $Y$. W rzeczywistość zmienne $Y$ są kombinacją liniową zmiennych $X$.
+\end{df}
+Niech dane będą dwie zmienne $X_1, X_2$ oraz $n$ pomiarów, które oznaczmy $(X_{i1},X_{i2})$ dla $i \in {1,2,3,...,n}$. Pomiary przedstawmy na układzie współrzędnych w formie diagramu korelacyjnego. Możemy zauważyć, że wzdłuż jednej osi dane są bardziej rozproszone - jest to pierwsza główna składowa $Y_1$. Drug biegnąca pod kątem prostym do pierwszej oś, wyznacza kierunek drugiej składowej - $Y_2$. Osie $X_1, X_2$ są transformowane przez przesunięcie środka do nowego punktu $(\overline{X_1},\overline{X_2})$, a następnie obrócone w ten sposób, by otrzymać współrzędne $Y_1$ i $Y_2$ głównych składowych.
+
+\begin{center}
+\begin{figure}[h]
+\includegraphics[scale=1.7]{obrazek.PNG} 
+\caption{Diagram korelacyjny wyodrębnienia głównych składowych.}
+\end{figure}
+\end{center}
+Punktem wyjścia rozważanego algorytmu jest macierz kowariancji lub macierz korelacji utworzone ze zbioru wyjściowego. Zawierają one informację niezbędną do wyznaczenia głównych składowych.
+\\W przypadku użycia macierzy kowariancji największy wpływ na wynik przeprowadzanego algorytmu mają zmienne o największej wariancji. Stąd też rozwiązanie to świetnie sprawdzi się w przypadku, gdy rozważane zmienne mają porównywalne wielkości: 
+\begin{center}
+$ A= \left[
+        \begin{array}{cccc}
+         \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1n}\\
+         \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2n}\\
+         \vdots & \vdots & \ddots & \vdots\\
+         \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_{nn}
+         \end{array}
+      \right]$, 
+\end{center}
+gdzie:
+\begin{itemize}
+\item $\sigma_{ii}$ - wariancja zmiennej $X_i$,
+\item $\sigma_{ij}=Cov(X_i,X_j)$ - kowariancja między zmiennymi $X_i$ i $X_j$.
+\end{itemize}
+W przypadku, gdy zmienne różnią się znacznie w wyrażonych jednostkach, lub gdy nie są proporcjonalne zastosujemy macierz korelacji:
+\begin{center}
+$ B= \left[
+        \begin{array}{cccc}
+         1 & \rho{12} & \cdots & \rho{1n}\\
+         \rho{21} & 1 & \cdots & \rho{2n}\\
+         \vdots & \vdots & \ddots & \vdots\\
+         \rho{n1} & \rho{n2} & \cdots & 1
+         \end{array}
+      \right]$, 
+\end{center}
+gdzie:
+\begin{itemize}
+\item $\rho{ij}=\frac{Cov(X_i,X_j)}{\sigma_{i}\sigma_{j}}$ - współczynnik korelacji $X_i$ i $X_j$.
+\end{itemize}
+Własności głównych składowych:
+\begin{itemize}
+\item są kombinacją liniową pierwotnych zmiennych,
+\item względem siebie są ortogonalne,
+\item suma wariancji pierwotnych zmiennych jest równa sumie wariancji zmiennych składowych.
+\end{itemize}
+Dla wspomnianej transformacji ortogonalnej, w przypadku gdy znamy wektory własne macierzy istnieje bezpośrednie równanie.
+\begin{tw}
+Niech $W$ będzie macierzą wektorów własnych przekształcenia $XX^T$ uporządkowaną malejąco.
+Wtedy transformacja PCA jest dana wzorem $Y=W^T X$.
+\end{tw}
+\begin{dw}
+Bez utraty ogólności załóżmy, że $X$ ma średnią zero.
+\\Niech $\lambda_1\geq\lambda_2\geq...\geq\lambda_n$ będą wartościami własnymi przekształcenia $XX^T$ oraz $v_i$ odpowiadającą bazą ortogonalną. Załóżmy, że $\omega = \sum_{i=1}^n a_iv_i$ maksymalizuje wariancję oraz $w\neq v_i$.
+\\Wtedy:
+\begin{center}
+$\omega_1 = argmax_{||\omega||=1}\omega^TXX^T\omega = argmax_{||\omega||=1}(\sum a_iv_i)^TXX^T(\sum a_iv_i)$
+\\$ = argmax_{||\omega||=1}(\sum a_iv_i)^T(\sum a_i\lambda_iv_i)= argmax_{||\omega||=1}(\sum a_i)^2$.
+\end{center}
+Stąd $\omega_1$ maksymalizuje wariancję wtedy i tylko wtedy, gdy $\omega_1=v_1$. 
+\\Znając k-1 głównych składowych k-tą znajdziemy postępując z transformacją:
+\begin{center}
+$X_{k-1} = X - \sum_{i=1}^{k-1}\omega_i\omega_i^TX$.
+\end{center}
+Podstawiając $X_{k-1}$ otrzymujemy:
+\begin{center}
+$\omega_k = argmax_{||x||=1}\omega^TX_{k-1}X_{k-1}^T\omega$.
+\end{center}
+\end{dw}
+\begin{flushright}
+$\Box$
+\end{flushright}
+RZEMYŚLEĆ JESZCZE DOWÓD???????????
+\\Twierdzenie przedstawia użyteczną interpretację algorytmy PCA, jednakże nie jest wydajną metodą przy odnajdowaniu wektorów własnych. Poniżej zostanie przedstawiony proces odnalezienia transformacji.
+\\Załóżmy, że średnia $X$ to zero. Naszym celem jest znaleźć transformację ortogonalną $W$ taką, że $WX$ jest losowym wektorem z parami niezależnych wektorów. ???
+\subsubsection{Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD))} 
+\begin{df} \textbf{Rozkład Według Wartości Osobliwych}%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
+%Using Linear Algebra for Intelligent Information Retrival.pdf
+\\Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ oraz $r \in \mathbb{N}$ jest rzędem macierzy $A$ nazywamy rozkład:
+\begin{center}
+$\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$,
+\end{center}  
+gdzie:
+\begin{itemize}
+\item $\mathbb{U}$ jest macierzą ortogonalną $m \times m$ - wymiarową,
+\item $\sum $ jest macierzą diagonalną, $m \times n$ - wymiarową o nieujemnych wartościach, $\sum = diag(d_1, d_2,..., d_n)$, $n \in \mathbb{N}$ taką, że $d_i>0$ dla $1\leq i \leq r$ i $d_i=0$ dla $i\geq r+1$,
+\item $\mathbb{V}$ są macierzą ortogonalną $n \times n$ - wymiarową.
+\end{itemize}
+\end{df}
+\begin{df}\textbf{Norma Frobeniusa}%Using Linear Algebra for Intelligent Information Retrival.pdf
+\\Normą Frobeniusa nazywamy:
+\begin{center}
+$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^* A}$,
+\end{center}
+gdzie $A$ jest macierzą $m\times n$ - wymiarową. $A^* = \overline{A}^T$ jest sprzężeniem hermitowskim macierzy, a $tr(A)$ śladem macierzy $A$.
+\end{df}
+
+\begin{tw}\textbf{Następstwa SVN}%Using Linear Algebra for Intelligent Information Retrival.pdf
+\\Niech rozkład według wartości osobliwych macierzy $A$ będzie dany wzorem
+\begin{center}
+$\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$
+\end{center}
+gdzie $U=[u_1,u_2,...u_m]$, $V = [v_1,v_2,...v_n]$ oraz 
+\\$d_1\geq d_2 \geq ... \geq d_r > d_{r+1} = ... = d_n = 0$.
+\\$R(A)$ i $N(A)$ oznaczają zakres i jądro macierzy.
+\\Wtedy:
+\begin{enumerate}
+\item właściwości rzędu macierzy: $rank(A) = r$, $N(A) = span\{v_{r+1},...,v_n \}$, $R(A) = span \{u_1,u_2,...,u_r \}$,
+\item $A = \sum_{i=1}^r u_i \cdot d_i \cdot v_i^T$,
+\item $||A||_F^2 = d_1^2+...+d_r^2$ i $||A||_2^2 = d_1$.
+\end{enumerate}
+\end{tw}
+
+\begin{tw}\textbf{Twierdzenie Eckart - Younga}%Using Linear Algebra for Intelligent Information Retrival.pdf
+\\Niech $X$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$, $r\in \mathbb{N} = rank(A)$ niech będzie rzędem macierzy i $r\leq p = min(m,n)$.
+\\Zdefiniujmy:
+\begin{center}
+$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T$, 
+\end{center}
+wtedy
+\begin{center}
+$min_{rank(B) = k } ||A - B||_F^2 = ||A - A_k||_F^2 = d_{k+1}^2 + ... + d_p^2$.
+\end{center}
+\end{tw}
+\begin{dw}
+Niech $A \in \mathbb{R}^{m\times n}$ będzie macierzą o wartościach rzeczywistych, gdzie $m\geq n$.
+\\Załóżmy, że
+\begin{center}
+$\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$
+\end{center} 
+jest rozkładem według wartości osobliwych macierzy $A$.
+\\Chcemy pokazać, że najlepszym przybliżeniem macierzy $A$ w normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
+\begin{center}
+$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T$,
+\end{center}
+gdzie $u_i$ i $v_i$ oznaczają odpowiednio $i$-te kolumny macierzy $U$ i $V$.
+\\Zauważmy, że
+\begin{center}
+$||A - A_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot d_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n d_i^2$.
+\end{center}
+Stąd należy udowodnić, że $B_k = XY^T$, gdzie $X$ i $Y$ są macierzami oraz 
+\begin{center}
+$||A - A_k||_F^2 = \sum_{i=k+1}^n d_i^2 = ||A - B_k||_F^2$.
+\end{center}
+Z nierówności trójkąta, jeżeli $A = A^{`} + A^{``}$ wtedy $d_1(A)\leq d_1(A^{`}) + d_1(A^{``})$. 
+\\Przez $A_k^{`}$ i $A_k^{``}$ oznaczmy przybliżenia SVD odpowiednio macierzy $A^{`}$ i $A^{``}$. 
+\\Stąd dla każdego $i,j \geq 1$
+\begin{center}
+$d_i(A^{`}) + d_j(A^{``}) = d_1(A^{`} - A_{i-1}^{`}) + d_1(A^{``} - A_{j-1}^{``})
+\geq d_1(A-A_{i-1}^{`} - A_{j-1}^{``})
+\geq d_1(A-A_{i+j-2})(rank(A_{i-1}^{`} + A_{j-1}^{``}))
+\geq d_{i+j-1}(A)$,
+\end{center}
+gdy $rank(A_{i-1}^{`} + A_{j-1}^{``}) \leq rank (A_{i+j-2})$.
+\\Jeżeli 
+\begin{center}
+$d_{k+1}(B_k)=0$,
+\end{center} 
+kiedy $A^{`} = A - B_k$ i $A^{``} = B_k$ wnioskujemy, że dla $i\geq 1, j= k+1$
+\begin{center}
+$d_i(A-B_k)\geq d_{k+1}(A)$.
+\end{center}
+Stąd:
+\begin{center}
+$||A - B_k||_F^2 = \sum_{i=1}^n d_i(A-B_k)^2\geq \sum_{k+1}^nd_i(A)^2 = ||A-A_k||_F^2$.
+\end{center}
+\end{dw}
+\begin{flushright}
+$\Box$
+\end{flushright}
+\bigskip
+\bigskip
+Zawsze jest możliwe dokonać dekompozycji macierzy $A$ do postaci $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$.
+\\Zakładamy,że naszą macierzą wejściową jest macierz danych $A$ $m \times n$-wymiarowa odzwierciedlająca $m$ elementów oraz $n$ cech dla każdego z nich. Po przeprowadzeniu rozkładu według wartości osobliwych otrzymamy:
+\begin{itemize}
+\item macierz $U$ o wymiarach $m \times r$ prezentującą $m$ elementów i $r$ konceptów,
+\item macierz diagonalną $\sum$ o wymiarach $r \times r$ prezentującą siłę poszczególnych konceptów,
+\item macierz $V$ o wymiarach $n \times r$ prezentującą $n$ cech i $r$ konceptów.
+\end{itemize}
+Macierz $\sum$ zawiera pojedyncze wartości uporządkowane zawsze w porządku malejącym. Macierz $U$ jest tu interpretowana jako macierz podobieństwa elementów i konceptów, macierz $U$ natomiast jako macierz podobieństwa cech i konceptów. 
+\\SVD jest powszechnie używane w celu odkrycia relacji występujących między użytkownikami i produktami.
 \section{Metody eksploracji danych}
 \subsection{k - najbliższych sąsiadów}%Larose -> odkrywanie wiedzy z danych (na podstawie)
 Algorytm k - najbliższych sąsiadów jest przykładem uczenia maszynowego, gdzie klasyfikacja nowych elementów zostaje przeprowadzona na podstawie porównania z najbardziej podobnymi jej obiektami.
