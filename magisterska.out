@@ -2,41 +2,40 @@
 \BOOKMARK [0][-]{chapter.2}{Preliminaria}{}% 2
 \BOOKMARK [1][-]{section.2.1}{Elementy rachunku prawdopodobienstwa i statystyki}{chapter.2}% 3
 \BOOKMARK [1][-]{section.2.2}{Elementy algebry liniowej}{chapter.2}% 4
-\BOOKMARK [1][-]{section.2.3}{? Metody}{chapter.2}% 5
-\BOOKMARK [0][-]{chapter.3}{Eksploracja danych w systemach rekomendujacych}{}% 6
-\BOOKMARK [1][-]{section.3.1}{Preprocesing danych}{chapter.3}% 7
-\BOOKMARK [2][-]{subsection.3.1.1}{Miary podobienstwa}{section.3.1}% 8
-\BOOKMARK [2][-]{subsection.3.1.2}{Redukcja wymiaru}{section.3.1}% 9
-\BOOKMARK [1][-]{section.3.2}{Metody eksploracji danych}{chapter.3}% 10
-\BOOKMARK [2][-]{subsection.3.2.1}{k - najblizszych sasiad\363w}{section.3.2}% 11
-\BOOKMARK [2][-]{subsection.3.2.2}{k-srednich}{section.3.2}% 12
-\BOOKMARK [2][-]{subsection.3.2.3}{drzewa decyzyjne}{section.3.2}% 13
-\BOOKMARK [2][-]{subsection.3.2.4}{regresja wielowymiarowa - logistyczna - ?}{section.3.2}% 14
-\BOOKMARK [2][-]{subsection.3.2.5}{sztuczna siec neuronowa - ?}{section.3.2}% 15
-\BOOKMARK [2][-]{subsection.3.2.6}{Support Vector Machines - ?}{section.3.2}% 16
-\BOOKMARK [1][-]{section.3.3}{Szacowanie B\233ed\363w Obliczen}{chapter.3}% 17
-\BOOKMARK [2][-]{subsection.3.3.1}{Ocena Dok\233adnosci Metody}{section.3.3}% 18
-\BOOKMARK [2][-]{subsection.3.3.2}{Ocena Precyzji Uzytecznosci}{section.3.3}% 19
-\BOOKMARK [2][-]{subsection.3.3.3}{Ocena Ranking\363w}{section.3.3}% 20
-\BOOKMARK [0][-]{chapter.4}{Modele tworzenia rekomendacji}{}% 21
-\BOOKMARK [1][-]{section.4.1}{Systemy rekomendujace oparte na tresci \(Content-based recommender systems\):}{chapter.4}% 22
-\BOOKMARK [2][-]{subsection.4.1.1}{Problem}{section.4.1}% 23
-\BOOKMARK [2][-]{subsection.4.1.2}{Algorytm}{section.4.1}% 24
-\BOOKMARK [2][-]{subsection.4.1.3}{Wygenerowanie profilu produktu}{section.4.1}% 25
-\BOOKMARK [2][-]{subsection.4.1.4}{Wygenerowanie profilu uzytkownika}{section.4.1}% 26
-\BOOKMARK [2][-]{subsection.4.1.5}{Rozpoznanie cech produktu odpowiednich dla uzytkownika}{section.4.1}% 27
-\BOOKMARK [2][-]{subsection.4.1.6}{Przyk\233ad}{section.4.1}% 28
-\BOOKMARK [2][-]{subsection.4.1.7}{????????Wady i zalety systemu rekomendujacego opartego na tresci}{section.4.1}% 29
-\BOOKMARK [1][-]{section.4.2}{Filtrowanie kolaboratywne \(Collaborative filtering\)}{chapter.4}% 30
-\BOOKMARK [2][-]{subsection.4.2.1}{Filtrowanie kolaboratywne oparte na uzytkowniku}{section.4.2}% 31
-\BOOKMARK [2][-]{subsection.4.2.2}{Filtrowanie kolaboratywne oparte na elementach}{section.4.2}% 32
-\BOOKMARK [2][-]{subsection.4.2.3}{????Wady i zalety filtrowania kolaboratywnego}{section.4.2}% 33
-\BOOKMARK [2][-]{subsection.4.2.4}{????Por\363wnanie filtrowania kolaboratywnego opartego na uzytkownikach i filtrowania kolaboratywnego opartego na elemtach:}{section.4.2}% 34
-\BOOKMARK [1][-]{section.4.3}{Systemy rekomendujace kontekstowe \( Context \205 aware recommender systems\):}{chapter.4}% 35
-\BOOKMARK [2][-]{subsection.4.3.1}{Algorytm}{section.4.3}% 36
-\BOOKMARK [2][-]{subsection.4.3.2}{Przyk\233ad}{section.4.3}% 37
-\BOOKMARK [2][-]{subsection.4.3.3}{???Wady i zalety system\363w rekomendujacych kontekstowych}{section.4.3}% 38
-\BOOKMARK [1][-]{section.4.4}{Hybrydowe systemy rekomendujace \(\):}{chapter.4}% 39
-\BOOKMARK [1][-]{section.4.5}{Systemy rekomendujace oparte na modelach\(\):}{chapter.4}% 40
-\BOOKMARK [0][-]{chapter.5}{Eksperymenty / czesc praktyczne}{}% 41
-\BOOKMARK [0][-]{chapter.6}{Podsumowanie}{}% 42
+\BOOKMARK [0][-]{chapter.3}{Eksploracja danych w systemach rekomendujacych}{}% 5
+\BOOKMARK [1][-]{section.3.1}{Preprocesing danych}{chapter.3}% 6
+\BOOKMARK [2][-]{subsection.3.1.1}{Miary podobienstwa}{section.3.1}% 7
+\BOOKMARK [2][-]{subsection.3.1.2}{Redukcja wymiaru}{section.3.1}% 8
+\BOOKMARK [1][-]{section.3.2}{Metody eksploracji danych}{chapter.3}% 9
+\BOOKMARK [2][-]{subsection.3.2.1}{k - Najblizszych Sasiad\363w}{section.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.2.2}{k-srednich}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.3}{drzewa decyzyjne-?}{section.3.2}% 12
+\BOOKMARK [2][-]{subsection.3.2.4}{regresja wielowymiarowa - logistyczna - ?}{section.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.2.5}{sztuczna siec neuronowa}{section.3.2}% 14
+\BOOKMARK [2][-]{subsection.3.2.6}{Support Vector Machines}{section.3.2}% 15
+\BOOKMARK [1][-]{section.3.3}{Szacowanie B\233ed\363w Obliczen}{chapter.3}% 16
+\BOOKMARK [2][-]{subsection.3.3.1}{Ocena Dok\233adnosci Metody}{section.3.3}% 17
+\BOOKMARK [2][-]{subsection.3.3.2}{Ocena Precyzji Uzytecznosci}{section.3.3}% 18
+\BOOKMARK [2][-]{subsection.3.3.3}{Ocena Ranking\363w}{section.3.3}% 19
+\BOOKMARK [0][-]{chapter.4}{Modele tworzenia rekomendacji}{}% 20
+\BOOKMARK [1][-]{section.4.1}{Systemy rekomendujace oparte na tresci \(Content-based recommender systems\):}{chapter.4}% 21
+\BOOKMARK [2][-]{subsection.4.1.1}{Problem}{section.4.1}% 22
+\BOOKMARK [2][-]{subsection.4.1.2}{Algorytm}{section.4.1}% 23
+\BOOKMARK [2][-]{subsection.4.1.3}{Wygenerowanie profilu produktu}{section.4.1}% 24
+\BOOKMARK [2][-]{subsection.4.1.4}{Wygenerowanie profilu uzytkownika}{section.4.1}% 25
+\BOOKMARK [2][-]{subsection.4.1.5}{Rozpoznanie cech produktu odpowiednich dla uzytkownika}{section.4.1}% 26
+\BOOKMARK [2][-]{subsection.4.1.6}{Przyk\233ad}{section.4.1}% 27
+\BOOKMARK [2][-]{subsection.4.1.7}{????????Wady i zalety systemu rekomendujacego opartego na tresci}{section.4.1}% 28
+\BOOKMARK [1][-]{section.4.2}{Filtrowanie kolaboratywne \(Collaborative filtering\)}{chapter.4}% 29
+\BOOKMARK [2][-]{subsection.4.2.1}{Filtrowanie kolaboratywne oparte na uzytkowniku}{section.4.2}% 30
+\BOOKMARK [2][-]{subsection.4.2.2}{Filtrowanie kolaboratywne oparte na elementach}{section.4.2}% 31
+\BOOKMARK [2][-]{subsection.4.2.3}{????Wady i zalety filtrowania kolaboratywnego}{section.4.2}% 32
+\BOOKMARK [2][-]{subsection.4.2.4}{????Por\363wnanie filtrowania kolaboratywnego opartego na uzytkownikach i filtrowania kolaboratywnego opartego na elemtach:}{section.4.2}% 33
+\BOOKMARK [1][-]{section.4.3}{Systemy rekomendujace kontekstowe \( Context \205 aware recommender systems\):}{chapter.4}% 34
+\BOOKMARK [2][-]{subsection.4.3.1}{Algorytm}{section.4.3}% 35
+\BOOKMARK [2][-]{subsection.4.3.2}{Przyk\233ad}{section.4.3}% 36
+\BOOKMARK [2][-]{subsection.4.3.3}{???Wady i zalety system\363w rekomendujacych kontekstowych}{section.4.3}% 37
+\BOOKMARK [1][-]{section.4.4}{Hybrydowe systemy rekomendujace \(\):}{chapter.4}% 38
+\BOOKMARK [1][-]{section.4.5}{Systemy rekomendujace oparte na modelach\(\):}{chapter.4}% 39
+\BOOKMARK [0][-]{chapter.5}{Eksperymenty / czesc praktyczne}{}% 40
+\BOOKMARK [0][-]{chapter.6}{Podsumowanie}{}% 41

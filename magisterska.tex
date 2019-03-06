@@ -20,6 +20,7 @@
 \newtheorem{problem}{Problem}
 
 \usepackage{graphicx}
+\usepackage{float}
 \begin{document}
 
 
@@ -191,39 +192,102 @@ zatem
 $sim (x,y) = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}$.
 \end{center}
 \end{df}
-
-\begin{df}\textbf{Transformacja ortogonalna}
+\begin{df}\textbf{Macierz transponowana}%Banaszak "Elementy algebry liniowej cz.1"
+\\Niech dana będzie macierz $A \in M_{m,n}(K)$ o $n$ kolumnach i $m$ wierszach:
+\begin{center}
+$ A= \left[
+        \begin{array}{cccc}
+         a_{11} & a_{12} & \cdots & a_{1n}\\
+         a_{21} & a_{22} & \cdots & a_{2n}\\
+         \vdots & \vdots & \ddots & \vdots\\
+         a_{m1} & a_{m2} & \cdots & a_{mn}\\
+         \end{array}
+      \right]
+      \qquad $.
+\end{center}
+Macierzą transponowaną nazywamy macierz $A^T \in M_{n,m}(K)$:
+\begin{center}
+$ A^T= \left[
+        \begin{array}{cccc}
+         a_{11} & a_{21} & \cdots & a_{m1}\\
+         a_{12} & a_{22} & \cdots & a_{m2}\\
+         \vdots & \vdots & \ddots & \vdots\\
+         a_{1n} & a_{2n} & \cdots & a_{mn}\\
+         \end{array}
+      \right]
+      \qquad $.
+\end{center}
 \end{df}
-\begin{df}\textbf{Macierz korelacji}
-\end{df}
+\begin{tw}\textbf{Własności transpozycji macierzy}
+\\Niech $A$ i $B$ będą macierzami o współczynnikach z $K$ oraz niech posiadają tyle kolumn i wierszy, że operacje występujące powyżej są określone. Niech $\lambda \in K$.
+\\Zachodzą następujące równości:
+\begin{itemize}
+\item $(A^T)^T = A$,
+\item $(A + B)^T = A^T + B^T$,
+\item $(\lambda A)^T = \lambda A^T$,
+\item $(AB)^T = B^T A^T$.
+\end{itemize}
+\end{tw}
 \begin{df}\textbf{Macierz ortogonalna}
+\\Macierzą ortogonalną nazywamy macierz kwadratową $A \in M_{n,n}(\mathbb{R})$ spełniającą nierówność:
+\begin{center}
+$A^T \cdot A = A\cdot A^T = I_n$,
+\end{center}
+gdzie $A^T$ oznacza macierz transponowaną względem $A$, natomiast $I_n$ oznacza macierz jednostkową.
 \end{df}
+
 \begin{df}\textbf{Macierz diagonalna}
+\\Macierzą diagonalną nazywamy macierz $A\in M_{n,n}(K)$ taką, że:
+\begin{center}
+$A = (a_{ij})$ dla $i,j=1,2,...,n$ 
+\\oraz 
+\\$a_{ij} = 0$ gdy $i\neq j$.
+\end{center}
 \end{df}
-\begin{df}\textbf{Dekompozycja macierzy?}
-\end{df}
-\begin{df}\textbf{Macierz odwrotna}
-\end{df}
-\begin{df}\textbf{Macierz transponowana}
-\end{df}
+
 \begin{df}\textbf{Macierz nieosobliwa}
+\\Macierzą nieosobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, jeżeli istnieje macierz $B \in M_{n,n}(K)$ taka, że:
+\begin{center}
+$A \cdot B = B \cdot A = I_n$,
+\end{center}
+gdzie $I_n$ jest macierzą jednostkową.
 \end{df}
 \begin{df}\textbf{Macierz osobliwa}
+\\Macierzą osobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, której wyznacznik jest równy zero.
 \end{df}
-\begin{df}\textbf{Sprzężenie hermitowskie}
+\begin{df}\textbf{Rozkład wartości osobliwych}
+\\Rozkładem wartości osobliwych nad $\mathbb{R}$ nazywamy przedstawienie macierzy $A$ w postaci:
+\begin{center}
+$A = \mathbb{U}\sum \mathbb{V}^T$,
+\end{center}
+gdzie $\mathbb{U}$ i $\mathbb{V}$ są macierzami ortogonalnymi. Natomiast $\sum$ jest macierzą diagonalną, która zawiera kolejne wartości osobliwe.
 \end{df}
+
+\begin{df}\textbf{?Macierz odwrotna}
+\end{df}
+
 \begin{df}\textbf{Ślad macierzy}
+\\Śladem macierzy  $A\in M_{n,n}(K)$ nazywamy wielkość:
+\begin{center}
+$tr(A) = \sum_{i=1}^n a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}$.
+\end{center}
 \end{df}
-\begin{df}\textbf{Rząd macierzy}
+\begin{df}\textbf{Rząd macierzy}%Banaszak "Elementy algebry liniowej cz.1"
+\\Rzędem macierzy nazywamy liczbę wiodących jedynek w dowolnej postaci zredukowanej macierzy. Rząd macierzy A oznaczamy symbolem $rz A$ lub $R(A)$.
 \end{df}
-\begin{df}\textbf{Zakres macierzy}
+Rząd macierzy wyznacza maksymalną wektorów niezależnych, które są kolumnami lub wierszami tej macierzy.
+\begin{df}\textbf{?Zakres macierzy}
 \end{df}
-\begin{df}\textbf{Jądro macierzy}
+\begin{df}\textbf{?Jądro macierzy}
 \end{df}
 \begin{df}\textbf{Przestrzeń generowana przez układ wektorów}
+\\Przestrzenią generowaną przez układ wektorów $X$ nazywamy zbór wszystkich kombinacji linowych skończonych podukładów $X$.
+\\Oznaczamy ją symbolem $span(X)$ i definiujemy ją następująco:
+\begin{center}
+$span(X) := \{\sum_{i=1}^n a_i x_i : (\forall_{i\in [1;n]\cap \mathbb{N}} a_i \in \mathbb{K}) \wedge (\forall_{i\in [1;n]\cap \mathbb{N}} x_i \in \mathbb{X}) \wedge n \in \mathbb{N}\}$,
+\end{center}
+gdzie $X = (x_i)_{i=1}^n$ jest układem wektorów przestrzeni wektorowej $\mathbb{V}$ nad ciałem $\mathbb{K}$.
 \end{df}
-\section{? Metody}
-1.Przedmiot 2.Użytkownik 3.Preferencje 4.Cecha/własność
 
 \chapter{Eksploracja danych w systemach rekomendujących}
 Większość systemów rekomendujących opiera swój rdzeń na algorytmach, które możemy rozumieć jako konkretne przypadki technik eksploracji danych. 
@@ -237,7 +301,7 @@ W tym rozdziale zostaną przeanalizowane najważniejsze i najczęściej używane
 \section{Preprocesing danych}
 Przed przystąpieniem do kroku analizy dane wymagają przygotowania: wyczyszczenia, przefiltrowania, transformacji. Dopiero tak przygotowane dane mogą zostać poddane zadaniom uczenia maszynowego. W tej sekcji zostaną przedstawione problemy, które spotkamy przy tworzeniu reguł rekomendujących.
 \subsection{Miary podobieństwa}
-W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństwach i odległości w danych.
+W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństwach i odległości.
 \\Najprostszym i jednocześnie najczęściej używanym podejściem jest tu \textbf{Odległość Euklidesowa}:
 \begin{center}
 $d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2}$, 
@@ -270,20 +334,21 @@ $J(A,B)=\frac{|A\cap B|}{|A \cup B|}$.
 Z racji tego, że użytkowników i elementy możemy przedstawić za pomocą wektorów łatwo zastosować współczynnik Jaccarda do obliczania podobieństwa.
 
 \subsection{Redukcja wymiaru}
+Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć, że tym samym rośnie stopień komplikacji w interpretacji otrzymanych wyników. Zbyt duża ilość zmiennych, które opisują obserwacje powoduje wzrost prawdopodobieństwa, że zmienne te są ze sobą skorelowane, a informacje wnoszone przez część zmiennych są redundantne. Podobne zjawiska możemy dostrzec także w regułach rekomendujących. Proces redukcji wymiaru pozwala przezwyciężyć ten problem poprzez transformację przestrzeni danych do przestrzeni o mniejszej liczbie wymiarów. W poniższym rozdziale przyjrzymy się dwóm najczęściej wybieranym algorytmom redukcji wymiarów w kontekście reguł rekomendujących. Są to Analiza Głównych Składowych oraz Rozkład Według Wartości Osobliwych.
+
 \subsubsection{Analiza Głównych Składowych}
 
 \begin{df}\textbf{Analiza Głównych Składowych (ang. Principal Component Analysis (PCA))}
 \\Analizą głównych składowych nazywamy procedurę statystyczną, która polega na ortogonalnej transformacji układu badanych zmiennych $X$ w zbiór nowych zmiennych $Y$. W rzeczywistość zmienne $Y$ są kombinacją liniową zmiennych $X$.
 \end{df}
 Niech dane będą dwie zmienne $X_1, X_2$ oraz $n$ pomiarów, które oznaczmy $(X_{i1},X_{i2})$ dla $i \in {1,2,3,...,n}$. Pomiary przedstawmy na układzie współrzędnych w formie diagramu korelacyjnego. Możemy zauważyć, że wzdłuż jednej osi dane są bardziej rozproszone - jest to pierwsza główna składowa $Y_1$. Drug biegnąca pod kątem prostym do pierwszej oś, wyznacza kierunek drugiej składowej - $Y_2$. Osie $X_1, X_2$ są transformowane przez przesunięcie środka do nowego punktu $(\overline{X_1},\overline{X_2})$, a następnie obrócone w ten sposób, by otrzymać współrzędne $Y_1$ i $Y_2$ głównych składowych.
-
-\begin{center}
-\begin{figure}[h]
-\includegraphics[scale=1.7]{obrazek.PNG} 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{obrazek.PNG} 
 \caption{Diagram korelacyjny wyodrębnienia głównych składowych.}
 \end{figure}
-\end{center}
-Punktem wyjścia rozważanego algorytmu jest macierz kowariancji lub macierz korelacji utworzone ze zbioru wyjściowego. Zawierają one informację niezbędną do wyznaczenia głównych składowych.
+\bigskip
+Punktem wyjścia rozważanego algorytmu jest macierz kowariancji lub macierz korelacji utworzone ze zbioru wejściowego. Zawierają one informację niezbędną do wyznaczenia głównych składowych.
 \\W przypadku użycia macierzy kowariancji największy wpływ na wynik przeprowadzanego algorytmu mają zmienne o największej wariancji. Stąd też rozwiązanie to świetnie sprawdzi się w przypadku, gdy rozważane zmienne mają porównywalne wielkości: 
 \begin{center}
 $ A= \left[
@@ -315,12 +380,16 @@ gdzie:
 \begin{itemize}
 \item $\rho{ij}=\frac{Cov(X_i,X_j)}{\sigma_{i}\sigma_{j}}$ - współczynnik korelacji $X_i$ i $X_j$.
 \end{itemize}
+\bigskip
+\bigskip
 Własności głównych składowych:
 \begin{itemize}
 \item są kombinacją liniową pierwotnych zmiennych,
 \item względem siebie są ortogonalne,
 \item suma wariancji pierwotnych zmiennych jest równa sumie wariancji zmiennych składowych.
 \end{itemize}
+\bigskip
+\bigskip
 Dla wspomnianej transformacji ortogonalnej, w przypadku gdy znamy wektory własne macierzy istnieje bezpośrednie równanie.
 \begin{tw}
 Niech $W$ będzie macierzą wektorów własnych przekształcenia $XX^T$ uporządkowaną malejąco.
@@ -347,9 +416,16 @@ $\omega_k = argmax_{||x||=1}\omega^TX_{k-1}X_{k-1}^T\omega$.
 \begin{flushright}
 $\Box$
 \end{flushright}
-RZEMYŚLEĆ JESZCZE DOWÓD???????????
-\\Twierdzenie przedstawia użyteczną interpretację algorytmy PCA, jednakże nie jest wydajną metodą przy odnajdowaniu wektorów własnych. Poniżej zostanie przedstawiony proces odnalezienia transformacji.
-\\Załóżmy, że średnia $X$ to zero. Naszym celem jest znaleźć transformację ortogonalną $W$ taką, że $WX$ jest losowym wektorem z parami niezależnych wektorów. ???
+Twierdzenie przedstawia użyteczną interpretację algorytmy PCA, jednakże nie jest wydajną metodą przy odnajdowaniu wektorów własnych. Poniżej zostanie przedstawiony proces odnalezienia transformacji.
+\\Załóżmy, że średnia $X$ to zero. Naszym celem jest znaleźć transformację ortogonalną $W$ taką, że $WX$ jest losowym wektorem z parami niezależnych komponentów:
+\begin{center}
+$cov(WX) = \mathbb{E}[WX(WX)^T]
+= \mathbb{E}[WX X^T W^T]
+=W \mathbb{E}[XX^T]W^T
+=W cov(X)W^{(-1)}$
+\end{center}
+Dopóki $cov(X)$ jest macierzą o wartościach dodatnich istnieje $W$, które spełnia powyższe równanie.
+\\PCA jest klasyczną metodą, która pozwala odnaleźć zależności w zbiorach danych o wielu wymiarach. W wyniku tej metody otrzymujemy uporządkowaną listę cech wyznaczoną dla największych wartości wariancji przy jednocześnie najmniejszym błędzie kwadratowym (podrozdział 3.3.1). W ten sposób spośród wielu cech opisujących nasze elementy jesteśmy w stanie wybrać te najbardziej dla nas istotne w procesie rekomendacji.
 \subsubsection{Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD))} 
 \begin{df} \textbf{Rozkład Według Wartości Osobliwych}%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
@@ -367,9 +443,9 @@ gdzie:
 \begin{df}\textbf{Norma Frobeniusa}%Using Linear Algebra for Intelligent Information Retrival.pdf
 \\Normą Frobeniusa nazywamy:
 \begin{center}
-$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^* A}$,
+$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^T A}$,
 \end{center}
-gdzie $A$ jest macierzą $m\times n$ - wymiarową. $A^* = \overline{A}^T$ jest sprzężeniem hermitowskim macierzy, a $tr(A)$ śladem macierzy $A$.
+gdzie $A$ jest macierzą $m\times n$ - wymiarową. $ A^T$ jest sprzężeniem macierzy, a $tr(A)$ śladem macierzy $A$.
 \end{df}
 
 \begin{tw}\textbf{Następstwa SVN}%Using Linear Algebra for Intelligent Information Retrival.pdf
@@ -450,30 +526,96 @@ $\Box$
 Zawsze jest możliwe dokonać dekompozycji macierzy $A$ do postaci $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$.
 \\Zakładamy,że naszą macierzą wejściową jest macierz danych $A$ $m \times n$-wymiarowa odzwierciedlająca $m$ elementów oraz $n$ cech dla każdego z nich. Po przeprowadzeniu rozkładu według wartości osobliwych otrzymamy:
 \begin{itemize}
-\item macierz $U$ o wymiarach $m \times r$ prezentującą $m$ elementów i $r$ konceptów,
-\item macierz diagonalną $\sum$ o wymiarach $r \times r$ prezentującą siłę poszczególnych konceptów,
-\item macierz $V$ o wymiarach $n \times r$ prezentującą $n$ cech i $r$ konceptów.
+\item macierz $U$ o wymiarach $m \times r$ prezentującą $m$ elementów i $r$ kategorii,
+\item macierz diagonalną $\sum$ o wymiarach $r \times r$ prezentującą istotność poszczególnych kategorii,
+\item macierz $V$ o wymiarach $n \times r$ prezentującą $n$ cech i $r$ kategorii.
 \end{itemize}
-Macierz $\sum$ zawiera pojedyncze wartości uporządkowane zawsze w porządku malejącym. Macierz $U$ jest tu interpretowana jako macierz podobieństwa elementów i konceptów, macierz $U$ natomiast jako macierz podobieństwa cech i konceptów. 
+Macierz $\sum$ zawiera pojedyncze wartości uporządkowane zawsze w porządku malejącym. Macierz $U$ jest tu interpretowana jako macierz podobieństwa elementów i kategorii, macierz $U$ natomiast jako macierz podobieństwa cech i kategorii. 
 \\SVD jest powszechnie używane w celu odkrycia relacji występujących między użytkownikami i produktami.
 \section{Metody eksploracji danych}
-\subsection{k - najbliższych sąsiadów}%Larose -> odkrywanie wiedzy z danych (na podstawie)
-Algorytm k - najbliższych sąsiadów jest przykładem uczenia maszynowego, gdzie klasyfikacja nowych elementów zostaje przeprowadzona na podstawie porównania z najbardziej podobnymi jej obiektami.
+Termin eksploracja danych jest często używany jako określenie procesu odkrywania wiedzy z danych. Coraz częściej jednak terminem  "proces odkrywania wiedzy" określamy cały proces pracy z danymi, natomiast termin "eksploracja danych" odnosi się do etapu odkrywania pewnego rodzaju reguł.
+\\Jak podaje w jednym ze swoich artykułów "Eksploracja danych: problemy i rozwiązania" Tadeusz Morzy metody eksploracji można podzielić na sześć klas:
+\begin{itemize}
+\item Odkrywanie asocjacji,
+\item Klastrowanie,
+\item Odkrywanie wzorców sekwencji,
+\item Odkrywanie klasyfikacji,
+\item Odkrywanie podobieństw w przebiegach czasowych,
+\item Wykrywanie zmian i odchyleń.
+\end{itemize}
+W tym podrozdziale skupimy się tylko na tych, które są najczęściej stosowane w regułach rekomendujących.
+\subsection{k - Najbliższych Sąsiadów}%Recomender system handbook
+Algorytm k-najbliższych sąsiadów (k-NN) jest najczęściej używanym algorytmem klasyfikacji. 
+Przyporządkowanie nowych elementów zostaje przeprowadzone na podstawie porównania obserwacji z $k$ najbardziej podobnymi jej obiektami ze zbioru treningowego. Podstawowa idea algorytmu mówi, że jeżeli nowy rekord znajduje się w pewnym otoczeniu, to na podstawie k - najbliższych mu obserwacji zostanie przyporządkowana do niego etykieta (klasa), której pojawienie się w rozważanym zbiorze jest najliczniejsze.
+\\Niech $q$ będzie punktem dla którego chcemy odnaleźć jego klasę $l$. 
+\\$X=\{\{x_1,l_1\},...,\{x_n,l_n\}\}$ niech będzie zbiorem treningowym, gdzie $x_j$ jest $j$-tym elementem zbioru, natomiast $l_j$ etykietką klasy do której zbiór należy, $j\in\{1,...,n\}$.
+\\W metodzie k-NN zostaje wybrany podzbiór 
+\begin{center}
+$Y=\{\{y_1,l_1\},...,\{y_k,l_k\}\}$, $k\in\{1,...,n\}$
+\end{center}
+taki, że $Y \in X$ oraz $\sum_1^k d(q,y_k)$ jest minimalna. $Y$ zawiera więc $k$ punktów z $X$, które leżą najbliżej rozważanego punktu $q$. Następnie do punktu $q$ zostaje przyporządkowana klasa taka, że:
+\begin{center}
+$l=f(\{l_1,...,l_k\})$.
+\end{center}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{kNN.PNG} 
+\caption{Metoda k - Najbliższych Sąsiadów.}
+\end{figure}
+\bigskip
+Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu k-NN. W części a) przedstawiony został zbiór treningowy z podziałem na dwie klasy (rąby, koła) oraz punkt, który będziemy chcieli przyporządkować do jednej z nich (trójkąt). W części b) przedstawiono dwa koła jedno prezentuje najbliższe sąsiedztwo dla $k = 3$, drugie dla $k = 9$. W obu przypadkach nowy punkt (trójkąt) zostanie przyporządkowany do klasy $l_1$. Warto również zauważyć, że znajduje się on na granicy dwóch klastrów.
 \\
-\\Niech dany będzie zbiór obserwacji w przestrzeni $\mathbb{R}^{n+1}$ z których każda składa się ze zmiennych objaśniających $x_1, ...,x_n$ i zmiennej objaśnianej $y$, obserwacja $d$ o znanych wartościach $x_1, ...,x_n$ do których chcemy przyporządkować wartość $y$ oraz $k\in \mathbb{N}$.
-\\W pierwszym kroku zostają porównane wartość zmiennych $x_1, ...,x_n$ obserwacji $d$ z wartościami tych zmiennych we wszystkich innych obserwacjach. Następnie zostaje wybrane $k$ obserwacji najbliższych obserwacji $d$. Ostatecznie na podstawie zmiennych objaśnianych, które odpowiadają obserwacjom w wybranej grupie obliczona zostaje średnia wartość $y$. Na podstawie tej wartości obserwacja $d$ uzyskuje odpowiednią prognozę przyporządkowania.
+\\Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne w przypadku, gdy dane są więcej niż dwuwymiarowe?
+\\Wykorzystywane są tutaj wcześniej opisane miary odległości z których najczęściej stosowaną jest odległość euklidesowa.
 \\
-\\Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne?
-\\Wykorzystywane są tutaj miary odległości z których najczęściej stosowaną jest odległość euklidesowa.
-\subsection{k-średnich}%Larose -> odkrywanie wiedzy z danych (na podstawie)
+\\Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu k-NN jest wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z Rysunku 3.2 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
+
+\subsection{k-średnich}%Analiza skupień Agnieszka Nowak-Brzezińska
 Algorytm k-średnich jest prostym i zarazem efektywnym algorytmem grupowania.
-\\W pierwszym kroku zostaje ustalona liczba grup, na jaką dane zostaną rozdzielone ($k \in \mathbb{N}$). Następnie wybierając $k$ początkowych rekordów ustalamy środek każdej z grup. Pozostałe rekordy zostają przyporządkowane do każdej grupy poprzez wybór najmniejszej odległości od wszystkich środków. W kolejnym kroku dla każdej z $k$ grup odnajdujemy położenie nowego centroidu (najczęściej przez obliczenie średniej wartości) i znów powtarzamy przyporządkowanie pozostałych rekordów. Mechanizm powtarzamy do momentu, gdy otrzymamy zadowalający wynik lub, gdy środki przestaną zmieniać swoje położenie.
- \\centroidy
- \\sse
-\subsection{drzewa decyzyjne}
+\\Głównym celem algorytmu jest podział pewnego zbioru $X$:
+\begin{center}
+$X = \{x_i = (x_{i1},...,x_{id}) : i \in \{1,...,N\}\}$,
+\end{center}
+gdzie $x_i$ jest $d$-wymiarowym wektorem cech opisującym obiekt na podzbiory.
+\\W wyniku grupowania $n$ - elementowego zbioru $X$ na $k$ podgrup jest macierz podziału $A$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $x_k$ przynależy do grupy.
+\\Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{ks_0.PNG} 
+\caption{Metoda k-średnich. Wybór początkowych środków.}
+\end{figure}
+W powyższym przykładzie (Rysunek 3.3) wybranymi środkami są punkty p1, p2, p3.
+\\
+Kolejnym krokiem jest przypisanie każdego z elementów do najbliższej mu grupy.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{ks_1.png} 
+\caption{Metoda k-średnich. Przypisanie elementów do grup.}
+\end{figure}
+Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzędnych, które staną się kolejnymi środkami.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{ks_2.png} 
+\caption{Metoda k-średnich. Wybór nowych środków.}
+\end{figure}
+Kroki te są wykonywane do momentu występowania migracji między obiektami.
+\\W algorytmie k-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
+\\W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje:
+\begin{center}
+$J(u,A) = \sum_{i=1}^k \sum_{k=1}^N b_{ki}d^2(u_i,x_k)$,
+\end{center}
+gdzie 
+\begin{itemize}
+\item $d(u,x)$ oznacza odległość elementu $x$ od grupy wyznaczonej przez środek $u$,
+\item $N$ to liczebność zbioru $X$,
+\item $A$ oznacza macierz podziału.
+\end{itemize}
+ 
+\subsection{drzewa decyzyjne-?}
 \subsection{regresja wielowymiarowa - logistyczna - ?}
-\subsection{sztuczna sieć neuronowa - ?}
-\subsection{Support Vector Machines - ?}
+\subsection{sztuczna sieć neuronowa}
+\subsection{Support Vector Machines}
+
 \section{Szacowanie Błędów Obliczeń}
 \subsection{Ocena Dokładności Metody}%RecommenderSystemsHandbook
 Kolejna kwestia często poruszana w regułach rekomendujących to dokładność przewidywań. Jak oceniamy, czy uzyskany przez nas wynik jest wystarczająco dokładny? 
@@ -561,17 +703,6 @@ oraz \textbf{miara Spearman's $\rho$}:
 $\rho = \frac{1}{n_{u}}\frac{\sum_i (r_{iu} - \overline{r})(\widehat{r}_{iu}-\overline{\widehat{r}})}{\sigma(r)\sigma(\widehat{r})}$,
 \end{center}
 gdzie $\overline{r}$ i $\overline{\widehat{r}}$ oznaczają średnie, natomiast $\sigma(r)$ i $\sigma(\widehat{r})$ odchylenia standardowe.
-\begin{df}\textbf{? Term frequency}
-
-\end{df}
-\begin{df}\textbf{? Inverse document frequency}
-
-\end{df}
-\begin{df}\textbf{? Faktoryzacja macierzy}
-
-\end{df}
-
-
 
 
 
