@@ -8,11 +8,11 @@
 \BOOKMARK [2][-]{subsection.3.1.2}{Redukcja wymiaru}{section.3.1}% 8
 \BOOKMARK [1][-]{section.3.2}{Metody eksploracji danych}{chapter.3}% 9
 \BOOKMARK [2][-]{subsection.3.2.1}{k - Najblizszych Sasiad\363w}{section.3.2}% 10
-\BOOKMARK [2][-]{subsection.3.2.2}{k-srednich}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.2}{k-Srednich}{section.3.2}% 11
 \BOOKMARK [2][-]{subsection.3.2.3}{drzewa decyzyjne-?}{section.3.2}% 12
 \BOOKMARK [2][-]{subsection.3.2.4}{regresja wielowymiarowa - logistyczna - ?}{section.3.2}% 13
-\BOOKMARK [2][-]{subsection.3.2.5}{sztuczna siec neuronowa}{section.3.2}% 14
-\BOOKMARK [2][-]{subsection.3.2.6}{Support Vector Machines}{section.3.2}% 15
+\BOOKMARK [2][-]{subsection.3.2.5}{Sztuczna Siec Neuronowa}{section.3.2}% 14
+\BOOKMARK [2][-]{subsection.3.2.6}{Maszyna Wektor\363w Nosnych}{section.3.2}% 15
 \BOOKMARK [1][-]{section.3.3}{Szacowanie B\233ed\363w Obliczen}{chapter.3}% 16
 \BOOKMARK [2][-]{subsection.3.3.1}{Ocena Dok\233adnosci Metody}{section.3.3}% 17
 \BOOKMARK [2][-]{subsection.3.3.2}{Ocena Precyzji Uzytecznosci}{section.3.3}% 18
@@ -37,5 +37,6 @@
 \BOOKMARK [2][-]{subsection.4.3.3}{???Wady i zalety system\363w rekomendujacych kontekstowych}{section.4.3}% 37
 \BOOKMARK [1][-]{section.4.4}{Hybrydowe systemy rekomendujace \(\):}{chapter.4}% 38
 \BOOKMARK [1][-]{section.4.5}{Systemy rekomendujace oparte na modelach\(\):}{chapter.4}% 39
-\BOOKMARK [0][-]{chapter.5}{Eksperymenty / czesc praktyczne}{}% 40
-\BOOKMARK [0][-]{chapter.6}{Podsumowanie}{}% 41
+\BOOKMARK [0][-]{chapter.5}{Przyk\233ad}{}% 40
+\BOOKMARK [0][-]{chapter.6}{Eksperymenty / czesc praktyczne}{}% 41
+\BOOKMARK [0][-]{chapter.7}{Podsumowanie}{}% 42

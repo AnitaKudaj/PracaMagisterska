@@ -557,12 +557,13 @@ taki, że $Y \in X$ oraz $\sum_1^k d(q,y_k)$ jest minimalna. $Y$ zawiera więc $
 \begin{center}
 $l=f(\{l_1,...,l_k\})$.
 \end{center}
+\begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{kNN.PNG} 
 \caption{Metoda k - Najbliższych Sąsiadów.}
 \end{figure}
-\bigskip
+\end{center}
 Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu k-NN. W części a) przedstawiony został zbiór treningowy z podziałem na dwie klasy (rąby, koła) oraz punkt, który będziemy chcieli przyporządkować do jednej z nich (trójkąt). W części b) przedstawiono dwa koła jedno prezentuje najbliższe sąsiedztwo dla $k = 3$, drugie dla $k = 9$. W obu przypadkach nowy punkt (trójkąt) zostanie przyporządkowany do klasy $l_1$. Warto również zauważyć, że znajduje się on na granicy dwóch klastrów.
 \\
 \\Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne w przypadku, gdy dane są więcej niż dwuwymiarowe?
@@ -570,7 +571,7 @@ Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu k-NN. W częś
 \\
 \\Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu k-NN jest wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z Rysunku 3.2 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
 
-\subsection{k-średnich}%Analiza skupień Agnieszka Nowak-Brzezińska
+\subsection{k-Średnich}%Analiza skupień Agnieszka Nowak-Brzezińska
 Algorytm k-średnich jest prostym i zarazem efektywnym algorytmem grupowania.
 \\Głównym celem algorytmu jest podział pewnego zbioru $X$:
 \begin{center}
@@ -579,25 +580,31 @@ $X = \{x_i = (x_{i1},...,x_{id}) : i \in \{1,...,N\}\}$,
 gdzie $x_i$ jest $d$-wymiarowym wektorem cech opisującym obiekt na podzbiory.
 \\W wyniku grupowania $n$ - elementowego zbioru $X$ na $k$ podgrup jest macierz podziału $A$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $x_k$ przynależy do grupy.
 \\Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
+\begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_0.PNG} 
 \caption{Metoda k-średnich. Wybór początkowych środków.}
 \end{figure}
+\end{center}
 W powyższym przykładzie (Rysunek 3.3) wybranymi środkami są punkty p1, p2, p3.
 \\
 Kolejnym krokiem jest przypisanie każdego z elementów do najbliższej mu grupy.
+\begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_1.png} 
 \caption{Metoda k-średnich. Przypisanie elementów do grup.}
 \end{figure}
+\end{center}
 Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzędnych, które staną się kolejnymi środkami.
+\begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_2.png} 
 \caption{Metoda k-średnich. Wybór nowych środków.}
 \end{figure}
+\end{center}
 Kroki te są wykonywane do momentu występowania migracji między obiektami.
 \\W algorytmie k-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
 \\W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje:
@@ -613,8 +620,134 @@ gdzie
  
 \subsection{drzewa decyzyjne-?}
 \subsection{regresja wielowymiarowa - logistyczna - ?}
-\subsection{sztuczna sieć neuronowa}
-\subsection{Support Vector Machines}
+\subsection{Sztuczna Sieć Neuronowa}
+Sztuczna Sieć Neuronowa jest klasyfikatorem opartym na systemie działania ludzkiego mózgu. Składa się z neuronów, które są połączone ze sobą synapsami. Te proste elementy połączone są w sieć, która posiada możliwość uczenia się problemów klasyfikacyjnych.
+\\
+\subsection{Maszyna Wektorów Nośnych}
+Maszyny Wektorów Nośnych (ang. Support Vector Machines (SVM)) jest algorytmem uczenia maszynowego używanym zarówno w przypadku zadań klasyfikacji jak i regresji. Głównym celem algorytmu jest znalezienie w przestrzenie $n$ - wymiarowej hiperpłaszczyzny, która wyraźnie sklasyfikuje obserwacje i podzieli na dwie klasy maksymalizując odległość między obserwacjami. Podejście to pozwala uniknąć błędnego przyporządkowania marginalnych obserwacji w przyszłości.
+\begin{center}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{SVM.PNG} 
+\caption{Maszyna Wektorów Nośnych - maksymalizacja odległości między klasami.}
+\end{figure}
+\end{center}
+Aby formalnie zdefiniować Maszyna Wektorów Nośnych zacznijmy od zdefiniowania problemu klasyfikacji.
+\begin{df}\textbf{Klasyfikacja}
+\\Nich w przestrzeni $\Omega$ znajdują się wektory danych $x_i \in \mathbb{R}^n$, $i\in \{1,...,n\}$. $P$ niech będzie próbą uczącą.
+\\Wtedy:
+\begin{center}
+$P = \{(x_i,c_i): x_i \in \mathbb{R}^n, c_i \in \{1,-1\}\}_{i=1}^N$.
+\end{center}
+\end{df}
+\bigskip
+Należy znaleźć klasyfikator dzielący całą przestrzeń $\Omega$ na dwie klasy $\{-1,1\}$, który pozwoli na przyporządkowywać nowego elementu do klasy. Szukamy funkcji $f(x)$ - granicy między klasami.
+
+\begin{df}\textbf{Liniowa Separowalność}%https://towardsdatascience.com/support-vector-machine-introduction-to-machine-learning-algorithms-934a444fca47
+\\Dwie klasy nazywamy liniowo separowalnymi, jeżeli istnieje hiperpłaszczyzna $f(x)$ postaci:
+\begin{center}
+$f(x) = w^T x +b$
+\end{center}
+taka, że:
+\begin{center}
+$\left\{\begin{array}{ll}
+f(x_i)>0, &    x_i\in\{1\}\\
+f(x_i)<0, &    x_i\in\{-1\}.
+\end{array} \right.$
+\end{center}
+\end{df}
+\bigskip
+\bigskip
+\bigskip
+Liniową separowalność definiujemy więc za pomocą funkcji:
+\begin{center}
+$\langle w,x \rangle + b = 0$, 
+\end{center}
+gdzie $w, b$ są parametrami spełniającymi założenia modelu:
+\begin{center}
+$f(x) = 
+\left\{\begin{array}{lll}
+1, & gdy &   \langle w,x \rangle + b > 0\\
+-1, &   gdy &   \langle w,x \rangle + b < 0.
+\end{array} \right.$
+\end{center}
+Parametry $w$ i $b$ wyznaczamy w taki sposób, by odległość między płaszczyznami
+\begin{center}
+$ b_{i1}$ $\langle w,x \rangle + b = 1$,
+\\$ b_{i2}$ $\langle w,x \rangle + b = -1$
+\end{center}
+była maksymalna.
+\\Zatem
+\begin{center}
+$f(x) = 
+\left\{\begin{array}{lll}
+1, & gdy &   \langle w,x \rangle + b \geq 1\\
+-1, &   gdy &   \langle w,x \rangle + b \leq -1,
+\end{array} \right.$
+\end{center}
+oraz szukana odległość wyznaczana jest przez maksymalizowanie funkcji 
+\begin{center}
+Margin (odległość)=$\frac{2}{||w||^2}$.
+\end{center}
+Jest to fakt równoważny minimalizowaniu funkcji odwrotnej do powyższej
+\begin{center}
+$L(W) = \frac{||w||^2}{2}$,
+\end{center}
+przy ograniczeniach
+\begin{center}
+$y_i(\langle w,x \rangle + b) \geq 1$.
+\end{center}
+Problem ten nazywamy problemem optymalizacji kwadratowej i rozważamy przy użyciu mnożników Lagrange'a. Minimalizujemy więc funkcję Lagrange'a:
+\begin{center}
+$L(w,b,\alpha)=\frac{1}{2}||w||^2 - \sum_{i=1}^n \alpha_i(y_i(\langle w,x \rangle + b)-1)$, 
+\end{center}
+gdzie
+$\alpha_i \geq 0$ dla $i \in \{1,...,n\}$ to mnożniki Lagrange'a spełniające ograniczenia Karusha-Kuhna-Tuckera:
+\begin{itemize}
+\item $\alpha_i \geq 0$,
+\item $\alpha_i(y_i(\langle w,x \rangle + b)-1) = 0$.
+\end{itemize}
+Możemy zauważyć, że w konsekwencji mnożniki Lagrange'a są niezerowe tylko dla wektorów nośnych. Liczba parametrów do oszacowania pozostaje jednak nadal zbyt duża. Częstym podejściem w tym przypadku jest przejście na postać dualną zadania optymalizacyjnego.
+Maksymalizujemy tu funkcję:\begin{center}
+$\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j(x_i \times x_j)$,
+\end{center}
+przy ograniczeniach:
+\begin{itemize}
+\item $\alpha_i \geq 0$,
+\item $\forall_i \sum_{i=1}^n \alpha_i y_i =0$.
+\end{itemize}
+\bigskip
+\bigskip
+\bigskip
+Jeżeli elementy nie są jednak separowalne liniowo:
+\begin{center}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{SVM2.PNG} 
+\caption{Maszyna Wektorów Nośnych - elementy nieseparowalne liniowo.}
+\end{figure}
+\end{center}
+wprowadzamy klasyfikator \textbf{Soft Margin SVM} oraz zmienne osłabiające (pomocnicze).
+\\W tym przypadku należy poddać minimalizacji funkcję:
+\begin{center}
+$L(w) = \frac{||w||^2}{2} + C \sum_{i=1}^n \varepsilon$,
+\end{center}
+gdzie parametr $C$ ocenia starty związane z każdym błędnie zaklasyfikowanym punktem.
+\\Funkcja $f(x)$ jest natomiast dana wzorem:
+\begin{center}
+$f(x) = 
+\left\{\begin{array}{lll}
+1, & gdy &   \langle w,x \rangle + b \geq 1 - \varepsilon\\
+-1, &   gdy &   \langle w,x \rangle + b \leq -1 + \varepsilon.
+\end{array} \right.$
+\end{center}
+Interpretacja rozwiązań:
+\begin{itemize}
+\item $\varepsilon_n =0$ i $\alpha_i =0$ - poprawne zaklasyfikowanie obserwacji, obserwacja leży poza marginesem,
+\item $\varepsilon_n =0$ i $0<\alpha_i <C$ - poprawne zaklasyfikowanie obserwacji, obserwacja leży na jednej z płaszczyzn ograniczających margines,
+\item $0<\varepsilon_n <1$ i $\alpha_i =C$ - poprawne zaklasyfikowanie obserwacji, obserwacja leży wewnątrz marginesu,
+\item $\varepsilon_n \geq 1$ i $\alpha_i =C$ - niepoprawne zaklasyfikowanie obserwacji.
+\end{itemize}
 
 \section{Szacowanie Błędów Obliczeń}
 \subsection{Ocena Dokładności Metody}%RecommenderSystemsHandbook
@@ -1118,7 +1251,171 @@ Podobnie jak w poprzednio rozważanych systemach rekomendujących również i w 
 
 \section{Systemy rekomendujące oparte na modelach():}
 (Czy potrzebny mi jeszcze ten podrozdział?)
+\chapter{Przykład}
+Załóżmy, że mamy zbiór pięciu książek $\{k_1, k_2, k_3, k_4, k_5\}$, oraz zbiór czterech czytelników $\{c_1, c_2, c_3, c_4\}$.
+\\Poniższa tabela przedstawia oceny jakie czytelnicy przyporządkowali po przeczytaniu poszczególnym pozycjom. Znak '?' oznacza, że czytelnik danej książki nie czytał.
 
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 5 & 5 & 0 & 0 \\
+\hline
+&$\mathbf{k_2}$ & 5 & \textbf{?} & \textbf{?} & 0 \\
+\hline
+&$\mathbf{k_3}$ & \textbf{?} & 4 & 0 & \textbf{?} \\
+\hline
+&$\mathbf{k_4}$ & 0 & 0 & 5 & 4 \\
+\hline
+&$\mathbf{k_5}$ & 0 & 0 & 5 & \textbf{?} \\
+\hline
+\end{tabular}
+\end{center}
+Niech:
+\begin{itemize}
+\item $n_u$ oznacza liczbę użytkowników, w tym przypadku $n_u = 4$,
+\item $n_m$ oznacza liczbę elementów, w tym przypadku liczbę książek, $n_m = 5$.
+\end{itemize}
+Dodatkowo wprowadźmy parametry:
+\begin{itemize}
+\item $r(i,j)$ - $r(i,j)=1$, jeżeli użytkownik $j$ ocenił książkę $i$,
+\item $y(i,j)$ - ocena jaką użytkownik $j$ przydzielił książce $i$, $y(i,j) \in \{0,1,2,3,4,5\}$ (ocenę definiujemy tylko wtedy gdy $r(i,j)=1$).
+\end{itemize}
+Celem jest na podstawie wskaźników $r(i,j)$, $y(i,j)$ przewidzieć brakujące oceny.
+\\
+\section*{Systemy rekomendujące oparte na treści}
+Niech poniższa tabela określa w jakim stopniu (skala 0-1) każda z książek reprezentuje cechy gatunków $g_1$, $g_2$.
+\begin{center}
+\begin{tabular}{|r|r|r|r|} \hline
+\textbf{Gatunki} & & $\mathbf{g_1}$ & $\mathbf{g_2}$ \\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 0,9 & 0 \\
+\hline
+&$\mathbf{k_2}$ & 1 & 0,01 \\
+\hline
+&$\mathbf{k_3}$ & 0,99 & 0 \\
+\hline
+&$\mathbf{k_4}$ & 0,1 & 1 \\
+\hline
+&$\mathbf{k_5}$ & 0 & 0,9 \\
+\hline
+\end{tabular}
+\end{center}
+Dodatkowo zakładamy, że istnieje gatunek $g_0$, którego cechy reprezentują wszystkie książki oraz dla każdej z książek $g_0=1$.
+\\Zatem $g^{(1)}= \left[
+        \begin{array}{c}
+         1 \\
+         0,9\\
+         0
+         \end{array}
+      \right] $ jest wektorem cech odpowiadającym książce $k_1$, $g^{(2)}= \left[
+        \begin{array}{c}
+         1 \\
+         1\\
+         0,01
+         \end{array}
+      \right] $ jest wektorem cech odpowiadającym książce $k_2$. Analogicznie możemy wyznaczyć podobne wektory dla każdej z książek.
+\\
+\\Należy jednak zaznaczyć, że liczba wybranych przez nas cech to $n=2$.
+\\
+\\Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\Theta^{(j)} \in \mathbb{R}^3$ (w ogólnej postaci $\Theta^{(j)} \in \mathbb{R}^{n+1})$, który przedstawia (w skali 0-5) preferencje użytkownika dotyczące poszczególnych gatunków. I tak odpowiednio $\Theta^{(1)}$ to wektor preferencji czytelnika $c_1$, $\Theta^{(2)}$ wektor preferencji użytkownika $c_2$, $\Theta^{(3)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_4$.
+\\
+\\Aby przewidzieć ocenę jaką użytkownik $j$ wystawiłby książce $i$ po jej przeczytaniu użyjemy równania:
+\begin{center}
+$(\Theta^{(j)})^T g^{(i)}$.
+\end{center}
+\bigskip
+Obliczmy ocenę jaką książce $k_3$ wystawiłby użytkownik $c_1$ przy założeniu, że wektor preferencji użytkownika $c_1$ jest postaci $\Theta^{(j)}= \left[
+        \begin{array}{c}
+         0 \\
+         5\\
+         0
+         \end{array}
+      \right] $. Użytkownik ten preferuje więc książki gatunku $g_1$, gdy książki gatunków $g_0$ i $g_2$ są dla niego nieatrakcyjne.
+\\Zatem:
+\begin{center}
+$(\Theta^{(1)})^T g^{(3)} = [0,5,0] \left[
+        \begin{array}{c}
+         1 \\
+         0,99\\
+         0
+         \end{array}
+      \right] = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95$.
+\end{center}
+Przewidywaną oceną jest zatem $4,95$. Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen możemy zarekomendować naszemu użytkownikowi nową lekturę.
+
+\section*{Filtrowanie kolaboratywne}
+Załóżmy jednak przypadek gdy nie posiadamy informacji dotyczących gatunków książek ani informacji o preferencjach użytkowników.
+\\Wiemy tylko jakie oceny wystawili użytkownicy książkom, które przeczytali:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 5 & 5 & 0 & 0 \\
+\hline
+&$\mathbf{k_2}$ & 5 & \textbf{?} & \textbf{?} & 0 \\
+\hline
+&$\mathbf{k_3}$ & \textbf{?} & 4 & 0 & \textbf{?} \\
+\hline
+&$\mathbf{k_4}$ & 0 & 0 & 5 & 4 \\
+\hline
+&$\mathbf{k_5}$ & 0 & 0 & 5 & \textbf{?} \\
+\hline
+\end{tabular}
+\end{center}.
+W takim przypadku, aby odnaleźć brakujące oceny i dokonać rekomendacji możemy użyć metody filtrowania kolaboratywnego opartego na treści lub filtrowania kolaboratywnego opartego na elementach.
+
+\subsubsection*{Filtrowanie kolaboratywne oparte na użytkownikach}
+Chcąc obliczyć podobieństwo między użytkownikiem $c_2$ i $c_3$ wybierzmy książki, które przeczytali obaj użytkownicy. W tym przypadku są to: $k_1$, $k_3$, $k_4$, $k_5$. Na tej podstawie tworzymy odpowiednio wektory ocen użytkowników $o_{2,3} ^{(2)}$ i $o_{2,3}^{(3)}$. 
+\\Zatem
+\begin{center}
+$o_{2,3} ^{(2)}= \left[
+        \begin{array}{c}
+         5 \\
+         4 \\
+         0 \\
+         0
+         \end{array}
+      \right]$ oraz $o_{2,3}^{(3)} = \left[
+        \begin{array}{c}
+         0 \\
+         0 \\
+         5 \\
+         5
+         \end{array}
+      \right]$.
+\end{center}
+Posługując się odległością euklidesową:
+\begin{center}
+$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
+\end{center}
+obliczymy odległość między użytkownikami.
+\\Zatem: 
+\begin{center}
+$d_{e}(o_{2,3}^{(2)},o_{2,3}^{(3)}) = \sqrt{(5-0)^2 + (4-0)^2 + (0-5)^2 + (0-5)^2} = \sqrt{91} \approx 9,54$.
+\end{center}
+Postępując w podobny sposób dla każdej z par użytkowników otrzymamy następującą macierz (tabelę) odległości:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
+\hline
+$\mathbf{c_1}$ & 0 & 0 & 8,66 & 8,12 \\
+\hline
+$\mathbf{c_2}$ & 0 & 0 & 9,54 &  6,4\\
+\hline
+$\mathbf{c_3}$ & 8,66 & 9,54 & 0 & 1  \\
+\hline
+$\mathbf{c_4}$ & 8,12 & 6,4 & 1 & 0 \\
+\hline 
+\end{tabular}.
+\end{center}
+Bazując na przedstawionych odległościach obliczając średnią ważoną przedstawmy ocenę jaką użytkownik $c_2$ zaproponuje dla książki $k_2$. W poniższym równaniu wartość podobieństwa między użytkownikiem $c_2$, a pozostałymi użytkownikami pomnożono przez oceny jakie użytkownicy wystawili książce. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
+\begin{center}
+
+\end{center}
 \chapter{Eksperymenty / cześć praktyczne}
 
 \chapter{Podsumowanie}
