@@ -841,15 +841,50 @@ gdzie $\overline{r}$ i $\overline{\widehat{r}}$ oznaczają średnie, natomiast $
 
 
 \chapter{Modele tworzenia rekomendacji}
-Systemy rekomendujące mogą zostać podzielone na systemy oparte na kontekście i systemy oparte na użytkownikach. W pierwszym przypadku eksploracja danych jest dokonywana pod względem zawartych w treści rozważanego elementu cech. Główne założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B. W systemach opartych na użytkownikach badaniu podlegają natomiast zależności, które występują między produktami, a użytkownikami. Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
+Systemy rekomendujące mogą zostać podzielone na systemy oparte na kontekście i systemy oparte na użytkownikach. W pierwszym przypadku eksploracja danych jest dokonywana pod względem wektorów cech rozważanych elementów. Główne założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B. W systemach opartych na użytkownikach badaniu podlegają natomiast zależności, które występują między produktami, a użytkownikami. Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
+\\
+\\
+\\Załóżmy, że mamy zbiór sześciu książek $\{k_1, k_2, k_3, k_4, k_5, k_6\}$, oraz zbiór sześciu czytelników $\{c_1, c_2, c_3, c_4, c_5, c_6\}$.
+\\Poniższa tabela przedstawia oceny jakie czytelnicy przyporządkowali po przeczytaniu poszczególnym pozycjom. Znak '?' oznacza, że czytelnik danej książki nie czytał.
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?}\\
+\hline
+&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?}\\
+\hline
+&$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
+\hline
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+\hline
+&$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{?} \\
+\hline
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+\hline
+\end{tabular}.
+\end{center}
+Niech:
+\begin{itemize}
+\item $n_u$ oznacza liczbę użytkowników, w tym przypadku $n_u = 6$,
+\item $n_m$ oznacza liczbę elementów, w tym przypadku liczbę książek, $n_m = 6$.
+\end{itemize}
+Dodatkowo wprowadźmy parametry:
+\begin{itemize}
+\item $r(i,j)$, gdzie $r(i,j)=1$, jeżeli użytkownik $j$ ocenił książkę $i$,
+\item $y(i,j)$ - ocena jaką użytkownik $j$ przydzielił książce $i$, $y(i,j) \in \{0,1,2,3,4,5,6,7,8,9,10\}$ (ocenę definiujemy tylko wtedy gdy $r(i,j)=1$).
+\end{itemize}
+Celem jest na podstawie wskaźników $r(i,j)$, $y(i,j)$ przewidzieć brakujące oceny.
 
-
-\section{Systemy rekomendujące oparte na treści (Content-based recommender systems):}
-\subsection{Problem}
+\section{Systemy rekomendujące oparte na treści 
+\\(Content-based recommender systems):}
 Rozważmy sytuację w której szukamy przyjemnej lektury na zimowy wieczór. Zaczynamy od przeglądania tytułów wśród interesujących nas gatunków. Następnie spojrzymy zapewne na oceny jakie inni czytelnicy wydali na temat danej pozycji. Analizując wartość uzyskanych ocen ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
 
+
+
 \subsection{Algorytm}
-Metody rozwiązywania podobnych problemów często spotykane są w matematyce. Jednym z przykładów są systemy oparte na treści, które wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treści produktu. Głównym celem tej metody jest scharakteryzowanie cech, które użytkownik ceni, a następnie zasugerowanie mu produktów, które te cechy posiadają. Wspomniana metoda opiera się na obliczaniu podobieństw oraz wykorzystuje zadania uczenia maszynowego, takie jak klasyfikacja.
+Metody rozwiązywania podobnych problemów często spotykane są w matematyce. Jednym z przykładów są systemy oparte na treści, które wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Głównym celem tej metody jest scharakteryzowanie wektora cech, które użytkownik ceni, a następnie zasugerowanie mu produktów, które te cechy posiadają. Wspomniana metoda opiera się na obliczaniu podobieństw oraz wykorzystuje zadania uczenia maszynowego, takie jak klasyfikacja.
 \\
 \\
 W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie listy elementów, które mogę być odpowiednie użytkownikowi możemy przedstawić w trzech krokach:
@@ -859,35 +894,97 @@ W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie 
 \item{Rozpoznanie cech produktu odpowiednich dla użytkownika}
 \end{enumerate}
 
-
+\subsection*{Przykład}
+Niech poniższa tabela określa w jakim stopniu (skala 0-1) każda z książek reprezentuje cechy gatunków $g_1$, $g_2$.
+\begin{center}
+\begin{tabular}{|r|r|r|r|} \hline
+\textbf{Gatunki} & & $\mathbf{g_1}$ & $\mathbf{g_2}$ \\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 0,9 & 0 \\
+\hline
+&$\mathbf{k_2}$ & 1 & 0,01 \\
+\hline
+&$\mathbf{k_3}$ & 0,99 & 0 \\
+\hline
+&$\mathbf{k_4}$ & 0,1 & 1 \\
+\hline
+&$\mathbf{k_5}$ & 0 & 0,9 \\
+\hline
+&$\mathbf{k_6}$ & 0,8 & 0,3 \\
+\hline
+\end{tabular}
+\end{center}
+Dodatkowo zakładamy, że istnieje gatunek $g_0$, którego cechy reprezentują wszystkie książki oraz dla każdej z książek $g_0=1$.
+\\Zatem $g^{(1)}= \left[
+        \begin{array}{c}
+         1 \\
+         0,9\\
+         0
+         \end{array}
+      \right] $ jest wektorem cech odpowiadającym książce $k_1$, $g^{(2)}= \left[
+        \begin{array}{c}
+         1 \\
+         1\\
+         0,01
+         \end{array}
+      \right] $ jest wektorem cech odpowiadającym książce $k_2$. Analogicznie możemy wyznaczyć podobne wektory dla każdej z książek.
+\\
+\\Należy jednak zaznaczyć, że liczba wybranych przez nas cech to $n=2$.
+\\
+\\Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\Theta^{(j)} \in \mathbb{R}^3$ (w ogólnej postaci $\Theta^{(j)} \in \mathbb{R}^{n+1})$, który przedstawia (w skali 0-5) preferencje użytkownika dotyczące poszczególnych gatunków. I tak odpowiednio $\Theta^{(1)}$ to wektor preferencji czytelnika $c_1$, $\Theta^{(2)}$ wektor preferencji użytkownika $c_2$, $\Theta^{(3)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_4$, $\Theta^{(5)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_5$
+\\
+\\Aby przewidzieć ocenę jaką użytkownik $j$ wystawiłby książce $i$ po jej przeczytaniu użyjemy równania:
+\begin{center}
+$(\Theta^{(j)})^T g^{(i)}$.
+\end{center}
+\bigskip
+Obliczmy ocenę jaką książce $k_3$ wystawiłby użytkownik $c_1$ przy założeniu, że wektor preferencji użytkownika $c_1$ jest postaci $\Theta^{(j)}= \left[
+        \begin{array}{c}
+         0 \\
+         5\\
+         0
+         \end{array}
+      \right] $. Użytkownik ten preferuje więc książki gatunku $g_1$, gdy książki gatunków $g_0$ i $g_2$ są dla niego nieatrakcyjne.
+\\Zatem:
+\begin{center}
+$(\Theta^{(1)})^T g^{(3)} = [0,5,0] \left[
+        \begin{array}{c}
+         1 \\
+         0,99\\
+         0
+         \end{array}
+      \right] = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95$.
+\end{center}
+Przewidywaną oceną jest zatem $4,95$. Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen możemy zarekomendować naszemu użytkownikowi nową lekturę.
 \subsection{Wygenerowanie profilu produktu}
 W większość systemów rekomendacji opartych na treści można zauważyć użycie prostych modeli wyszukujących. Jednym z najbardziej popularnych jest Model Przestrzeni Wektorowej (\textit{ang. Vector Space Model}) z algorytmem TF-IDF (\textit{ang. TF – term frequency, IDF - inverse document frequency}). Jest to przestrzenna forma reprezentacji dokumentów, gdzie dokument $i$ jest reprezentowany przez wektor w przestrzeni n-wymiarowej $x_{i}$, a każdy z $n$ wymiarów stanowi rozważaną cechę produktu. Dla danych w formie dokumentów tekstowych cechami, które pomagają scharakteryzować temat dokumentu, np. artykułu na stronie internetowej są słowa. Dla każdego ze słów zostaje obliczona wartość funkcji TFIDF (została ona dokładnie omówiona poniżej). W końcowym etapie słowa, które otrzymały najwyższe wyniki zostają uznane za charakteryzujące rozważany dokument.
 \\
 \\Formalnie rzecz ujmując każdy z dokumentów jest przedstawiony za pomocą wektora wag, gdzie waga w odpowiedni sposób wyraża zależność między dokumentem, a badanym terminem.
 \\
-\\Niech \begin{math} P = \{p_1, p_2,...,p_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}C = \{c_1, c_2,...,c_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} p_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} p_j = [w_{1j}, w_{2j},...,w_{nj}] \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} c_k \end{math} w dokumencie  \begin{math} p_j \end{math}.
+\\Niech \begin{math} K = \{k_1, k_2,...,k_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}G = \{g_1, g_2,...,g_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} k_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} k_j = [w_{1j}, w_{2j},...,w_{nj}] \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} g_k \end{math} w dokumencie  \begin{math} k_j \end{math}.
 \\
 \\
-Do generowania profilu produktu używany jest wspomniany wcześniej algorytm TFIDF pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy tu, że:
+Do generowania profilu produktu używany jest wspomniany wcześniej algorytm TFIDF pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy, że:
 \begin{itemize}
 \item rzadkie cechy są równie istotne jak częste (założenie IDF),
 \item kilkukrotne wystąpienie terminu w rozważanym dokumencie jest równie istotne jak pojedyncze (założenie TF),
 \item długość dokumentu (filmu, książki) nie ma znaczenia (założenie normalizacji).  
 \end{itemize}
-Możemy więc powiedzieć, że jeżeli termin występuje często w konkretnym przedmiocie rozważań (TF) i równocześnie rzadko w pozostałych elementach zboru (IDF) ma większe prawdopodobieństwo stać się jedną z istotnych cech rozważanych w temacie. Ponadto normalizacja wektorów wag pozwala zrównoważyć wartość wyników i umożliwia ich porównywanie w dalszej analizie.
+Zatem jeżeli termin występuje często w konkretnym przedmiocie rozważań (TF) i równocześnie rzadko w pozostałych elementach zboru (IDF) ma większe prawdopodobieństwo stać się jedną z istotnych cech rozważanych w temacie. Ponadto normalizacja wektorów wag pozwala zrównoważyć wartość wyników i umożliwia ich porównywanie w dalszej analizie.
 \\
 \\Powyższe założenia odzwierciedla funkcja TFIDF:
 \begin{center}
 \begin{math}
-TFIDF(t_k, d_j) = TF(c_k, p_j) * IDF,
+TFIDF(t_k, d_j) = TF(g_k, k_j) * IDF,
 \end{math}
 \end{center}
 gdzie:
 \begin{itemize}
-\item \begin{math}TF(c_k, p_j)  \end{math} (macierz \textit{term frequency}) przedstawia odniesienie każdego z podanych terminów do każdego z badanych elementów:
+\item \begin{math}TF(g_k, k_j)  \end{math} (macierz \textit{term frequency}) przedstawia odniesienie każdego z podanych terminów do każdego z badanych elementów:
 \begin{center}
 \begin{math}
-TF(c_k, p_j)=\frac{f_{k,j}}{\max_{z}f_{z,j}},
+TF(g_k, k_j)=\frac{f_{k,j}}{\max_{z}f_{z,j}},
 \end{math}
 \end{center}
 $\max_{z}f_{z,j}$ - maksymalna w odniesieniu do wszystkich cech $c_z$, które pojawiły się w dokumencie $p_j$ częstotliwość wystąpień ($f_{z,j}$) 
@@ -914,7 +1011,7 @@ Tak wygenerowany został zbiór słów, które są reprezentacją danego dokumen
 
 \begin{center}
 \begin{math}
-sim(p_i,p_j) = \frac{\sum_{i=k} w_{k,i}\cdot w_{k,j}}{\sqrt{\sum_{k=1}{w_{k,i}}^2} \cdot \sqrt{\sum_{k=1}{w_{k,j}}^2}}.
+sim(k_i,k_j) = \frac{\sum_{i=k} w_{k,i}\cdot w_{k,j}}{\sqrt{\sum_{k=1}{w_{k,i}}^2} \cdot \sqrt{\sum_{k=1}{w_{k,j}}^2}}.
 \end{math}
 \end{center}
 Przy estymowaniu odległości kosinusów między dwoma dokumentami elementami wektora są słowa, które zostały wybrane na podstawie wcześniej przeprowadzonego algorytmu. W wektorze tym wartość $1$ oznacza, że słowo pojawiło się w zbiorze opisującym dokument, natomiast $0$ oznacza sytuację przeciwną.
@@ -925,150 +1022,8 @@ Przy generowaniu wektora opisującego rozważane dokumenty należy uwzględnić 
 \subsection{Rozpoznanie cech produktu odpowiednich dla użytkownika} 
 Proces rekomendacji bazuje na dopasowaniu cech profilu użytkownika i wartości opisujących treść obiektu. Rezultatem jest stwierdzenie czy rozważany kandydat jest zainteresowany analizowanym przedmiotem. Zainteresowanie użytkownika danym przedmiotem można wyestymować używając podobieństwa cosinusów. Rozważmy dokument, gdzie użytkownik wyraża zainteresowanie większością cech w wektorze $x_i$ opisującym dokument $i$. Otrzymamy cosinus kąta między użytkownikiem i dokumentem będący dodatnim ułamkiem. Oznacza to, że kąt będzie bliski $0^{o}$ a tym samym odległość między wektorami będzie mała. W przypadku przeciwnym otrzymamy cosinus bliski zeru lub mniejszy od zera, oznacza to kąt należący do przedziału $(90^{o};180^{o})$ oraz małe podobieństwo między rozważanymi wektorami.
 
-\subsection{Przykład}
-Aby dokładnie przyjrzeć się metodom opartym na treści rozważmy wcześniej przytoczony problem oparty na książkach.
-Poniższa tabela przedstawia tytuły kilku randomowo wybranych książek wraz z gatunkami.
-\begin{center}
-\begin{tabular}{|r|r|} \hline
-\textbf{Książka} & \textbf{Gatunek} \\
-\hline 
-Władza Absolutna & Kryminał  \\
-\hline 
-Patrioci & Proza współczesna \\
-\hline 
-Proxima & Powieść fantastycznonaukowa \\
-\hline 
-Strażacy & Literatura faktu \\
-\hline 
-Gra o Śmierć & Romans \\
-\hline 
-Cyrk & Komedia \\
-\hline
-\end{tabular}
-\end{center}
-Przez wykorzystanie algorytmu TFIDF stworzymy profil każdej z książek.
-Pierwszym etapem algorytmu jest stworzenie macierzy „term frequency”. W tym przypadku jej wypełnienie przedstawia odniesienie każdego z podanych terminów do każdej z książek. Załóżmy, że 1 oznacza iż książka reprezentuje cechy danego gatunku, natomiast 0 oznacza brak takich cech. 
-\\
-\\
-\footnotesize{
-\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
-Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
-/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
-Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
-\hline \hline 
-Władza & &  &  &  &  & &  &  \\
-Absolutna & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
-Patrioci & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
-Proxima & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
-Strażacy & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
-Gra & &  &  &  &  & &  &  \\
-o Śmierć & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
-Cyrk & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
-\hline
-\end{tabular}
-}
-\normalsize{
-\\
-\\Zbadajmy teraz "inverse dokument frequency".
-\begin{center}
-\begin{math}IDF = \log \frac{N}{n_k} \end{math}
-\end{center}
-W rozważanym przypadku $N$ to liczba książek, natomiast $n_k$ to całkowita liczba wystąpień "term frequency", uzyskana dla wszystkich dokumentów.
-}
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
-Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
-minał & współ- &  fantastycz- & tura &  &  & akcji & \\
- & czesna &  nonaukowa & faktu &  &  &  & \\
-\hline \hline 
-1.098612 & 1.098612 & 1.791759 & 1.791759 & 1.791759 & 1.791759 & 0.693147 & 1.791759 \\
-\hline
-\end{tabular}
-\end{center}
-\normalsize{Mając stworzona macierz "term frequency" oraz wektor "inverse dokument frequency" przejdźmy do ostatniego kroku i stwórzmy macierz TFIDF dla rozważanego przypadku:}
-\begin{center}
 
-\footnotesize{
-\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
-Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
-/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
-Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
-\hline 
-Władza & &  &  &  &  & &  &  \\
-Absolutna & 1.098612 & 0 & 0 & 0 & 0 & 0 & 0.693147 & 0 \\
-\hline
-Patrioci & 0 & 1.098612 & 0 & 0 & 0 & 0 & 0.693147 & 0 \\
-\hline
-Proxima & 0 & 1.098612 & 1.791759 & 0 & 0 & 0 & 0 & 0 \\
-\hline
-Strażacy & 0 & 0 & 0 &1.791759 & 0 & 0 & 0.693147 & 0 \\
-\hline
-Gra & &  &  &  &  & &  &  \\
-o Śmierć & 0 & 0 & 0 & 0 & 1.791759 & 0 & 0 & 1.791759 \\
-\hline
-Cyrk & 1.098612 & 0 & 0 & 0 & 0 & 1.791759 & 0 & 0\\
-\hline
-\end{tabular}
-}
-\end{center}
-\normalsize{
-Zakończyliśmy generowanie profilu przedmiotu, przejdźmy więc do wygenerowania profilu użytkownika. 
-\\Rozważmy zbiór danych, który przedstawia informacje o czytelnikach i książkach. W poniższym zestawieniu 1 oznacza, że dana osoba przeczytała książkę, natomiast puste miejsce, że nie podjęła się lektury.
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|r|} \hline
-Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
-\hline \hline 
-Władza Absolutna & 1 & 1 & & 1 & 1 &  \\
-Patrioci &  & 1 & 1 & 1 & 1 &  \\
-Proxima & 1 & 1 & 1 & 1 & 1 & 1 \\
-Strażacy & 1 & 1 & 1 & 1 & 1 & 1 \\
-Gra o Śmierć & 1 & 1 & 1 & 1 & 1 &  \\
-Cyrk & 1 & 1 & 1 & 1 & 1 & 1 \\
-\hline
-\end{tabular}
-\end{center}
-Profil użytkownika powinien zawierać jego preferencje dotyczące cech danego przedmiotu, w tym przypadku będą to preferencje dotyczące gatunku książki. Iloczyn skalarny zbudowany na TFIDF i macierzy preferencji użytkowników przedstawi powinowactwo każdego z użytkowników do każdego z rozważanych gatunków książki. 
-\begin{center}
-\footnotesize{
-\begin{tabular}{|r|r|r|r|r|r|r|r|r|} \hline
-Książka  & Kry- & Proza &  Powieść & Litera- & Romans & Komedia & Książka & Thriller\\
-/ & minał & współ- &  fantastycz- & tura &  &  & akcji & \\
-Gatunek & & czesna &  nonaukowa & faktu &  &  &  & \\
-\hline 
-Anna &    2.197224 &  1.098612 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 1.3862944 & 1.791759 \\
-\hline
-Maciej &  2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
-\hline
-Bartek &  1.098612 &  2.197224 &  1.791759 &  1.791759 & 1.791759  & 1.791759  & 1.3862944 & 1.791759 \\
-\hline
-Ewa &     2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
-\hline
-Sandra &  2.197224 &  2.197224 &  1.791759 &  1.791759 &  1.791759 & 1.791759 & 2.0794416 & 1.791759 \\
-\hline
-Kacper &  1.098612 &  1.098612 &  1.791759 &  1.791759 & 0 & 1.791759 & 0.6931472 & 0\\
-\hline
-\end{tabular}
-}
-\end{center}
-Kolejnym krokiem po wygenerowaniu profilu przedmiotu i profilu użytkownika jest przedstawienie w jakim stopniu każdy z użytkowników będzie zainteresowany każdą z książek. Do tego wykorzystane zostanie, wcześniej już wspomniane, podobieństwo kosinusów.
-\\
-\\(macierz zainteresowań)
-\\
 
-\subsection{????????Wady i zalety systemu rekomendującego opartego na treści}
-Badacze Francesco Ricci, Lior Rokach, Bracha Shapira i Paul B. Kantor w swojej publikacji :"Recommender Systems
-Handbook" wyróżniają następujące zalety filtrowania opartego na treści: 
-\begin{itemize}
-\item \textbf{Niezależność użytkowników:} Jest metodą ukierunkowaną na indywidualne rozważnie każdego użytkownika, a budowanie jego profilu odbywa się na podstawie ocen, które zostały przez niego wydane. W metodzie filtrowania kolaboratywnego rekomendacja była dokonana po uwzględnieniu ocen innych użytkowników oraz znalezieniu użytkowników najbardziej podobnych pod względem preferencji.
-\item \textbf{Transparentność:} W celu przedstawienia zaproponowanej rekomendacji opartej na treści możemy przedstawić listę kontekstów, które zostały poddane analizie. Stanowią one listę wskaźników na podstawie których możemy ocenić wartość i prawdziwość rekomendacji. W przypadku filtrowania kolaboratywnego jedyną informacją jaka doprowadziła nas do reprezentowanych wniosków jest podobieństwo między nieznanymi użytkownikami, którzy charakteryzują się podobnym gustem.
-\item \textbf{Nowy przedmiot:} Systemy rekomendacji oparte na treści umożliwiają stworzenie rekomendacji przedmiotu, który nie został wcześniej oceniony przez użytkowników. Istnieje bowiem możliwość szybkiego ustalenia cech w rozważanych przez rekomendację aspektach. 
-\end{itemize}
-Niemniej jednak, rozważając ten rodzaj systemów rekomendujących możemy dostrzec następujące niedociągnięcia:
-\begin{itemize}
-\item \textbf{Ograniczona analiza treści:} Techniki rekomendacji oparte na treści posiadają ograniczenia w postaci liczby i typów cech, które są powiązane z rekomendowanymi obiektami. Przyporządkowanie pewnych kontekstów do przedmiotów może okazać się niewystarczające aby zbadać zainteresowania użytkowników.
-\item \textbf{Nadmierne wyspecjalizowanie:} Stosując rekomendacje oparte na treści nie posiadamy możliwości do odnalezienia wyjątkowo nieoczekiwanych wniosków. Systemy te sugerują bowiem przedmioty, których noty są wysokie w stosunku do profilu użytkownika, skąd wynikiem rekomendacji zawsze będą przedmioty podobne do tych przez użytkownika już ocenionych. Na tej podstawie też często zarzuca się rozważanym systemom niski poziom nowości przy dostarczaniu rekomendacji.
- \item \textbf{Nowy użytkownik:} W przypadku użytkowników, gdzie możemy analizować dużą liczbę wystawionych ocen i dobrze zrozumieć ich preferencje stworzenie odpowiedniej rekomendacji nie stanowi problemu. Jednakże, gdy ocen jest tylko kilka lub użytkownik jest nowy system nie będzie w stanie stworzyć niezawodnej rekomendacji.
-\end{itemize} 
 
 \section{Filtrowanie kolaboratywne (Collaborative filtering)}
 
@@ -1079,8 +1034,31 @@ Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują 
 \end{itemize}
 Cechą wspólną dla obu powyższych metod jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
 \\Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach kontekstowych. Rekomendację są dokonywane tylko na podstawie ocen. Dzięki temu systemowi możemy również dokonywać rekomendacji na przestrzeni kilku kontekstów, co pozwala uniknąć nam konkretne wyspecjalizowanej przestrzeni obecnej w metodach kontekstowych.
-\subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
+\subsection{Przykład}
+Załóżmy więc przypadek gdy nie posiadamy informacji dotyczących gatunków książek ani informacji o preferencjach użytkowników.
+\\Wiemy tylko jakie oceny (z zakresu 1-10) wystawili użytkownicy książkom, które przeczytali:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?}\\
+\hline
+&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?}\\
+\hline
+&$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
+\hline
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+\hline
+&$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{?} \\
+\hline
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+\hline
+\end{tabular}.
+\end{center}
+W takim przypadku, aby odnaleźć brakujące oceny i dokonać rekomendacji możemy użyć metody filtrowania kolaboratywnego opartego na użytkownikach lub filtrowania kolaboratywnego opartego na elementach.
 
+\subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
 
 \subsubsection{Algorytm}
 Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
@@ -1089,36 +1067,122 @@ Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
 \item Wyestymowanie ocen, które czytelnicy (w szczególności osoba dla której tworzymy rekomendację) mogliby wystawić dla nieprzeczytanych książek z rozważanego zbioru.
 \end{enumerate}
 W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
-\subsubsection{3.1.3.2 Przykład}
-Zakładamy, że tabela przedstawia oceny czytelników dla kilku wybranych książek oraz, że każda z zapytanych osób mogła wystawić ocenę z zakresu 1 -10. Istotne jest, że nie wszyscy zapytani wystawili ocenę dla każdej z książek:
+\subsubsection{Przykład}
+Chcąc obliczyć podobieństwo między użytkownikiem $c_2$ i $c_3$ wybierzmy książki, które przeczytali obaj użytkownicy. W tym przypadku są to: $k_2$, $k_3$, $k_4$, $k_5$, $k_6$. Na tej podstawie tworzymy odpowiednio wektory ocen użytkowników $o_{2,3} ^{(2)}$ i $o_{2,3}^{(3)}$. 
+\\Zatem
 \begin{center}
-\begin{tabular}{|r|r|r|r|r|r|r|} \hline
-Książka/Czytelnik & Anna & Maciej & Bartek & Ewa & Sandra & Kacper \\
-\hline \hline 
-Wladza Absolutna & 6 & 3 & & 6 & 4 &  \\
-Patrioci &  & 6 & 6 & 5 & 6 &  \\
-Proxima & 7 & 7 & 8 & 7 & 8 & 9 \\
-Strażacy & 8 & 10 & 10 & 7 & 6 & 8 \\
-Gra o Śmierć & 9 & 6 & 6 & 6 & 6 &  \\
-Cyrk & 5 & 7 & 7 & 5 & 4 & 2 \\
-\hline
-\end{tabular}
+$o_{2,3} ^{(2)}= \left[
+        \begin{array}{c}
+         6 \\
+         7 \\
+         10 \\
+         6 \\
+         7
+         \end{array}
+      \right]$ oraz $o_{2,3}^{(3)} = \left[
+        \begin{array}{c}
+         6 \\
+         8 \\
+         10 \\
+         6 \\
+         7
+         \end{array}
+      \right]$.
 \end{center}
-W tym przykładzie zastosujemy pierwsze ze wspomnianych rozwiązań. Używając wzoru:
+Posługując się odległością euklidesową
 \begin{center}
 $d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
 \end{center}
-obliczymy szukane odległości:
-
-(tabela)
-
-Bazując na podobieństwach między poszczególnymi użytkownikami, przez obliczenie średniej ważonej, zostaje przewidziana ocena jaką Bartek zaproponuje dla książki „Władza Absolutna”. W poniższym równaniu wartość podobieństwa między Bartkiem i innymi użytkownikami została pomnożona przez ocenę jaką dany użytkownik wystawił dla książki „Władza Absolutna”. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
-\\
-\\(obliczenie)
-\\
-\\Ostatecznie, gdy znane są oceny dla wszystkich książek dokonana zastaje rekomendacja dla naszego użytkownika.
-\\
-\\
+obliczamy odległość między użytkownikami $c_2$ i $c_3$: 
+\begin{center}
+$d_{e}(o_{2,3}^{(2)},o_{2,3}^{(3)}) = \sqrt{(6-6)^2 + (7-8)^2 + (10-10)^2 + (6-6)^2 + (7-7)^2} = \sqrt{1} = 1$.
+\end{center}
+Postępując w podobny sposób dla każdej z par użytkowników otrzymamy następującą macierz odległości:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+$\mathbf{c_1}$ & 0 & 5,099 & 4,243 & 3 & 4,359 & 3,606 \\
+\hline
+$\mathbf{c_2}$ & 5,099 & 0 & 1 & 4,796 & 5,196 & 5,745\\
+\hline
+$\mathbf{c_3}$ & 4,243 & 1 & 0 & 3,873 & 5 & 5,477\\
+\hline
+$\mathbf{c_4}$ & 3 & 4,796 & 3,873 & 0 & 2,828 & 3,742 \\
+\hline 
+$\mathbf{c_5}$ & 4,359 & 5,196 & 5 & 2,828 & 0 & 3 \\
+\hline 
+$\mathbf{c_6}$ & 3,606 & 5,745 & 5,477 & 3,742 & 3 & 0 \\
+\hline 
+\end{tabular}.
+\end{center}
+W celu uzyskania wartości z przedziału $[0,1]$ poddajemy macierz normalizacji 
+\\($max\{0,1,2,3,4,5,6,7,8,9,10\} - min\{0,1,2,3,4,5,6,7,8,9,10\}$):
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+$\mathbf{c_1}$ & 0 & 0,5099 & 0,4243 & 0,3 & 0,4359 & 0,3606 \\
+\hline
+$\mathbf{c_2}$ & 0,5099 & 0 & 0,1 & 0,4796 & 0,5196 & 0,5745\\
+\hline
+$\mathbf{c_3}$ & 0,4243 & 0,1 & 0 & 0,3873 & 0,5 & 0,5477\\
+\hline
+$\mathbf{c_4}$ & 0,3 & 0,4796 & 0,3873 & 0 & 0,2828 & 0,3742 \\
+\hline 
+$\mathbf{c_5}$ & 0,4359 & 0,5196 & 0,5 & 0,2828 & 0 & 0,3 \\
+\hline 
+$\mathbf{c_6}$ & 0,3606 & 0,5745 & 0,5477 & 0,3742 & 0,3 & 0 \\
+\hline 
+\end{tabular}.
+\end{center}
+Im większa odległość między czytelnikami tym mniejsze jest podobieństwo jakie między nimi występuje.
+Zakładając, że największa wartość prawdopodobieństwa to $1$ macierz podobieństwa przyjmuje wartości:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+$\mathbf{c_1}$ & 1 & 0,4901 & 0,5757 & 0,7 & 0,5641 & 0,6394 \\
+\hline
+$\mathbf{c_2}$ & 0,4901 & 1 & 0,9 & 0,5204 & 0,4804 & 0,4255\\
+\hline
+$\mathbf{c_3}$ & 0,5757 & 0,9 & 1 & 0.6127 & 0,5 & 0,4523\\
+\hline
+$\mathbf{c_4}$ & 0,7 & 0,5204 & 0.6127 & 1 & 0,7172 & 0,6258 \\
+\hline 
+$\mathbf{c_5}$ & 0,5641 & 0,4804 & 0,5 & 0,7172 & 1 & 0,7 \\
+\hline 
+$\mathbf{c_6}$ & 0,6394 & 0,4255 & 0,4523 & 0,6258 & 0,7 & 1 \\
+\hline 
+\end{tabular}.
+\end{center}
+Bazując na przedstawionych podobieństwach wyestymujmy ocenę jaką użytkownik $c_1$ zaproponuje dla książki $k_2$. W poniższym równaniu obliczymy średnią ważoną ocen wykorzystując wartość podobieństwa między użytkownikiem $c_1$, a pozostałymi użytkownikami, którzy wcześniej ocenili książkę:
+\begin{center}
+$\frac{0,4901 \cdot 6 + 0,5757 \cdot 6 + 0,7 \cdot 5 + 0,5641 \cdot 6}{0,4901 + 0,5757  + 0,7  + 0,5641} = 5,7$
+\end{center}
+Na podstawie metody filtrowania kolaboratywnego opartej na użytkownikach wnioskujemy, że użytkownik $c_1$ wystawiłby książce $k_2$ ocenę $5,7$.
+\\Postępując w analogiczny sposób przewidzimy wszystkie brakujące oceny :
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\hline
+\hline
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{4,57} & 6 & 4 & \textbf{4,88}\\
+\hline
+&$\mathbf{k_2}$ & \textbf{5,7} & 6 & 6 & 5 & 6 & \textbf{5,72}\\
+\hline
+&$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
+\hline
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+\hline
+&$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{6,67} \\
+\hline
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+\hline
+\end{tabular}.
+\end{center}
+na których podstawie możemy dokonać rekomendacji dla naszych użytkowników.
+\\Możemy wnioskować, że dla użytkownika $c_3$ książka $k_1$ prawdopodobnie nie będzie zbyt atrakcyjna. Użytkownik $c_6$, natomiast, z chęcią przeczyta książkę $k_5$. 
 \subsection{Filtrowanie kolaboratywne oparte na  elementach}
 W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez  wartości podobieństwa między elementami.
 \\W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
@@ -1130,65 +1194,113 @@ Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykona
 \end{enumerate}
 
 \subsubsection{Przykład}
-Chcąc zastosować ten rodzaj filtrowania kolaboratywnego do rozważanego problemu i przewidzieć ocenę użytkownika dla pewnej wybranej książki należy na wstępie zdefiniować wszystkie książki podobne do wybranej. Można to zrobić używając wspomnianego wcześniej, podobieństwa kosinusów. W tym przypadku elementami wektorów są oceny wystawione przez użytkowników dla poszczególnych książek, np.: (7,7,8,7,8,9) dla książki "Proxima". Poniższa tabela przedstawia natomiast podobieństwa występujące między wszystkimi książkami obliczone za pomocą wzoru:
+W tym przypadku wektory odzwierciedlają zbiory ocen wystawione poszczególnym książkom przez użytkowników.
+\\Wektor mają zatem postać:
 \begin{center}
-$ sim (\vec{a},\vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\mid \vec{a} \mid \mid \vec{b} \mid }$
+$o^{(k_1)} = \left[
+        \begin{array}{c}
+         6 \\
+         3 \\
+         6 \\
+         4 
+         \end{array}
+      \right]$, $o^{(k_2)} = \left[
+        \begin{array}{c}
+         6 \\
+         6 \\
+         5 \\
+         6
+         \end{array}
+      \right]$, $o^{(k_3)} = \left[
+        \begin{array}{c}
+         7 \\
+         7 \\
+         8 \\
+         7 \\
+         8 \\
+         9
+         \end{array}
+      \right]$, $o^{(k_4)} = \left[
+        \begin{array}{c}
+         8 \\
+         10 \\
+         10 \\
+         7 \\
+         6 \\
+         8
+         \end{array}
+      \right]$, $o^{(k_5)} = \left[
+        \begin{array}{c}
+         9 \\
+         6 \\
+         6 \\
+         6 \\
+         6
+         \end{array}
+      \right]$, $o^{(k_6)} = \left[
+        \begin{array}{c}
+         5 \\
+         7 \\
+         7 \\
+         5 \\
+         4 \\
+         2
+         \end{array}
+      \right]$
 \end{center}
+Warto zauważyć, że wektory są różnej długości.
+\\Aby obliczyć podobieństwo między książkami $k_1$ i $k_2$ wyznaczmy wektory ocen w których uwzględnimy przypadki, gdzie jeden użytkownik ocenił obie pozycje.
+\\Zatem:
 \begin{center}
-\footnotesize{
-\begin{tabular}{|r|r|r|r|r|r|r|} \hline
- & Władza Absolutna & Patrioci & Proxima & Strażacy & Gra o Śmierć & Cyrk \\
-\hline
-Władza & & & & & & \\
-Absolutna & 1 & 0.6339 & 0.7372 & 0.7195 & 0.8935 & 0.7599 \\
-\hline
-Patrioci & 0.6339 & 1 & 0.7951 & 0.8150 & 0.7977 & 0.8898 \\
-\hline
-Proxima & 0.7372 & 0.7951 & 1 & 0.9780 & 0.8586 & 0.9200 \\
-\hline
-Strażacy & 0.7195 & 0.8150 & 0.9780 & 1 & 0.8860 & 0.9681 \\
-\hline
-Gra o Śmierć & 0.8935 & 0.7977 & 0.8586 & 0.8860 & 1 & 0.9413 \\
-\hline
-Cyrk & 0.7599 & 0.8898 & 0.9200 & 0.9681 & 0.9413 & 1 \\
-\hline
-\end{tabular}
-}
+$\overline{o^{(k_1)}} = \left[
+        \begin{array}{c}
+         3 \\
+         6 \\
+         4
+         \end{array}
+      \right]$, $\overline{o^{(k_2)}} = \left[
+        \begin{array}{c}
+         6 \\
+         5 \\
+         6
+         \end{array}
+      \right]$.
 \end{center}
-Znając podobieństwa między pozycjami oraz noty wystawione przez Kacpra możemy więc wyestymować jak Kacper oceni inne pozycje z naszego spisu. 
-\\Rozważmy książkę "Patrioci". Ustalone podobieństwa między pozycją "Patrioci" a każdą z innych książek ocenianych przez Kacpra wymnożymy przez oceny, które nadał pozycjom. Następnie sumę iloczynów dzielimy przez sumę wszystkich podobieństw.
+Następnie używając wzoru na podobieństwo kosinusowe
 \begin{center}
-$\frac{(0.7951 \cdot 9 + 0.8150 \cdot 8 + 0.8898 \cdot 2)}{(0.7951 + 0.8150 + 0.8898)} = 6.16 $
+$sim(\overrightarrow{a},\overrightarrow{b}) = \frac{\overrightarrow{a} \cdot \overrightarrow{b}}{|\overrightarrow{a}||\overrightarrow{b}|}$ 
 \end{center}
-Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu Kacper książce "Patrioci" to $6.16$.
-Powtarzając powyższe obliczenia dla każdej z pozycji nieocenionych przez Kacpra otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania naszemu użytkownikowi.
-\subsection{????Wady i zalety filtrowania kolaboratywnego}
-Mając przed sobą dwa typy filtrowania kolaboratywnego możemy zadać pytanie o efektywność, czy precyzyjność tego rozwiązania.
-\\Poniżej kilka wniosków i informacji, opartych na rozważaniach Christian Desrosiers i George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} które pozwalają dostrzec zalety i wady tego rozwiązania.
-\\ 
-\\Zalety:
-\begin{itemize}
-\item Opisywane podejście tworzenia rekomendacji jest intuicyjne i łatwe implementacji zarówno w przypadku metody opartej na użytkownikach jak i metody opartej na elementach. 
-\item Metody filtrowania kolaboratywnego pozwalają ponadto na zwięzłe i intuicyjne wyjaśnienie obliczeń prognostycznych, które wykonujemy.
-\item W rozważanych metodach filtrowania nie są wykorzystywane informacje o zawartości produktów, czy informacje o profilu użytkownika. Kiedy wiec wzrośnie liczba ocen dla konkretnego produktu zmianie ulegnie jedynie wartość podobieństwa między elementami.
-\end{itemize}
-Z drugiej strony:
-\begin{itemize}
-\item Filtrowanie kolaboratywne jest kosztowne obliczeniowo, ponieważ wykorzystywane są tu informacje o użytkownikach, produktach oraz ocenach produktów przez użytkowników. 
-\item Podejście to zawodzi, kiedy istnieje potrzeba stworzenia rekomendacji dla nowego użytkownika o którego ocenach nie ma informacji.
-\item Zarówno metoda oparta na użytkownikach, jak i metoda oparta na elementach jest mało wiarygodna kiedy zasób danych na którym bazujemy jest mały.
-\end{itemize}
+obliczamy podobieństwo między wybranymi książkami
+\begin{center}
+$sim(k_1,k_2) = \frac{\overline{o^{(k_1)}} \cdot \overline{o^{(k_2)}}}{|o^{(k_1)}||o^{(k_2)}|} = \frac{3 \cdot 6 + 6 \cdot 5 + 4 \cdot 6}{\sqrt{6^2 + 3^2 + 6^2 + 4^2} \sqrt{6^2 + 6^2 + 5^2 + 6^2}} = 0,6339$.
+\end{center}
+Postępując w analogiczny sposób otrzymamy macierz podobieństwa elementów:
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
+\textbf{Czytelnicy} & $\mathbf{k_1}$ & $\mathbf{k_2}$ & $\mathbf{k_3}$ & $\mathbf{k_4}$ & $\mathbf{k_5}$ & $\mathbf{k_6}$ \\
+\hline
+$\mathbf{k_1}$ & 1 & 0,6339 & 0,7372 & 0,7195 & 0,8935 & 0,7599 \\
+\hline
+$\mathbf{k_2}$ & 0,6339 & 1 & 0,7951 & 0,8150 & 0,7977 & 0,8898 \\
+\hline
+$\mathbf{k_3}$ & 0,7372 & 0,7951 & 1 & 0,9780 & 0,8586 & 0,9200 \\
+\hline
+$\mathbf{k_4}$ & 0,7195 & 0,8150 & 0,9780 & 1 & 0,8860 & 0,9681 \\
+\hline 
+$\mathbf{k_5}$ & 0,8935 & 0,7977 & 0,8586 & 0,8860 & 1 & 0,9413 \\
+\hline 
+$\mathbf{k_6}$ & 0,7599 & 0,8898 & 0,9200 & 0,9681 & 0,9413 & 1 \\
+\hline 
+\end{tabular}.
+\end{center}
+Wyestymujmy teraz ocenę jaką użytkownik $c_6$ zaproponuje dla książki $k_2$. Ponownie obliczymy średnią ważoną ocen, tym razem, wykorzystując wartość podobieństwa między książką $k_1$, a książkami ocenionymi wcześniej przez użytkownika oraz oceny jakie nadał on tym pozycjom:
+\begin{center}
+$\frac{(0,7951 \cdot 9 + 0,8150 \cdot 8 + 0,8898 \cdot 2)}{(0,7951 + 0,8150 + 0,8898)} = 6,16 $.
+\end{center}
+Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu użytkownik $c_6$ książce $k_2$ to $6,16$.
+\\Powtarzając powyższe obliczenia dla każdej z pozycji wcześniej nieocenionej przez wybranego użytkownika otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania użytkownikowi.
 
-\subsection{????Porównanie filtrowania kolaboratywnego opartego na użytkownikach i filtrowania kolaboratywnego opartego na elemtach:}
-Warty rozważenie jest również fakt wyboru między rekomendacją opartą na użytkowniku, a rekomendacją opartą na elementach. Według Christian Desrosiers, George Karypis \textbf{[44][ file:///C:/Users/akuda/Downloads/NbrRSsurvey2011.pdf] [strona 7] [A comprehensive survey of neighborhood-based recommendation methods][ Christian Desrosiers, George Karypis]} jest kilka obszarów, które należy rozważyć przed ostatecznym wyborem toku postępowania:
-\begin{itemize}
-\item \textbf{Precyzyjność:} Metodę wybieramy w zależności od stosunku między użytkownikami a przedmiotami w rozważanych danych. Mianowicie, jeżeli rozważany zbiór zawiera dużą liczbę użytkowników i jednocześnie mała liczbę elementów preferowanym rozwiązaniem jest metoda oparta na elementach.
-\item \textbf{Sprawność:} Złożoność rozważanych algorytmów zależy od stosunku między liczbą użytkowników, a liczbą elementów. Przyjmując O, U, E jako liczbę odpowiednio ocen, użytkowników i elementów zdefiniujmy 
-$p = O/U$ i $q = O/E$. Wtedy też złożoność metody opartej na użytkownikach wyrażona zostaje przez $p^2/E$, a złożoność metody opartej na elementach przez $q^2/U$.
-\item \textbf{Stabilność:} Rozważając ten aspekt przed wyborem metody należy rozważyć co wzrasta szybciej – liczba użytkowników, czy liczba elementów. Jeżeli liczba elementów wydaje się bardziej statyczna wtedy też lepszym wyborem jest metoda oparta na elementach i odwrotnie.
-\item \textbf{Uzasadnienie:} Pod tym względem lepszym wyborem będzie system rekomendacji oparty na elementach. W przypadku bowiem potrzeby wyjaśnienia naszej rekomendacji przedstawienie listy rozważanych elementów jest łatwiejsze niż przedstawienie listy użytkowników.
-\item \textbf{Serendipity:} Patrząc pod kontem możliwości wyszukiwania zaskakujących rekomendacji lepszym wyborem byłby system oparty na użytkowniku. Pozwala on bowiem dojść do znacznie ciekawszych wniosków niż system oparty na elementach.
-\end{itemize}
+
 
 
 
@@ -1220,202 +1332,15 @@ W modelu kontekstowym rekomendacje są generowane w dwóch krokach:
 \\ \textbf{Filtrowanie jako etap końcowy (ang. Post-Filtering)}
 \\Informacje o kontekście są ignorowane w wejściowych danych, a rekomendacja dokonywana jest na całym zbiorze. To w następnym kroku lista rekomendacji stworzona dla użytkownika jest zawężana przez uwzględnienie kontekstu.
 \end{enumerate}
-\subsection{Przykład}
-Wracając do przykładu rozważanego w przykładzie systemów rekomendacyjnych opartych na treści, gdzie oceny dla filmów generowano na podstawie wcześniej stworzonych profili przedmiotów i użytkowników dołóżmy kontekst.
-Niech kontekstem w tym przypadku będą procenty odzwierciedlające preferencje użytkownika do poszczególnych gatunków książek, czytanych w różnych porach roku.
-\\
-\\(tabela)(zostanie dodana po rozwikłaniu zagadki z metody wyżej)
-\\(tabelka)
-\\
-\\Na początku należy utworzyć profil użytkownika uwzględniający każdy z kontekstów i każdy z gatunków książek. 
-Iloczyn skalarny macierzy kontekstu i macierzy profilu użytkownika przedstawia preferencje użytkownika w stosunku do każdego z kontekstów.
-\\
-\\(tabela po iloczynie)
-\\
-\\Następnym krokiem jest przedstawienie rankingu książek uwzględniającego kontekst dla wybranego użytkownika.
-Do stworzenia takiego rankingu zostanie użyte, dobrze już znane w zakresie reguł rekomendacyjnych prawdopodobieństwo kosinusów.
-\\
-\\Podobieństwo kosinusów(matrix, item profile).
-\\
-\\Po uzyskaniu rankingu można przejść do zasugerowania odpowiedniej książki dla wybranego użytkownika. Oczywiście, w tym przypadku, uwzględniając rozważany kontekst.
 
-\subsection{???Wady i zalety systemów rekomendujących kontekstowych}
-Metody kontekstowe są bardziej zaawansowane niż wcześniej omawiane systemy rekomendujące. Dzięki temu rekomendacje oparte na metodach kontekstowych:
-\begin{itemize}
-\item  zawsze pozostają w zgodzie z użytkownikiem i generują informacje uwzględniając jego aktualne potrzeby,
-\item  są najczęściej stosowane przy generowaniu rekomendacji w czasie rzeczywistym.
-\end{itemize}
-Podobnie jak w poprzednio rozważanych systemach rekomendujących również i w tym brak jednak serendipity i proponowania nowych, zaskakujących użytkownika rekomendacji. 
 \section{Hybrydowe systemy rekomendujące ():}
 (Czy potrzebny mi jeszcze ten podrozdział?)
 
 \section{Systemy rekomendujące oparte na modelach():}
 (Czy potrzebny mi jeszcze ten podrozdział?)
-\chapter{Przykład}
-Załóżmy, że mamy zbiór pięciu książek $\{k_1, k_2, k_3, k_4, k_5\}$, oraz zbiór czterech czytelników $\{c_1, c_2, c_3, c_4\}$.
-\\Poniższa tabela przedstawia oceny jakie czytelnicy przyporządkowali po przeczytaniu poszczególnym pozycjom. Znak '?' oznacza, że czytelnik danej książki nie czytał.
 
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
-\hline
-\hline
-\textbf{Książki} &$\mathbf{k_1}$ & 5 & 5 & 0 & 0 \\
-\hline
-&$\mathbf{k_2}$ & 5 & \textbf{?} & \textbf{?} & 0 \\
-\hline
-&$\mathbf{k_3}$ & \textbf{?} & 4 & 0 & \textbf{?} \\
-\hline
-&$\mathbf{k_4}$ & 0 & 0 & 5 & 4 \\
-\hline
-&$\mathbf{k_5}$ & 0 & 0 & 5 & \textbf{?} \\
-\hline
-\end{tabular}
-\end{center}
-Niech:
-\begin{itemize}
-\item $n_u$ oznacza liczbę użytkowników, w tym przypadku $n_u = 4$,
-\item $n_m$ oznacza liczbę elementów, w tym przypadku liczbę książek, $n_m = 5$.
-\end{itemize}
-Dodatkowo wprowadźmy parametry:
-\begin{itemize}
-\item $r(i,j)$ - $r(i,j)=1$, jeżeli użytkownik $j$ ocenił książkę $i$,
-\item $y(i,j)$ - ocena jaką użytkownik $j$ przydzielił książce $i$, $y(i,j) \in \{0,1,2,3,4,5\}$ (ocenę definiujemy tylko wtedy gdy $r(i,j)=1$).
-\end{itemize}
-Celem jest na podstawie wskaźników $r(i,j)$, $y(i,j)$ przewidzieć brakujące oceny.
-\\
-\section*{Systemy rekomendujące oparte na treści}
-Niech poniższa tabela określa w jakim stopniu (skala 0-1) każda z książek reprezentuje cechy gatunków $g_1$, $g_2$.
-\begin{center}
-\begin{tabular}{|r|r|r|r|} \hline
-\textbf{Gatunki} & & $\mathbf{g_1}$ & $\mathbf{g_2}$ \\
-\hline
-\hline
-\textbf{Książki} &$\mathbf{k_1}$ & 0,9 & 0 \\
-\hline
-&$\mathbf{k_2}$ & 1 & 0,01 \\
-\hline
-&$\mathbf{k_3}$ & 0,99 & 0 \\
-\hline
-&$\mathbf{k_4}$ & 0,1 & 1 \\
-\hline
-&$\mathbf{k_5}$ & 0 & 0,9 \\
-\hline
-\end{tabular}
-\end{center}
-Dodatkowo zakładamy, że istnieje gatunek $g_0$, którego cechy reprezentują wszystkie książki oraz dla każdej z książek $g_0=1$.
-\\Zatem $g^{(1)}= \left[
-        \begin{array}{c}
-         1 \\
-         0,9\\
-         0
-         \end{array}
-      \right] $ jest wektorem cech odpowiadającym książce $k_1$, $g^{(2)}= \left[
-        \begin{array}{c}
-         1 \\
-         1\\
-         0,01
-         \end{array}
-      \right] $ jest wektorem cech odpowiadającym książce $k_2$. Analogicznie możemy wyznaczyć podobne wektory dla każdej z książek.
-\\
-\\Należy jednak zaznaczyć, że liczba wybranych przez nas cech to $n=2$.
-\\
-\\Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\Theta^{(j)} \in \mathbb{R}^3$ (w ogólnej postaci $\Theta^{(j)} \in \mathbb{R}^{n+1})$, który przedstawia (w skali 0-5) preferencje użytkownika dotyczące poszczególnych gatunków. I tak odpowiednio $\Theta^{(1)}$ to wektor preferencji czytelnika $c_1$, $\Theta^{(2)}$ wektor preferencji użytkownika $c_2$, $\Theta^{(3)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_4$.
-\\
-\\Aby przewidzieć ocenę jaką użytkownik $j$ wystawiłby książce $i$ po jej przeczytaniu użyjemy równania:
-\begin{center}
-$(\Theta^{(j)})^T g^{(i)}$.
-\end{center}
-\bigskip
-Obliczmy ocenę jaką książce $k_3$ wystawiłby użytkownik $c_1$ przy założeniu, że wektor preferencji użytkownika $c_1$ jest postaci $\Theta^{(j)}= \left[
-        \begin{array}{c}
-         0 \\
-         5\\
-         0
-         \end{array}
-      \right] $. Użytkownik ten preferuje więc książki gatunku $g_1$, gdy książki gatunków $g_0$ i $g_2$ są dla niego nieatrakcyjne.
-\\Zatem:
-\begin{center}
-$(\Theta^{(1)})^T g^{(3)} = [0,5,0] \left[
-        \begin{array}{c}
-         1 \\
-         0,99\\
-         0
-         \end{array}
-      \right] = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95$.
-\end{center}
-Przewidywaną oceną jest zatem $4,95$. Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen możemy zarekomendować naszemu użytkownikowi nową lekturę.
 
-\section*{Filtrowanie kolaboratywne}
-Załóżmy jednak przypadek gdy nie posiadamy informacji dotyczących gatunków książek ani informacji o preferencjach użytkowników.
-\\Wiemy tylko jakie oceny wystawili użytkownicy książkom, które przeczytali:
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
-\hline
-\hline
-\textbf{Książki} &$\mathbf{k_1}$ & 5 & 5 & 0 & 0 \\
-\hline
-&$\mathbf{k_2}$ & 5 & \textbf{?} & \textbf{?} & 0 \\
-\hline
-&$\mathbf{k_3}$ & \textbf{?} & 4 & 0 & \textbf{?} \\
-\hline
-&$\mathbf{k_4}$ & 0 & 0 & 5 & 4 \\
-\hline
-&$\mathbf{k_5}$ & 0 & 0 & 5 & \textbf{?} \\
-\hline
-\end{tabular}
-\end{center}.
-W takim przypadku, aby odnaleźć brakujące oceny i dokonać rekomendacji możemy użyć metody filtrowania kolaboratywnego opartego na treści lub filtrowania kolaboratywnego opartego na elementach.
 
-\subsubsection*{Filtrowanie kolaboratywne oparte na użytkownikach}
-Chcąc obliczyć podobieństwo między użytkownikiem $c_2$ i $c_3$ wybierzmy książki, które przeczytali obaj użytkownicy. W tym przypadku są to: $k_1$, $k_3$, $k_4$, $k_5$. Na tej podstawie tworzymy odpowiednio wektory ocen użytkowników $o_{2,3} ^{(2)}$ i $o_{2,3}^{(3)}$. 
-\\Zatem
-\begin{center}
-$o_{2,3} ^{(2)}= \left[
-        \begin{array}{c}
-         5 \\
-         4 \\
-         0 \\
-         0
-         \end{array}
-      \right]$ oraz $o_{2,3}^{(3)} = \left[
-        \begin{array}{c}
-         0 \\
-         0 \\
-         5 \\
-         5
-         \end{array}
-      \right]$.
-\end{center}
-Posługując się odległością euklidesową:
-\begin{center}
-$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
-\end{center}
-obliczymy odległość między użytkownikami.
-\\Zatem: 
-\begin{center}
-$d_{e}(o_{2,3}^{(2)},o_{2,3}^{(3)}) = \sqrt{(5-0)^2 + (4-0)^2 + (0-5)^2 + (0-5)^2} = \sqrt{91} \approx 9,54$.
-\end{center}
-Postępując w podobny sposób dla każdej z par użytkowników otrzymamy następującą macierz (tabelę) odległości:
-\begin{center}
-\begin{tabular}{|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ \\
-\hline
-$\mathbf{c_1}$ & 0 & 0 & 8,66 & 8,12 \\
-\hline
-$\mathbf{c_2}$ & 0 & 0 & 9,54 &  6,4\\
-\hline
-$\mathbf{c_3}$ & 8,66 & 9,54 & 0 & 1  \\
-\hline
-$\mathbf{c_4}$ & 8,12 & 6,4 & 1 & 0 \\
-\hline 
-\end{tabular}.
-\end{center}
-Bazując na przedstawionych odległościach obliczając średnią ważoną przedstawmy ocenę jaką użytkownik $c_2$ zaproponuje dla książki $k_2$. W poniższym równaniu wartość podobieństwa między użytkownikiem $c_2$, a pozostałymi użytkownikami pomnożono przez oceny jakie użytkownicy wystawili książce. Następnie, w celu normalizacji, wynik został podzielony przez sumę wartości wszystkich podobieństw.
-\begin{center}
-
-\end{center}
 \chapter{Eksperymenty / cześć praktyczne}
 
 \chapter{Podsumowanie}
