@@ -74,7 +74,7 @@ Promotor: dr, mgr inż. Piotr Kowalski
 \bigskip
 \bigskip
 \begin{center}
-{\textsc{\large \L\'od\'z, ?????}}
+{\textsc{\large \L\'od\'z, 07.2019}}
 \end{center}
 \end{titlepage}
 
@@ -291,7 +291,7 @@ gdzie $X = (x_i)_{i=1}^n$ jest układem wektorów przestrzeni wektorowej $\mathb
 
 \chapter{Eksploracja danych w systemach rekomendujących}
 Większość systemów rekomendujących opiera swój rdzeń na algorytmach, które możemy rozumieć jako konkretne przypadki technik eksploracji danych. 
-\\Proces eksploracji danych składa się zazwyczaj z trzech kroków:
+\\Proces eksploracji danych składa się z trzech kroków:
 \begin{enumerate}
 \item Preprocesing Danych,
 \item Analiza Danych,
@@ -299,18 +299,14 @@ Większość systemów rekomendujących opiera swój rdzeń na algorytmach, któ
 \end{enumerate}
 W tym rozdziale zostaną przeanalizowane najważniejsze i najczęściej używane w regułach rekomendujących metody. Zaczniemy od miar podobieństw i redukcji wymiaru. W kolejnym etapie spojrzymy na metody klasyfikacji, grupowania i regresji, aby zakończyć interpretacją wyników i oceną błędów obliczeń.
 \section{Preprocesing danych}
-Przed przystąpieniem do kroku analizy dane wymagają przygotowania: wyczyszczenia, przefiltrowania, transformacji. Dopiero tak przygotowane dane mogą zostać poddane zadaniom uczenia maszynowego. W tej sekcji zostaną przedstawione problemy, które spotkamy przy tworzeniu reguł rekomendujących.
+Przed przystąpieniem do kroku analizy dane wymagają przygotowania: wyczyszczenia, przefiltrowania, transformacji. Dopiero tak przygotowane dane mogą zostać poddane zadaniom uczenia maszynowego. W tej sekcji zostaną przedstawione problemy, które spotykamy przy tworzeniu reguł rekomendujących.
 \subsection{Miary podobieństwa}
-W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństwach i odległości.
-\\Najprostszym i jednocześnie najczęściej używanym podejściem jest tu \textbf{Odległość Euklidesowa}:
-\begin{center}
-$d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2}$, 
-\end{center}
+W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństw i odległości.
+\\Najprostszym i jednocześnie najczęściej używanym podejściem jest \textbf{Odległość Euklidesowa}:
+$$d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2}$$, 
 gdzie $n$ oznacza liczbę atrybutów elementów $x$ i $y$ przy czym $x_k$ oznacza k-ty atrybut elementu $x$. 
 \\Innym przykładem jest \textbf{Odległość Minkowkskiego}, która jest uogólnioną wersją Odległości Euklidesowej:
-\begin{center}
-$d(x,y) = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}$.
-\end{center}
+$$d(x,y) = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}$$.
 W zależności od wartości stopnia odległości $r$ Odległość Minkowkskiego przyjmuje konkretne nazwy:
 \begin{itemize}
 \item $r=1$ - Odległość Manhatan (norma $L_1$),
@@ -323,9 +319,7 @@ $cos(x_u, x_v) = \frac{x_u^{T}x_v}{||x_u|| ||x_v||}$,
 \end{center}
 gdzie $x_u$ i $x_v$ oznaczają wektory preferencji użytkowników $u$ oraz $v$.
 \\Inną miarą jest \textbf{Korelacja Pearsona}, zdefiniowana następująco:
-\begin{center}
-$\rho(u,v) = \frac{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)(r_{vi}-\overline{r}_v)}{\sqrt{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)^2 \sum_{i\in I_{uv}}(r_{vi}-\overline{r}_v)^2}}$
-\end{center}
+$$\rho(u,v) = \frac{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)(r_{vi}-\overline{r}_v)}{\sqrt{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)^2 \sum_{i\in I_{uv}}(r_{vi}-\overline{r}_v)^2}}$$
 $I_{uv}$ oznacza w tym przypadku zbiór elementów, które zostały ocenione przez użytkownika $u$ i użytkownika $v$, $r_{ui}$ natomiast ocenę elementu $i$ przez użytkownika $u$.
 \\\textbf{Indeks Jaccarda (Współczynnik podobieństwa Jaccarda)} to kolejny wskaźnik opisujący podobieństwo. Jeżeli oznaczymy przez $A$ i $B$ wektory to:
 \begin{center}
@@ -341,13 +335,14 @@ Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć,
 \begin{df}\textbf{Analiza Głównych Składowych (ang. Principal Component Analysis (PCA))}
 \\Analizą głównych składowych nazywamy procedurę statystyczną, która polega na ortogonalnej transformacji układu badanych zmiennych $X$ w zbiór nowych zmiennych $Y$. W rzeczywistość zmienne $Y$ są kombinacją liniową zmiennych $X$.
 \end{df}
-Niech dane będą dwie zmienne $X_1, X_2$ oraz $n$ pomiarów, które oznaczmy $(X_{i1},X_{i2})$ dla $i \in {1,2,3,...,n}$. Pomiary przedstawmy na układzie współrzędnych w formie diagramu korelacyjnego. Możemy zauważyć, że wzdłuż jednej osi dane są bardziej rozproszone - jest to pierwsza główna składowa $Y_1$. Drug biegnąca pod kątem prostym do pierwszej oś, wyznacza kierunek drugiej składowej - $Y_2$. Osie $X_1, X_2$ są transformowane przez przesunięcie środka do nowego punktu $(\overline{X_1},\overline{X_2})$, a następnie obrócone w ten sposób, by otrzymać współrzędne $Y_1$ i $Y_2$ głównych składowych.
+Niech dane będą dwie zmienne $X_1, X_2$ oraz $n$ pomiarów, które oznaczmy $(X_{i1},X_{i2})$ dla $i \in \{1,2,3,...,n\}$. Pomiary przedstawmy na układzie współrzędnych w formie diagramu korelacyjnego. Możemy zauważyć, że wzdłuż jednej osi dane są bardziej rozproszone - jest to pierwsza główna składowa $Y_1$. Drug biegnąca pod kątem prostym do pierwszej oś, wyznacza kierunek drugiej składowej - $Y_2$. Osie $X_1, X_2$ są transformowane przez przesunięcie środka do nowego punktu $(\overline{X_1},\overline{X_2})$, a następnie obrócone w ten sposób, by otrzymać współrzędne $Y_1$ i $Y_2$ głównych składowych.
+\begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{obrazek.PNG} 
 \caption{Diagram korelacyjny wyodrębnienia głównych składowych.}
 \end{figure}
-\bigskip
+\end{center}
 Punktem wyjścia rozważanego algorytmu jest macierz kowariancji lub macierz korelacji utworzone ze zbioru wejściowego. Zawierają one informację niezbędną do wyznaczenia głównych składowych.
 \\W przypadku użycia macierzy kowariancji największy wpływ na wynik przeprowadzanego algorytmu mają zmienne o największej wariancji. Stąd też rozwiązanie to świetnie sprawdzi się w przypadku, gdy rozważane zmienne mają porównywalne wielkości: 
 \begin{center}
@@ -390,14 +385,14 @@ Własności głównych składowych:
 \end{itemize}
 \bigskip
 \bigskip
-Dla wspomnianej transformacji ortogonalnej, w przypadku gdy znamy wektory własne macierzy istnieje bezpośrednie równanie.
+Dla wspomnianej transformacji ortogonalnej, w przypadku gdy znamy wektory własne macierzy istnieje równanie.
 \begin{tw}
 Niech $W$ będzie macierzą wektorów własnych przekształcenia $XX^T$ uporządkowaną malejąco.
 Wtedy transformacja PCA jest dana wzorem $Y=W^T X$.
 \end{tw}
 \begin{dw}
 Bez utraty ogólności załóżmy, że $X$ ma średnią zero.
-\\Niech $\lambda_1\geq\lambda_2\geq...\geq\lambda_n$ będą wartościami własnymi przekształcenia $XX^T$ oraz $v_i$ odpowiadającą bazą ortogonalną. Załóżmy, że $\omega = \sum_{i=1}^n a_iv_i$ maksymalizuje wariancję oraz $w\neq v_i$.
+\\Niech $\lambda_1\geq\lambda_2\geq...\geq\lambda_n$ będą wartościami własnymi przekształcenia $XX^T$ oraz $v_i$ odpowiadającą bazą ortogonalną. Załóżmy, że $$\omega = \sum_{i=1}^n a_iv_i$$ maksymalizuje wariancję oraz $w\neq v_i$.
 \\Wtedy:
 \begin{center}
 $\omega_1 = argmax_{||\omega||=1}\omega^TXX^T\omega = argmax_{||\omega||=1}(\sum a_iv_i)^TXX^T(\sum a_iv_i)$
@@ -405,13 +400,9 @@ $\omega_1 = argmax_{||\omega||=1}\omega^TXX^T\omega = argmax_{||\omega||=1}(\sum
 \end{center}
 Stąd $\omega_1$ maksymalizuje wariancję wtedy i tylko wtedy, gdy $\omega_1=v_1$. 
 \\Znając k-1 głównych składowych k-tą znajdziemy postępując z transformacją:
-\begin{center}
-$X_{k-1} = X - \sum_{i=1}^{k-1}\omega_i\omega_i^TX$.
-\end{center}
+$$X_{k-1} = X - \sum_{i=1}^{k-1}\omega_i\omega_i^TX$$.
 Podstawiając $X_{k-1}$ otrzymujemy:
-\begin{center}
-$\omega_k = argmax_{||x||=1}\omega^TX_{k-1}X_{k-1}^T\omega$.
-\end{center}
+$$\omega_k = argmax_{||x||=1}\omega^TX_{k-1}X_{k-1}^T\omega.$$
 \end{dw}
 \begin{flushright}
 $\Box$
@@ -442,9 +433,7 @@ gdzie:
 \end{df}
 \begin{df}\textbf{Norma Frobeniusa}%Using Linear Algebra for Intelligent Information Retrival.pdf
 \\Normą Frobeniusa nazywamy:
-\begin{center}
-$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^T A}$,
-\end{center}
+$$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^T A},$$
 gdzie $A$ jest macierzą $m\times n$ - wymiarową. $ A^T$ jest sprzężeniem macierzy, a $tr(A)$ śladem macierzy $A$.
 \end{df}
 
@@ -458,8 +447,9 @@ gdzie $U=[u_1,u_2,...u_m]$, $V = [v_1,v_2,...v_n]$ oraz
 \\$R(A)$ i $N(A)$ oznaczają zakres i jądro macierzy.
 \\Wtedy:
 \begin{enumerate}
-\item właściwości rzędu macierzy: $rank(A) = r$, $N(A) = span\{v_{r+1},...,v_n \}$, $R(A) = span \{u_1,u_2,...,u_r \}$,
-\item $A = \sum_{i=1}^r u_i \cdot d_i \cdot v_i^T$,
+\item właściwości rzędu macierzy: $rank(A) = r$, $N(A) = span\{v_{r+1},...,v_n \}$, 
+\\$R(A) = span \{u_1,u_2,...,u_r \}$,
+\item $A = \sum_{i=1}^r u_i \cdot d_i \cdot v_i^T,$
 \item $||A||_F^2 = d_1^2+...+d_r^2$ i $||A||_2^2 = d_1$.
 \end{enumerate}
 \end{tw}
@@ -467,12 +457,10 @@ gdzie $U=[u_1,u_2,...u_m]$, $V = [v_1,v_2,...v_n]$ oraz
 \begin{tw}\textbf{Twierdzenie Eckart - Younga}%Using Linear Algebra for Intelligent Information Retrival.pdf
 \\Niech $X$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$, $r\in \mathbb{N} = rank(A)$ niech będzie rzędem macierzy i $r\leq p = min(m,n)$.
 \\Zdefiniujmy:
-\begin{center}
-$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T$, 
-\end{center}
+$$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T,$$
 wtedy
 \begin{center}
-$min_{rank(B) = k } ||A - B||_F^2 = ||A - A_k||_F^2 = d_{k+1}^2 + ... + d_p^2$.
+$\min \limits_{rank(B) = k } ||A - B||_F^2 = ||A - A_k||_F^2 = d_{k+1}^2 + ... + d_p^2$.
 \end{center}
 \end{tw}
 \begin{dw}
@@ -483,18 +471,12 @@ $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$
 \end{center} 
 jest rozkładem według wartości osobliwych macierzy $A$.
 \\Chcemy pokazać, że najlepszym przybliżeniem macierzy $A$ w normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
-\begin{center}
-$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T$,
-\end{center}
+$$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T,$$
 gdzie $u_i$ i $v_i$ oznaczają odpowiednio $i$-te kolumny macierzy $U$ i $V$.
 \\Zauważmy, że
-\begin{center}
-$||A - A_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot d_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n d_i^2$.
-\end{center}
+$$||A - A_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot d_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n d_i^2.$$
 Stąd należy udowodnić, że $B_k = XY^T$, gdzie $X$ i $Y$ są macierzami oraz 
-\begin{center}
-$||A - A_k||_F^2 = \sum_{i=k+1}^n d_i^2 = ||A - B_k||_F^2$.
-\end{center}
+$$||A - A_k||_F^2 = \sum_{i=k+1}^n d_i^2 = ||A - B_k||_F^2.$$
 Z nierówności trójkąta, jeżeli $A = A^{`} + A^{``}$ wtedy $d_1(A)\leq d_1(A^{`}) + d_1(A^{``})$. 
 \\Przez $A_k^{`}$ i $A_k^{``}$ oznaczmy przybliżenia SVD odpowiednio macierzy $A^{`}$ i $A^{``}$. 
 \\Stąd dla każdego $i,j \geq 1$
@@ -514,9 +496,7 @@ kiedy $A^{`} = A - B_k$ i $A^{``} = B_k$ wnioskujemy, że dla $i\geq 1, j= k+1$
 $d_i(A-B_k)\geq d_{k+1}(A)$.
 \end{center}
 Stąd:
-\begin{center}
-$||A - B_k||_F^2 = \sum_{i=1}^n d_i(A-B_k)^2\geq \sum_{k+1}^nd_i(A)^2 = ||A-A_k||_F^2$.
-\end{center}
+$$||A - B_k||_F^2 = \sum_{i=1}^n d_i(A-B_k)^2\geq \sum_{k+1}^nd_i(A)^2 = ||A-A_k||_F^2.$$
 \end{dw}
 \begin{flushright}
 $\Box$
@@ -553,10 +533,7 @@ Przyporządkowanie nowych elementów zostaje przeprowadzone na podstawie porówn
 \begin{center}
 $Y=\{\{y_1,l_1\},...,\{y_k,l_k\}\}$, $k\in\{1,...,n\}$
 \end{center}
-taki, że $Y \in X$ oraz $\sum_1^k d(q,y_k)$ jest minimalna. $Y$ zawiera więc $k$ punktów z $X$, które leżą najbliżej rozważanego punktu $q$. Następnie do punktu $q$ zostaje przyporządkowana klasa taka, że:
-\begin{center}
-$l=f(\{l_1,...,l_k\})$.
-\end{center}
+taki, że $Y \in X$ oraz $$\sum_1^k d(q,y_k)$$ jest minimalna. $Y$ zawiera więc $k$ punktów z $X$, które leżą najbliżej rozważanego punktu $q$. Następnie do punktu $q$ zostaje przyporządkowana klasa taka, że $l=f(\{l_1,...,l_k\})$.
 \begin{center}
 \begin{figure}[H]
 \centering
@@ -608,9 +585,7 @@ Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzęd
 Kroki te są wykonywane do momentu występowania migracji między obiektami.
 \\W algorytmie k-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
 \\W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje:
-\begin{center}
-$J(u,A) = \sum_{i=1}^k \sum_{k=1}^N b_{ki}d^2(u_i,x_k)$,
-\end{center}
+$$J(u,A) = \sum_{i=1}^k \sum_{k=1}^N b_{ki}d^2(u_i,x_k),$$
 gdzie 
 \begin{itemize}
 \item $d(u,x)$ oznacza odległość elementu $x$ od grupy wyznaczonej przez środek $u$,
@@ -620,7 +595,7 @@ gdzie
  
 \subsection{drzewa decyzyjne-?}
 \subsection{regresja wielowymiarowa - logistyczna - ?}
-\subsection{Sztuczna Sieć Neuronowa}
+\subsection{Sztuczna Sieć Neuronowa ???}
 Sztuczna Sieć Neuronowa jest klasyfikatorem opartym na systemie działania ludzkiego mózgu. Składa się z neuronów, które są połączone ze sobą synapsami. Te proste elementy połączone są w sieć, która posiada możliwość uczenia się problemów klasyfikacyjnych.
 \\
 \subsection{Maszyna Wektorów Nośnych}
@@ -698,9 +673,7 @@ przy ograniczeniach
 $y_i(\langle w,x \rangle + b) \geq 1$.
 \end{center}
 Problem ten nazywamy problemem optymalizacji kwadratowej i rozważamy przy użyciu mnożników Lagrange'a. Minimalizujemy więc funkcję Lagrange'a:
-\begin{center}
-$L(w,b,\alpha)=\frac{1}{2}||w||^2 - \sum_{i=1}^n \alpha_i(y_i(\langle w,x \rangle + b)-1)$, 
-\end{center}
+$$L(w,b,\alpha)=\frac{1}{2}||w||^2 - \sum_{i=1}^n \alpha_i(y_i(\langle w,x \rangle + b)-1),$$
 gdzie
 $\alpha_i \geq 0$ dla $i \in \{1,...,n\}$ to mnożniki Lagrange'a spełniające ograniczenia Karusha-Kuhna-Tuckera:
 \begin{itemize}
@@ -708,9 +681,8 @@ $\alpha_i \geq 0$ dla $i \in \{1,...,n\}$ to mnożniki Lagrange'a spełniające 
 \item $\alpha_i(y_i(\langle w,x \rangle + b)-1) = 0$.
 \end{itemize}
 Możemy zauważyć, że w konsekwencji mnożniki Lagrange'a są niezerowe tylko dla wektorów nośnych. Liczba parametrów do oszacowania pozostaje jednak nadal zbyt duża. Częstym podejściem w tym przypadku jest przejście na postać dualną zadania optymalizacyjnego.
-Maksymalizujemy tu funkcję:\begin{center}
-$\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j(x_i \times x_j)$,
-\end{center}
+Maksymalizujemy tu funkcję:
+$$\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j(x_i \times x_j),$$
 przy ograniczeniach:
 \begin{itemize}
 \item $\alpha_i \geq 0$,
@@ -729,9 +701,7 @@ Jeżeli elementy nie są jednak separowalne liniowo:
 \end{center}
 wprowadzamy klasyfikator \textbf{Soft Margin SVM} oraz zmienne osłabiające (pomocnicze).
 \\W tym przypadku należy poddać minimalizacji funkcję:
-\begin{center}
-$L(w) = \frac{||w||^2}{2} + C \sum_{i=1}^n \varepsilon$,
-\end{center}
+$$L(w) = \frac{||w||^2}{2} + C \sum_{i=1}^n \varepsilon,$$
 gdzie parametr $C$ ocenia starty związane z każdym błędnie zaklasyfikowanym punktem.
 \\Funkcja $f(x)$ jest natomiast dana wzorem:
 \begin{center}
@@ -757,29 +727,21 @@ Kolejna kwestia często poruszana w regułach rekomendujących to dokładność 
 \\Najczęściej używanymi miarami dokładności modelu są:
 \begin{itemize}
 \item \textbf{Średni Błąd (Mean Error)}
-\begin{center}
-$ME = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})$   
-\end{center}
+$$ME = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})$$
 
 \item \textbf{Średni Błąd Bezwzględny (Mean Absolute Error)}
-\begin{center}
-$MAD = \frac{1}{|P|}\sum_{(u,i)\in P}|\widehat{r_{(u,i)}}-r_{(u,i)}|$   
-\end{center}
+$$MAD = \frac{1}{|P|}\sum_{(u,i)\in P}|\widehat{r_{(u,i)}}-r_{(u,i)}|$$
 
 \item \textbf{Średni Błąd Kwadratowy (Mean Squared Error)}
-\begin{center}
-$MSE = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})^2$   
-\end{center}
+$$MSE = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})^2$$
 \end{itemize}
 Funkcja kwadratowa jest funkcją monotoniczną co pozwala na dość częste zastępowanie średniego błędu kwadratowego przez średnią kwadratową błędów \textbf{(Root Mean Squared Error (RMSE))}.
 \begin{center}
 $RMSE = \sqrt{MSE}$
 \end{center} 
 \textbf{Normalized RMSE (NRMSE)} oraz \textbf{Normalized MAE (NMAE)} są znormalizownymi, przez użycie zakresu wartości $r_{max} - r_{min}$, wersjami błędów RMSE i MAE.
-\\Kolejnym rodzajem powszechnie używanego błędu jest \textbf{Average RMSE}, który pozwala na użycie sum ważonych. Niech $w_i>0$ będzie wagę dla elementu $i$ i $\sum w_i = 1$. 
-\begin{center}
-$ARMSE = \sqrt{\sum_{(u,i)\in P}w_{i}(\widehat{r_{(u,i)}}-r_{(u,i)})^2}$ 
-\end{center}
+\\Kolejnym rodzajem powszechnie używanego błędu jest \textbf{Average RMSE}, który pozwala na użycie sum ważonych. Niech $w_i>0$ będzie wagę dla elementu $i$ i $\sum w_i = 1$
+$$ARMSE = \sqrt{\sum_{(u,i)\in P}w_{i}(\widehat{r_{(u,i)}}-r_{(u,i)})^2}.$$
 
 \subsection{Ocena Precyzji Użyteczności}
 W regułach rekomendujących częstymi są przypadki, gdzie systemy nie będą przewidywać konkretnych preferencji użytkownika, jak oceny ale samo prawdopodobieństwo podjęcia przez użytkownika akcji.
@@ -811,13 +773,11 @@ W poprzedniej sekcji została omówiona metoda wyboru odpowiedniego modelu rekom
 \\
 \\Niech $r_{ui}$ będzie rankingiem odniesienia i $\widehat{r}_{ui}$ rankingiem stworzonym przez wybrany system rekomendującym $n_u$ elementów $i$ użytkownikowi $u$. 
 \\Ponadto niech:
-\begin{center}
-$C^{+} = \sum_{i<j} sgn(r_{ui} - r_{uj})sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$
-\\$C^{-} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})sgn(\widehat{r}_{uj}-\widehat{r}_{ui})$
-\\$C^{u} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})$
-\\$C^{s} = \sum_{i<j} sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$
-\\$C^{0}=C^{u}-(C^{+}-C^{-})$, gdzie
-\end{center}
+$$C^{+} = \sum_{i<j} sgn(r_{ui} - r_{uj})sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$$
+$$C^{-} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})sgn(\widehat{r}_{uj}-\widehat{r}_{ui})$$
+$$C^{u} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})$$
+$$C^{s} = \sum_{i<j} sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$$
+$$C^{0}=C^{u}-(C^{+}-C^{-}),$$ gdzie
 $C^{u}$ jest liczbą par dla których ranking referencyjny okazuje się lepszą możliwością, 
 \\$C^{+}$ i $C^{-}$ to liczba par z poprawną i niepoprawną kolejnością,
 \\$C^{0}$ jest liczbą par dla których ranking referencyjny nie jest wiążący, kiedy ranking systemu rekomendującego jest.
@@ -832,9 +792,7 @@ Powiązania w rankingu referencyjnym pojawiają się naturalnie, kiedy znamy pre
 $\tau = \frac{C^{+} - C^{-} }{\sqrt{C^{u}}\sqrt{C^{s}}}$
 \end{center}
 oraz \textbf{miara Spearman's $\rho$}:
-\begin{center}
-$\rho = \frac{1}{n_{u}}\frac{\sum_i (r_{iu} - \overline{r})(\widehat{r}_{iu}-\overline{\widehat{r}})}{\sigma(r)\sigma(\widehat{r})}$,
-\end{center}
+$$\rho = \frac{1}{n_{u}}\frac{\sum_i (r_{iu} - \overline{r})(\widehat{r}_{iu}-\overline{\widehat{r}})}{\sigma(r)\sigma(\widehat{r})},$$
 gdzie $\overline{r}$ i $\overline{\widehat{r}}$ oznaczają średnie, natomiast $\sigma(r)$ i $\sigma(\widehat{r})$ odchylenia standardowe.
 
 
@@ -999,21 +957,15 @@ $N$ - całkowita liczba dokumentów w zbiorze,
 Ponadto w związku z założeniem o normalizacji wagi, które zostały uzyskane w wyniku \begin{math}
 TFIDF(t_k, d_j)
 \end{math} poddane zostaną metodzie transformacji kosinusowej: 
-\begin{center}
-\begin{math}
-w_{k,j} = \frac{TFIDF(t_k, d_j)}{\sqrt{\sum_{i=1}^{|T|}{TFIDF(t_i, d_j)}^2}}.
-\end{math}
-\end{center}
+$$w_{k,j} = \frac{TFIDF(t_k, d_j)}{\sqrt{ \sum_{i=1}^{|T|}{TFIDF(t_i, d_j)}^2}}.$$
 Tak wygenerowany został zbiór słów, które są reprezentacją danego dokumentu oraz jego tematu. Ostatnim krokiem przed zarekomendowaniem pozycji czytelnikom jest wyestymowanie podobieństw występujących między poszczególnymi dokumentami. Naturalnymi miarami odległości, które można tu wykorzystać są:
 \begin{itemize}
 \item współczynnik Jaccarda mierzący odległość między zbiorami słów,
 \item podobieństwa kosinusów mierzące odległość między wektorami:
 
-\begin{center}
-\begin{math}
+$$
 sim(k_i,k_j) = \frac{\sum_{i=k} w_{k,i}\cdot w_{k,j}}{\sqrt{\sum_{k=1}{w_{k,i}}^2} \cdot \sqrt{\sum_{k=1}{w_{k,j}}^2}}.
-\end{math}
-\end{center}
+$$
 Przy estymowaniu odległości kosinusów między dwoma dokumentami elementami wektora są słowa, które zostały wybrane na podstawie wcześniej przeprowadzonego algorytmu. W wektorze tym wartość $1$ oznacza, że słowo pojawiło się w zbiorze opisującym dokument, natomiast $0$ oznacza sytuację przeciwną.
 \end{itemize}
 
@@ -1090,9 +1042,7 @@ $o_{2,3} ^{(2)}= \left[
       \right]$.
 \end{center}
 Posługując się odległością euklidesową
-\begin{center}
-$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$
-\end{center}
+$$d_{e}(x,y) = \sqrt{\sum_{i=1}^n \mid x_{i} - y_{i} \mid ^2 }$$
 obliczamy odległość między użytkownikami $c_2$ i $c_3$: 
 \begin{center}
 $d_{e}(o_{2,3}^{(2)},o_{2,3}^{(3)}) = \sqrt{(6-6)^2 + (7-8)^2 + (10-10)^2 + (6-6)^2 + (7-7)^2} = \sqrt{1} = 1$.
@@ -1300,11 +1250,19 @@ $\frac{(0,7951 \cdot 9 + 0,8150 \cdot 8 + 0,8898 \cdot 2)}{(0,7951 + 0,8150 + 0,
 Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu użytkownik $c_6$ książce $k_2$ to $6,16$.
 \\Powtarzając powyższe obliczenia dla każdej z pozycji wcześniej nieocenionej przez wybranego użytkownika otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania użytkownikowi.
 
-
-
-
-
-
+\section{Inne wykorzystanie algorytmów}
+Jak znając wektory preferencji użytkowników $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ odnaleźć wektor cech konkretnej książki $g^{(i)}$, gdzie $i \in \{1,...,n_m\}$?
+\\Minimalizując następujące równanie:
+$$\min \limits_{g^{(i)}} \frac{1}{2} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{k=1}^n (g_k^{(i)})^2.$$
+\\
+\\Aby odnaleźć wektory cech $g^{(1)}, g^{(2)},...,g^{(n_m)}$ wszystkich książek równanie, które minimalizujemy przyjmuje następującą postać:
+$$\min \limits_{g^{(1)},...,g^{(n_m)}} \frac{1}{2} \sum_{i=1}^{n_m} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{i=1}^{n_m} \sum_{k=1}^n (g_k^{(i)})^2.$$
+\\
+\\Znając wektory cech książek i oceny wystawione przez użytkowników możemy przewidzieć wektory preferencji użytkowników $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ poprzez:
+$$\min \limits_{\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}} \frac{1}{2} \sum_{i=1}^{n_u} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{i=1}^{n_u} \sum_{k=1}^n (\Theta^{(j)})^2.$$
+Ponownie znając $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ możemy wyestymować $g^{(1)}, g^{(2)},...,g^{(n_m)}$.
+\\
+\\Powtarzając powyższe kroki odnajdowania wektorów cech elementów i wektorów preferencji użytkowników stworzymy algorytm, który z każdą iteracją będzie dokładniej estymował szukane wartości.
 \section{Systemy rekomendujące kontekstowe ( Context – aware recommender systems):}
 
 \subsection{Algorytm}
@@ -1333,10 +1291,10 @@ W modelu kontekstowym rekomendacje są generowane w dwóch krokach:
 \\Informacje o kontekście są ignorowane w wejściowych danych, a rekomendacja dokonywana jest na całym zbiorze. To w następnym kroku lista rekomendacji stworzona dla użytkownika jest zawężana przez uwzględnienie kontekstu.
 \end{enumerate}
 
-\section{Hybrydowe systemy rekomendujące ():}
+\section{Hybrydowe systemy rekomendujące (): ????}
 (Czy potrzebny mi jeszcze ten podrozdział?)
 
-\section{Systemy rekomendujące oparte na modelach():}
+\section{Systemy rekomendujące oparte na modelach(): ????}
 (Czy potrzebny mi jeszcze ten podrozdział?)
 
 
