@@ -3,24 +3,33 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{polski}
 \usepackage{natbib}
 \usepackage[hidelinks]{hyperref}
 \usepackage[left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 \linespread{1.3}
+
+\newtheorem{df}{Definicja}[chapter]
+\newtheorem{tw}[df]{Twierdzenie}
+%\newtheorem{dw}{Dowód}
+\newtheorem{algorytm}[df]{Algorytm}
+\newtheorem{przyklad}{Przykład}[chapter]
+\newtheorem{metoda}[df]{Metoda}
+\newtheorem{problem}{Problem}[chapter]
+\usepackage{graphicx}
+\usepackage{float}
+
+\newcommand{\setR}{\mathbb{R}}
+\newcommand{\setN}{\mathbb{N}}
+\newcommand{\set}[1]{\left\lbrace {#1} \right\rbrace}
+\newcommand{\Covariance}[2]{\operatorname{Cov}\left({#1}; {#2} \right)}
+\newcommand{\norm}[2][]{\left\| {#2} \right\|_{#1}}
+
+
 \author{Anita Kudaj}
 \title{Matematyczne modele wykorzystywane w systemach rekomendacji.}
 
-\newtheorem{df}{Definicja}
-\newtheorem{tw}{Twierdzenie}
-\newtheorem{dw}{Dowód}
-\newtheorem{algorytm}{Algorytm}
-\newtheorem{przyklad}{Przykład}
-\newtheorem{metoda}{Metoda}
-\newtheorem{problem}{Problem}
-
-\usepackage{graphicx}
-\usepackage{float}
 \begin{document}
 
 
@@ -28,19 +37,19 @@
 \begin{flushleft}
 \end{flushleft}
 \begin{center}
-\textsc{{\huge Politechnika \L\'odzka}}
+\textsc{{\huge Politechnika Łódzka}}
 \end{center}
 \bigskip
 \bigskip
 \begin{center}
-\textsc{{\Large Wydzia\l\ Fizyki Technicznej, Informatyki i~Matematyki Stosowanej}}
+\textsc{{\Large Wydział Fizyki Technicznej, Informatyki i~Matematyki Stosowanej}}
 \end{center}
 \bigskip
 \bigskip
 \begin{Large}
-Kierunek: Matematyka Stosowana\\
-Specjalno\'s\'c: Analiza Danych w Biznesie i Logistyce
-\\
+Kierunek: Matematyka Stosowana
+Specjalność: Analiza Danych w Biznesie i Logistyce
+
 \end{Large}
 \bigskip
 \bigskip
@@ -51,17 +60,17 @@ Specjalno\'s\'c: Analiza Danych w Biznesie i Logistyce
 \begin{flushright}
 {\large 
 Anita Kudaj
-\\
+
 Nr albumu: 
 220020
-\\}
+}
 \end{flushright}
 \noindent\hrulefill
 \bigskip
 \bigskip
 \begin{center}
 {\large Praca magisterska
-\\napisana w Instytucie Matematyki Politechniki Łódzkiej\\ 
+napisana w Instytucie Matematyki Politechniki Łódzkiej 
 \bigskip
 \bigskip
 \bigskip
@@ -74,60 +83,62 @@ Promotor: dr, mgr inż. Piotr Kowalski
 \bigskip
 \bigskip
 \begin{center}
-{\textsc{\large \L\'od\'z, 07.2019}}
+{\textsc{\large Łódź, 07.2019}}
 \end{center}
 \end{titlepage}
 
 
 \tableofcontents
 
+
 \chapter{Wstęp}
 %TODO napiszemy na końcu
 \chapter{Preliminaria} %teorie, definicje, twierdzenia z innych działów - potrzebne do zrozumienia pracy
 \section{Elementy rachunku prawdopodobieństwa i statystyki}
 Niech $F$ oznacza $\sigma$ - algebrę podzbiorów z przestrzeni $\Omega$ oraz niech $X$ oznacza funkcję rzeczywistą określoną na przestrzeni $\Omega$, to znaczy: %Krzyśko - Wykład z teorii pstwa
-\begin{center}
-$X: \Omega \longrightarrow \mathbb{R}$.
-\end{center}
+$$
+X: \Omega \longrightarrow \setR.
+$$
 \begin{df}\textbf{Zmienna losowa}%Krzyśko - Wykład z teorii pstwa
-\\Zmienną losową nazywamy funkcję $X$, która jest $F$ - mierzalna, to znaczy jeżeli dla każdego $a\in\mathbb{R}$ zachodzi:
+
+Zmienną losową nazywamy funkcję $X$, która jest $F$ - mierzalna, to znaczy jeżeli dla każdego $a\in\mathbb{R}$ zachodzi:
 \begin{center}
-$\{\omega : X(\omega) < a\} = X^{-1}((-\infty,a))\in F$, 
+$\set{\omega : X(\omega) < a} = X^{-1}((-\infty,a))\in F$, 
 \end{center}
 gdzie $X^{-1}$ jest operacją przeciwobrazu zbioru przez funkcję $X$.
 \end{df}
 
 \begin{df}\textbf{Kowariancja}
-\\Kowariancją zmiennych losowych $X,Y$ nazywamy liczbę:
+Kowariancją zmiennych losowych $X,Y$ nazywamy liczbę:
 \begin{center}
-$Cov(X,Y) = E[(X-E(X))(Y-E(Y))]$,
+$\Covariance{X}{Y} = E[(X-E(X))(Y-E(Y))]$,
 \end{center}
 gdzie $E(X)$ oznacza wartość oczekiwaną zmiennej losowej $X$.
 \end{df}
 \begin{df}\textbf{Odchylenie standardowe}
-\\Wariancją zmiennej losowej $X$ nazywamy liczbę:
+Wariancją zmiennej losowej $X$ nazywamy liczbę:
 \begin{center}
 $Var(X)=E([X-E(X)]^2)$,
 \end{center}
 jeżeli po prawej stronie równości wartość oczekiwana istnieje. 
-\\Odchyleniem standardowym zmiennej losowej $X$ nazywamy liczbę:
+Odchyleniem standardowym zmiennej losowej $X$ nazywamy liczbę:
 \begin{center}
 $\sigma(X)=\sqrt{Var(X)}$.
 \end{center}
 \end{df}
 \begin{df}\textbf{Współczynnik korelacja}
-\\Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $X$ i $Y$ zdefiniowaną następująco:
+Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $X$ i $Y$ zdefiniowaną następująco:
 \begin{center}
 $\rho(x,Y) = \frac{Cov(X,Y)}{\sigma(X)\sigma(Y)}$.
 \end{center}
 \end{df}
-W statystyce do przedstawienia poziomu zależności liniowej między dwoma zmiennymi losowymi używamy Współczynnika Korelacji Pearsona.
-\begin{df}\textbf{Współczynnik Korelacji Pearsona}
-\\Niech $X,Y \in \mathbb{R}^n$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\{1,...,n\}$ oznaczają wartości prób losowych tych zmiennych. 
-\\Przez $\overline{x}$ i $\overline{y}$ oznaczmy:
+W statystyce do przedstawienia poziomu zależności liniowej między dwoma zmiennymi losowymi używamy współczynnika korelacji Pearsona.
+\begin{df}\textbf{Współczynnik korelacji Pearsona}
+Niech $X,Y \in \setR^n$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\{1,...,n\}$ oznaczają wartości prób losowych tych zmiennych. 
+Przez $\overline{x}$ i $\overline{y}$ oznaczmy:
 \begin{center}
 $\overline{x}=\frac{1}{n} \sum_{k=1}^n x_k$,
-\\$\overline{y}=\frac{1}{n} \sum_{k=1}^n y_k$.
+$\overline{y}=\frac{1}{n} \sum_{k=1}^n y_k$.
 \end{center}
 Wówczas Współczynnikiem Korelacji Pearsona nazywamy:
 \begin{center}
@@ -136,7 +147,7 @@ $\rho(X,Y) = \frac{\sum_{k=1}^n(x_k - \overline{x})(y_k - \overline{y})}{\sqrt{\
 \end{df}
 \section{Elementy algebry liniowej}
 \begin{df}\textbf{Iloczyn skalarny}
-\\Niech $U$ oznacza przestrzeń liniową nad ciałem $\mathbb{R}$. Iloczynem skalarnym nazywamy formę dwuliniową 
+Niech $U$ oznacza przestrzeń liniową nad ciałem $\mathbb{R}$. Iloczynem skalarnym nazywamy formę dwuliniową 
 \begin{center}
 $d: U \times U \longrightarrow \mathbb{R}$,
 \end{center}
@@ -153,11 +164,11 @@ $d(u,v)=d(v,u)$
 \item $\d(u,u)=0 \Leftrightarrow u = \Theta_{U}$
 \end{itemize}
 Przestrzeń liniową $U$ nad ciałem liczb rzeczywistych z iloczynem skalarnym 
-\\$d: U \times U \longrightarrow \mathbb{R}$ nazywamy przestrzenią euklidesową.
+$d: U \times U \longrightarrow \mathbb{R}$ nazywamy przestrzenią euklidesową.
 \end{df}
 %Larose -> odkrywanie wiedzy z danych
 \begin{df} \textbf{Miara odległości}
-\\Miarą odległości (funkcją odległości) nazywamy rzeczywistą funkcję $d$, która dla każdego $x, y, x \in \mathbb{R}^n$ spełnia warunki:
+Miarą odległości (funkcją odległości) nazywamy rzeczywistą funkcję $d$, która dla każdego $x, y, x \in \mathbb{R}^n$ spełnia warunki:
 \begin{itemize}
 \item $d(x,y)\geq 0$ 
 \item $d(x,y) = 0 \Leftrightarrow x = y$ 
@@ -166,11 +177,11 @@ Przestrzeń liniową $U$ nad ciałem liczb rzeczywistych z iloczynem skalarnym
 \end{itemize}
 \end{df}
 
-\begin{df}\textbf{Odległość euklidesowa} %Spodzieja S.: Wstęp do analizy matematycznej funkcje jednej zmiennej.
-\\Niech $(x_1,x_2,...,x_n) \in \mathbb{R}^n $.
+\begin{df}[Odległość euklidesowa] %Spodzieja S.: Wstęp do analizy matematycznej funkcje jednej zmiennej.
+Niech $(x_1,x_2,...,x_n) \in \mathbb{R}^n $.
 Normą x nazywamy:
-\begin{center}
-$||x|| = \sqrt{x_{1}^{2} + ... + x_{n}^{2}}$.
+\begin{center} 
+$\norm{x} = \sqrt{x_{1}^{2} + ... + x_{n}^{2}}$.
 \end{center}
 Jeśli $x,y \in \mathbb{R}^n $ to liczbę:
 $||x-y||$ nazywamy odległością euklidesową punktów $x$ i $y$, gdzie:
@@ -179,7 +190,7 @@ $(x-y) = (x_1-y_1,...,x_n-y_n)$.
 \end{center}
 \end{df}
 \begin{df}\textbf{Odległość kosinusowa} %https://pqstat.pl/?mod_f=macpod
-\\Niech $x,y \in \mathbb{R}^n $ (x,y są n-wymiarowymi wektorami). Odległością kosinusową nazywamy:
+Niech $x,y \in \mathbb{R}^n $ (x,y są n-wymiarowymi wektorami). Odległością kosinusową nazywamy:
 \begin{center}
 $d(x,y) = 1 - sim (x,y)$, 
 \end{center}
@@ -193,34 +204,34 @@ $sim (x,y) = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}
 \end{center}
 \end{df}
 \begin{df}\textbf{Macierz transponowana}%Banaszak "Elementy algebry liniowej cz.1"
-\\Niech dana będzie macierz $A \in M_{m,n}(K)$ o $n$ kolumnach i $m$ wierszach:
-\begin{center}
-$ A= \left[
+Niech dana będzie macierz $A \in M_{m,n}(K)$ o $n$ kolumnach i $m$ wierszach:
+$$
+A= \left[
         \begin{array}{cccc}
-         a_{11} & a_{12} & \cdots & a_{1n}\\
-         a_{21} & a_{22} & \cdots & a_{2n}\\
-         \vdots & \vdots & \ddots & \vdots\\
-         a_{m1} & a_{m2} & \cdots & a_{mn}\\
+         a_{11} & a_{12} & \cdots & a_{1n} \\
+         a_{21} & a_{22} & \cdots & a_{2n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{m1} & a_{m2} & \cdots & a_{mn} \\
          \end{array}
       \right]
-      \qquad $.
-\end{center}
+      \qquad 
+$$
 Macierzą transponowaną nazywamy macierz $A^T \in M_{n,m}(K)$:
 \begin{center}
 $ A^T= \left[
         \begin{array}{cccc}
-         a_{11} & a_{21} & \cdots & a_{m1}\\
-         a_{12} & a_{22} & \cdots & a_{m2}\\
-         \vdots & \vdots & \ddots & \vdots\\
-         a_{1n} & a_{2n} & \cdots & a_{mn}\\
+         a_{11} & a_{21} & \cdots & a_{m1} \\
+         a_{12} & a_{22} & \cdots & a_{m2} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{1n} & a_{2n} & \cdots & a_{mn} \\
          \end{array}
       \right]
       \qquad $.
 \end{center}
 \end{df}
 \begin{tw}\textbf{Własności transpozycji macierzy}
-\\Niech $A$ i $B$ będą macierzami o współczynnikach z $K$ oraz niech posiadają tyle kolumn i wierszy, że operacje występujące powyżej są określone. Niech $\lambda \in K$.
-\\Zachodzą następujące równości:
+Niech $A$ i $B$ będą macierzami o współczynnikach z $K$ oraz niech posiadają tyle kolumn i wierszy, że operacje występujące powyżej są określone. Niech $\lambda \in K$.
+Zachodzą następujące równości:
 \begin{itemize}
 \item $(A^T)^T = A$,
 \item $(A + B)^T = A^T + B^T$,
@@ -229,7 +240,7 @@ $ A^T= \left[
 \end{itemize}
 \end{tw}
 \begin{df}\textbf{Macierz ortogonalna}
-\\Macierzą ortogonalną nazywamy macierz kwadratową $A \in M_{n,n}(\mathbb{R})$ spełniającą nierówność:
+Macierzą ortogonalną nazywamy macierz kwadratową $A \in M_{n,n}(\mathbb{R})$ spełniającą nierówność:
 \begin{center}
 $A^T \cdot A = A\cdot A^T = I_n$,
 \end{center}
@@ -237,26 +248,26 @@ gdzie $A^T$ oznacza macierz transponowaną względem $A$, natomiast $I_n$ oznacz
 \end{df}
 
 \begin{df}\textbf{Macierz diagonalna}
-\\Macierzą diagonalną nazywamy macierz $A\in M_{n,n}(K)$ taką, że:
+Macierzą diagonalną nazywamy macierz $A\in M_{n,n}(K)$ taką, że:
 \begin{center}
 $A = (a_{ij})$ dla $i,j=1,2,...,n$ 
-\\oraz 
-\\$a_{ij} = 0$ gdy $i\neq j$.
+oraz 
+$a_{ij} = 0$ gdy $i\neq j$.
 \end{center}
 \end{df}
 
 \begin{df}\textbf{Macierz nieosobliwa}
-\\Macierzą nieosobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, jeżeli istnieje macierz $B \in M_{n,n}(K)$ taka, że:
+Macierzą nieosobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, jeżeli istnieje macierz $B \in M_{n,n}(K)$ taka, że:
 \begin{center}
 $A \cdot B = B \cdot A = I_n$,
 \end{center}
 gdzie $I_n$ jest macierzą jednostkową.
 \end{df}
 \begin{df}\textbf{Macierz osobliwa}
-\\Macierzą osobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, której wyznacznik jest równy zero.
+Macierzą osobliwą nazywamy macierz kwadratową $A \in M_{n,n}(K)$, której wyznacznik jest równy zero.
 \end{df}
 \begin{df}\textbf{Rozkład wartości osobliwych}
-\\Rozkładem wartości osobliwych nad $\mathbb{R}$ nazywamy przedstawienie macierzy $A$ w postaci:
+Rozkładem wartości osobliwych nad $\mathbb{R}$ nazywamy przedstawienie macierzy $A$ w postaci:
 \begin{center}
 $A = \mathbb{U}\sum \mathbb{V}^T$,
 \end{center}
@@ -267,13 +278,13 @@ gdzie $\mathbb{U}$ i $\mathbb{V}$ są macierzami ortogonalnymi. Natomiast $\sum$
 \end{df}
 
 \begin{df}\textbf{Ślad macierzy}
-\\Śladem macierzy  $A\in M_{n,n}(K)$ nazywamy wielkość:
+Śladem macierzy  $A\in M_{n,n}(K)$ nazywamy wielkość:
 \begin{center}
 $tr(A) = \sum_{i=1}^n a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}$.
 \end{center}
 \end{df}
 \begin{df}\textbf{Rząd macierzy}%Banaszak "Elementy algebry liniowej cz.1"
-\\Rzędem macierzy nazywamy liczbę wiodących jedynek w dowolnej postaci zredukowanej macierzy. Rząd macierzy A oznaczamy symbolem $rz A$ lub $R(A)$.
+Rzędem macierzy nazywamy liczbę wiodących jedynek w dowolnej postaci zredukowanej macierzy. Rząd macierzy A oznaczamy symbolem $rz A$ lub $R(A)$.
 \end{df}
 Rząd macierzy wyznacza maksymalną wektorów niezależnych, które są kolumnami lub wierszami tej macierzy.
 \begin{df}\textbf{?Zakres macierzy}
@@ -281,17 +292,17 @@ Rząd macierzy wyznacza maksymalną wektorów niezależnych, które są kolumnam
 \begin{df}\textbf{?Jądro macierzy}
 \end{df}
 \begin{df}\textbf{Przestrzeń generowana przez układ wektorów}
-\\Przestrzenią generowaną przez układ wektorów $X$ nazywamy zbór wszystkich kombinacji linowych skończonych podukładów $X$.
-\\Oznaczamy ją symbolem $span(X)$ i definiujemy ją następująco:
+Przestrzenią generowaną przez układ wektorów $X$ nazywamy zbór wszystkich kombinacji linowych skończonych podukładów $X$.
+Oznaczamy ją symbolem $span(X)$ i definiujemy ją następująco:
 \begin{center}
 $span(X) := \{\sum_{i=1}^n a_i x_i : (\forall_{i\in [1;n]\cap \mathbb{N}} a_i \in \mathbb{K}) \wedge (\forall_{i\in [1;n]\cap \mathbb{N}} x_i \in \mathbb{X}) \wedge n \in \mathbb{N}\}$,
 \end{center}
 gdzie $X = (x_i)_{i=1}^n$ jest układem wektorów przestrzeni wektorowej $\mathbb{V}$ nad ciałem $\mathbb{K}$.
 \end{df}
 
-\chapter{Eksploracja danych w systemach rekomendujących}
+\chapter{Elementy eksploracji danych wykorzystywane w systemach rekomendujących}
 Większość systemów rekomendujących opiera swój rdzeń na algorytmach, które możemy rozumieć jako konkretne przypadki technik eksploracji danych. 
-\\Proces eksploracji danych składa się z trzech kroków:
+Proces eksploracji danych składa się z trzech kroków:
 \begin{enumerate}
 \item Preprocesing Danych,
 \item Analiza Danych,
@@ -302,11 +313,15 @@ W tym rozdziale zostaną przeanalizowane najważniejsze i najczęściej używane
 Przed przystąpieniem do kroku analizy dane wymagają przygotowania: wyczyszczenia, przefiltrowania, transformacji. Dopiero tak przygotowane dane mogą zostać poddane zadaniom uczenia maszynowego. W tej sekcji zostaną przedstawione problemy, które spotykamy przy tworzeniu reguł rekomendujących.
 \subsection{Miary podobieństwa}
 W systemach rekomendujących, jak filtrowanie kolaboratywne bardzo częstym podejściem jest używanie metod klasyfikacji i grupowania. Metody te bardzo ściśle opierają się na obliczaniu podobieństw i odległości.
-\\Najprostszym i jednocześnie najczęściej używanym podejściem jest \textbf{Odległość Euklidesowa}:
-$$d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2}$$, 
+Najprostszym i jednocześnie najczęściej używanym podejściem jest \textbf{Odległość Euklidesowa}:
+$$
+d(x,y) = \sqrt{\sum_{k=1}^n (x_k-y_k)^2},
+$$ 
 gdzie $n$ oznacza liczbę atrybutów elementów $x$ i $y$ przy czym $x_k$ oznacza k-ty atrybut elementu $x$. 
-\\Innym przykładem jest \textbf{Odległość Minkowkskiego}, która jest uogólnioną wersją Odległości Euklidesowej:
-$$d(x,y) = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}$$.
+Innym przykładem jest \textbf{Odległość Minkowkskiego}, która jest uogólnioną wersją Odległości Euklidesowej:
+$$
+d(x,y) = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}.
+$$
 W zależności od wartości stopnia odległości $r$ Odległość Minkowkskiego przyjmuje konkretne nazwy:
 \begin{itemize}
 \item $r=1$ - Odległość Manhatan (norma $L_1$),
@@ -318,10 +333,10 @@ Kolejnym podejściem, gdzie poszczególne elementy są postrzegane jako $n$ - wy
 $cos(x_u, x_v) = \frac{x_u^{T}x_v}{||x_u|| ||x_v||}$,
 \end{center}
 gdzie $x_u$ i $x_v$ oznaczają wektory preferencji użytkowników $u$ oraz $v$.
-\\Inną miarą jest \textbf{Korelacja Pearsona}, zdefiniowana następująco:
+Inną miarą jest \textbf{Korelacja Pearsona}, zdefiniowana następująco:
 $$\rho(u,v) = \frac{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)(r_{vi}-\overline{r}_v)}{\sqrt{\sum_{i\in I_{uv}}(r_{ui}-\overline{r}_u)^2 \sum_{i\in I_{uv}}(r_{vi}-\overline{r}_v)^2}}$$
 $I_{uv}$ oznacza w tym przypadku zbiór elementów, które zostały ocenione przez użytkownika $u$ i użytkownika $v$, $r_{ui}$ natomiast ocenę elementu $i$ przez użytkownika $u$.
-\\\textbf{Indeks Jaccarda (Współczynnik podobieństwa Jaccarda)} to kolejny wskaźnik opisujący podobieństwo. Jeżeli oznaczymy przez $A$ i $B$ wektory to:
+\textbf{Indeks Jaccarda (Współczynnik podobieństwa Jaccarda)} to kolejny wskaźnik opisujący podobieństwo. Jeżeli oznaczymy przez $A$ i $B$ wektory to:
 \begin{center}
 $J(A,B)=\frac{|A\cap B|}{|A \cup B|}$.
 \end{center}
@@ -333,25 +348,25 @@ Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć,
 \subsubsection{Analiza Głównych Składowych}
 
 \begin{df}\textbf{Analiza Głównych Składowych (ang. Principal Component Analysis (PCA))}
-\\Analizą głównych składowych nazywamy procedurę statystyczną, która polega na ortogonalnej transformacji układu badanych zmiennych $X$ w zbiór nowych zmiennych $Y$. W rzeczywistość zmienne $Y$ są kombinacją liniową zmiennych $X$.
+Analizą głównych składowych nazywamy procedurę statystyczną, która polega na ortogonalnej transformacji układu badanych zmiennych $X$ w zbiór nowych zmiennych $Y$. W rzeczywistość zmienne $Y$ są kombinacją liniową zmiennych $X$.
 \end{df}
 Niech dane będą dwie zmienne $X_1, X_2$ oraz $n$ pomiarów, które oznaczmy $(X_{i1},X_{i2})$ dla $i \in \{1,2,3,...,n\}$. Pomiary przedstawmy na układzie współrzędnych w formie diagramu korelacyjnego. Możemy zauważyć, że wzdłuż jednej osi dane są bardziej rozproszone - jest to pierwsza główna składowa $Y_1$. Drug biegnąca pod kątem prostym do pierwszej oś, wyznacza kierunek drugiej składowej - $Y_2$. Osie $X_1, X_2$ są transformowane przez przesunięcie środka do nowego punktu $(\overline{X_1},\overline{X_2})$, a następnie obrócone w ten sposób, by otrzymać współrzędne $Y_1$ i $Y_2$ głównych składowych.
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=1]{obrazek.PNG} 
+%\includegraphics[scale=1]{obrazek.PNG} 
 \caption{Diagram korelacyjny wyodrębnienia głównych składowych.}
 \end{figure}
 \end{center}
 Punktem wyjścia rozważanego algorytmu jest macierz kowariancji lub macierz korelacji utworzone ze zbioru wejściowego. Zawierają one informację niezbędną do wyznaczenia głównych składowych.
-\\W przypadku użycia macierzy kowariancji największy wpływ na wynik przeprowadzanego algorytmu mają zmienne o największej wariancji. Stąd też rozwiązanie to świetnie sprawdzi się w przypadku, gdy rozważane zmienne mają porównywalne wielkości: 
+W przypadku użycia macierzy kowariancji największy wpływ na wynik przeprowadzanego algorytmu mają zmienne o największej wariancji. Stąd też rozwiązanie to świetnie sprawdzi się w przypadku, gdy rozważane zmienne mają porównywalne wielkości: 
 \begin{center}
 $ A= \left[
         \begin{array}{cccc}
-         \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1n}\\
-         \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2n}\\
-         \vdots & \vdots & \ddots & \vdots\\
-         \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_{nn}
+         \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1n} \\
+         \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_{nn}\\
          \end{array}
       \right]$, 
 \end{center}
@@ -364,10 +379,10 @@ W przypadku, gdy zmienne różnią się znacznie w wyrażonych jednostkach, lub 
 \begin{center}
 $ B= \left[
         \begin{array}{cccc}
-         1 & \rho{12} & \cdots & \rho{1n}\\
-         \rho{21} & 1 & \cdots & \rho{2n}\\
-         \vdots & \vdots & \ddots & \vdots\\
-         \rho{n1} & \rho{n2} & \cdots & 1
+         1 & \rho{12} & \cdots & \rho{1n} \\
+         \rho{21} & 1 & \cdots & \rho{2n} \\
+         \vdots & \vdots & \ddots & \vdots \\ 
+         \rho{n1} & \rho{n2} & \cdots & 1 \\ 
          \end{array}
       \right]$, 
 \end{center}
@@ -390,25 +405,22 @@ Dla wspomnianej transformacji ortogonalnej, w przypadku gdy znamy wektory własn
 Niech $W$ będzie macierzą wektorów własnych przekształcenia $XX^T$ uporządkowaną malejąco.
 Wtedy transformacja PCA jest dana wzorem $Y=W^T X$.
 \end{tw}
-\begin{dw}
+\begin{proof}
 Bez utraty ogólności załóżmy, że $X$ ma średnią zero.
-\\Niech $\lambda_1\geq\lambda_2\geq...\geq\lambda_n$ będą wartościami własnymi przekształcenia $XX^T$ oraz $v_i$ odpowiadającą bazą ortogonalną. Załóżmy, że $$\omega = \sum_{i=1}^n a_iv_i$$ maksymalizuje wariancję oraz $w\neq v_i$.
-\\Wtedy:
+Niech $\lambda_1\geq\lambda_2\geq...\geq\lambda_n$ będą wartościami własnymi przekształcenia $XX^T$ oraz $v_i$ odpowiadającą bazą ortogonalną. Załóżmy, że $$\omega = \sum_{i=1}^n a_iv_i$$ maksymalizuje wariancję oraz $w\neq v_i$.
+Wtedy:
 \begin{center}
 $\omega_1 = argmax_{||\omega||=1}\omega^TXX^T\omega = argmax_{||\omega||=1}(\sum a_iv_i)^TXX^T(\sum a_iv_i)$
-\\$ = argmax_{||\omega||=1}(\sum a_iv_i)^T(\sum a_i\lambda_iv_i)= argmax_{||\omega||=1}(\sum a_i)^2$.
+$ = argmax_{||\omega||=1}(\sum a_iv_i)^T(\sum a_i\lambda_iv_i)= argmax_{||\omega||=1}(\sum a_i)^2$.
 \end{center}
 Stąd $\omega_1$ maksymalizuje wariancję wtedy i tylko wtedy, gdy $\omega_1=v_1$. 
-\\Znając k-1 głównych składowych k-tą znajdziemy postępując z transformacją:
+Znając k-1 głównych składowych k-tą znajdziemy postępując z transformacją:
 $$X_{k-1} = X - \sum_{i=1}^{k-1}\omega_i\omega_i^TX$$.
 Podstawiając $X_{k-1}$ otrzymujemy:
 $$\omega_k = argmax_{||x||=1}\omega^TX_{k-1}X_{k-1}^T\omega.$$
-\end{dw}
-\begin{flushright}
-$\Box$
-\end{flushright}
+\end{proof}
 Twierdzenie przedstawia użyteczną interpretację algorytmy PCA, jednakże nie jest wydajną metodą przy odnajdowaniu wektorów własnych. Poniżej zostanie przedstawiony proces odnalezienia transformacji.
-\\Załóżmy, że średnia $X$ to zero. Naszym celem jest znaleźć transformację ortogonalną $W$ taką, że $WX$ jest losowym wektorem z parami niezależnych komponentów:
+Załóżmy, że średnia $X$ to zero. Naszym celem jest znaleźć transformację ortogonalną $W$ taką, że $WX$ jest losowym wektorem z parami niezależnych komponentów:
 \begin{center}
 $cov(WX) = \mathbb{E}[WX(WX)^T]
 = \mathbb{E}[WX X^T W^T]
@@ -416,11 +428,11 @@ $cov(WX) = \mathbb{E}[WX(WX)^T]
 =W cov(X)W^{(-1)}$
 \end{center}
 Dopóki $cov(X)$ jest macierzą o wartościach dodatnich istnieje $W$, które spełnia powyższe równanie.
-\\PCA jest klasyczną metodą, która pozwala odnaleźć zależności w zbiorach danych o wielu wymiarach. W wyniku tej metody otrzymujemy uporządkowaną listę cech wyznaczoną dla największych wartości wariancji przy jednocześnie najmniejszym błędzie kwadratowym (podrozdział 3.3.1). W ten sposób spośród wielu cech opisujących nasze elementy jesteśmy w stanie wybrać te najbardziej dla nas istotne w procesie rekomendacji.
+PCA jest klasyczną metodą, która pozwala odnaleźć zależności w zbiorach danych o wielu wymiarach. W wyniku tej metody otrzymujemy uporządkowaną listę cech wyznaczoną dla największych wartości wariancji przy jednocześnie najmniejszym błędzie kwadratowym (podrozdział 3.3.1). W ten sposób spośród wielu cech opisujących nasze elementy jesteśmy w stanie wybrać te najbardziej dla nas istotne w procesie rekomendacji.
 \subsubsection{Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD))} 
 \begin{df} \textbf{Rozkład Według Wartości Osobliwych}%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
-\\Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ oraz $r \in \mathbb{N}$ jest rzędem macierzy $A$ nazywamy rozkład:
+Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ oraz $r \in \mathbb{N}$ jest rzędem macierzy $A$ nazywamy rozkład:
 \begin{center}
 $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$,
 \end{center}  
@@ -432,54 +444,54 @@ gdzie:
 \end{itemize}
 \end{df}
 \begin{df}\textbf{Norma Frobeniusa}%Using Linear Algebra for Intelligent Information Retrival.pdf
-\\Normą Frobeniusa nazywamy:
+Normą Frobeniusa nazywamy:
 $$||A||_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr A^T A},$$
 gdzie $A$ jest macierzą $m\times n$ - wymiarową. $ A^T$ jest sprzężeniem macierzy, a $tr(A)$ śladem macierzy $A$.
 \end{df}
 
 \begin{tw}\textbf{Następstwa SVN}%Using Linear Algebra for Intelligent Information Retrival.pdf
-\\Niech rozkład według wartości osobliwych macierzy $A$ będzie dany wzorem
+Niech rozkład według wartości osobliwych macierzy $A$ będzie dany wzorem
 \begin{center}
 $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$
 \end{center}
 gdzie $U=[u_1,u_2,...u_m]$, $V = [v_1,v_2,...v_n]$ oraz 
-\\$d_1\geq d_2 \geq ... \geq d_r > d_{r+1} = ... = d_n = 0$.
-\\$R(A)$ i $N(A)$ oznaczają zakres i jądro macierzy.
-\\Wtedy:
+$d_1\geq d_2 \geq ... \geq d_r > d_{r+1} = ... = d_n = 0$.
+$R(A)$ i $N(A)$ oznaczają zakres i jądro macierzy.
+Wtedy:
 \begin{enumerate}
 \item właściwości rzędu macierzy: $rank(A) = r$, $N(A) = span\{v_{r+1},...,v_n \}$, 
-\\$R(A) = span \{u_1,u_2,...,u_r \}$,
+$R(A) = span \{u_1,u_2,...,u_r \}$,
 \item $A = \sum_{i=1}^r u_i \cdot d_i \cdot v_i^T,$
 \item $||A||_F^2 = d_1^2+...+d_r^2$ i $||A||_2^2 = d_1$.
 \end{enumerate}
 \end{tw}
 
 \begin{tw}\textbf{Twierdzenie Eckart - Younga}%Using Linear Algebra for Intelligent Information Retrival.pdf
-\\Niech $X$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$, $r\in \mathbb{N} = rank(A)$ niech będzie rzędem macierzy i $r\leq p = min(m,n)$.
-\\Zdefiniujmy:
+Niech $X$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$, $r\in \mathbb{N} = rank(A)$ niech będzie rzędem macierzy i $r\leq p = min(m,n)$.
+Zdefiniujmy:
 $$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T,$$
 wtedy
 \begin{center}
 $\min \limits_{rank(B) = k } ||A - B||_F^2 = ||A - A_k||_F^2 = d_{k+1}^2 + ... + d_p^2$.
 \end{center}
 \end{tw}
-\begin{dw}
+\begin{proof}
 Niech $A \in \mathbb{R}^{m\times n}$ będzie macierzą o wartościach rzeczywistych, gdzie $m\geq n$.
-\\Załóżmy, że
+Załóżmy, że
 \begin{center}
 $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$
 \end{center} 
 jest rozkładem według wartości osobliwych macierzy $A$.
-\\Chcemy pokazać, że najlepszym przybliżeniem macierzy $A$ w normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
+Chcemy pokazać, że najlepszym przybliżeniem macierzy $A$ w normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
 $$A_k = \sum_{i=1}^k u_i\cdot d_i \cdot v_i^T,$$
 gdzie $u_i$ i $v_i$ oznaczają odpowiednio $i$-te kolumny macierzy $U$ i $V$.
-\\Zauważmy, że
+Zauważmy, że
 $$||A - A_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot d_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n d_i^2.$$
 Stąd należy udowodnić, że $B_k = XY^T$, gdzie $X$ i $Y$ są macierzami oraz 
 $$||A - A_k||_F^2 = \sum_{i=k+1}^n d_i^2 = ||A - B_k||_F^2.$$
 Z nierówności trójkąta, jeżeli $A = A^{`} + A^{``}$ wtedy $d_1(A)\leq d_1(A^{`}) + d_1(A^{``})$. 
-\\Przez $A_k^{`}$ i $A_k^{``}$ oznaczmy przybliżenia SVD odpowiednio macierzy $A^{`}$ i $A^{``}$. 
-\\Stąd dla każdego $i,j \geq 1$
+Przez $A_k^{`}$ i $A_k^{``}$ oznaczmy przybliżenia SVD odpowiednio macierzy $A^{`}$ i $A^{``}$. 
+Stąd dla każdego $i,j \geq 1$
 \begin{center}
 $d_i(A^{`}) + d_j(A^{``}) = d_1(A^{`} - A_{i-1}^{`}) + d_1(A^{``} - A_{j-1}^{``})
 \geq d_1(A-A_{i-1}^{`} - A_{j-1}^{``})
@@ -487,7 +499,7 @@ $d_i(A^{`}) + d_j(A^{``}) = d_1(A^{`} - A_{i-1}^{`}) + d_1(A^{``} - A_{j-1}^{``}
 \geq d_{i+j-1}(A)$,
 \end{center}
 gdy $rank(A_{i-1}^{`} + A_{j-1}^{``}) \leq rank (A_{i+j-2})$.
-\\Jeżeli 
+Jeżeli 
 \begin{center}
 $d_{k+1}(B_k)=0$,
 \end{center} 
@@ -497,24 +509,24 @@ $d_i(A-B_k)\geq d_{k+1}(A)$.
 \end{center}
 Stąd:
 $$||A - B_k||_F^2 = \sum_{i=1}^n d_i(A-B_k)^2\geq \sum_{k+1}^nd_i(A)^2 = ||A-A_k||_F^2.$$
-\end{dw}
+\end{proof}
 \begin{flushright}
 $\Box$
 \end{flushright}
 \bigskip
 \bigskip
 Zawsze jest możliwe dokonać dekompozycji macierzy $A$ do postaci $\mathbb{X}=\mathbb{U}\sum \mathbb{V}^T$.
-\\Zakładamy,że naszą macierzą wejściową jest macierz danych $A$ $m \times n$-wymiarowa odzwierciedlająca $m$ elementów oraz $n$ cech dla każdego z nich. Po przeprowadzeniu rozkładu według wartości osobliwych otrzymamy:
+Zakładamy,że naszą macierzą wejściową jest macierz danych $A$ $m \times n$-wymiarowa odzwierciedlająca $m$ elementów oraz $n$ cech dla każdego z nich. Po przeprowadzeniu rozkładu według wartości osobliwych otrzymamy:
 \begin{itemize}
 \item macierz $U$ o wymiarach $m \times r$ prezentującą $m$ elementów i $r$ kategorii,
 \item macierz diagonalną $\sum$ o wymiarach $r \times r$ prezentującą istotność poszczególnych kategorii,
 \item macierz $V$ o wymiarach $n \times r$ prezentującą $n$ cech i $r$ kategorii.
 \end{itemize}
 Macierz $\sum$ zawiera pojedyncze wartości uporządkowane zawsze w porządku malejącym. Macierz $U$ jest tu interpretowana jako macierz podobieństwa elementów i kategorii, macierz $U$ natomiast jako macierz podobieństwa cech i kategorii. 
-\\SVD jest powszechnie używane w celu odkrycia relacji występujących między użytkownikami i produktami.
+SVD jest powszechnie używane w celu odkrycia relacji występujących między użytkownikami i produktami.
 \section{Metody eksploracji danych}
 Termin eksploracja danych jest często używany jako określenie procesu odkrywania wiedzy z danych. Coraz częściej jednak terminem  "proces odkrywania wiedzy" określamy cały proces pracy z danymi, natomiast termin "eksploracja danych" odnosi się do etapu odkrywania pewnego rodzaju reguł.
-\\Jak podaje w jednym ze swoich artykułów "Eksploracja danych: problemy i rozwiązania" Tadeusz Morzy metody eksploracji można podzielić na sześć klas:
+Jak podaje w jednym ze swoich artykułów "Eksploracja danych: problemy i rozwiązania" Tadeusz Morzy metody eksploracji można podzielić na sześć klas:
 \begin{itemize}
 \item Odkrywanie asocjacji,
 \item Klastrowanie,
@@ -527,9 +539,9 @@ W tym podrozdziale skupimy się tylko na tych, które są najczęściej stosowan
 \subsection{k - Najbliższych Sąsiadów}%Recomender system handbook
 Algorytm k-najbliższych sąsiadów (k-NN) jest najczęściej używanym algorytmem klasyfikacji. 
 Przyporządkowanie nowych elementów zostaje przeprowadzone na podstawie porównania obserwacji z $k$ najbardziej podobnymi jej obiektami ze zbioru treningowego. Podstawowa idea algorytmu mówi, że jeżeli nowy rekord znajduje się w pewnym otoczeniu, to na podstawie k - najbliższych mu obserwacji zostanie przyporządkowana do niego etykieta (klasa), której pojawienie się w rozważanym zbiorze jest najliczniejsze.
-\\Niech $q$ będzie punktem dla którego chcemy odnaleźć jego klasę $l$. 
-\\$X=\{\{x_1,l_1\},...,\{x_n,l_n\}\}$ niech będzie zbiorem treningowym, gdzie $x_j$ jest $j$-tym elementem zbioru, natomiast $l_j$ etykietką klasy do której zbiór należy, $j\in\{1,...,n\}$.
-\\W metodzie k-NN zostaje wybrany podzbiór 
+Niech $q$ będzie punktem dla którego chcemy odnaleźć jego klasę $l$. 
+$X=\{\{x_1,l_1\},...,\{x_n,l_n\}\}$ niech będzie zbiorem treningowym, gdzie $x_j$ jest $j$-tym elementem zbioru, natomiast $l_j$ etykietką klasy do której zbiór należy, $j\in\{1,...,n\}$.
+W metodzie k-NN zostaje wybrany podzbiór 
 \begin{center}
 $Y=\{\{y_1,l_1\},...,\{y_k,l_k\}\}$, $k\in\{1,...,n\}$
 \end{center}
@@ -537,40 +549,40 @@ taki, że $Y \in X$ oraz $$\sum_1^k d(q,y_k)$$ jest minimalna. $Y$ zawiera więc
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{kNN.PNG} 
+%\includegraphics[scale=0.5]{kNN.PNG} 
 \caption{Metoda k - Najbliższych Sąsiadów.}
 \end{figure}
 \end{center}
 Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu k-NN. W części a) przedstawiony został zbiór treningowy z podziałem na dwie klasy (rąby, koła) oraz punkt, który będziemy chcieli przyporządkować do jednej z nich (trójkąt). W części b) przedstawiono dwa koła jedno prezentuje najbliższe sąsiedztwo dla $k = 3$, drugie dla $k = 9$. W obu przypadkach nowy punkt (trójkąt) zostanie przyporządkowany do klasy $l_1$. Warto również zauważyć, że znajduje się on na granicy dwóch klastrów.
-\\
-\\Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne w przypadku, gdy dane są więcej niż dwuwymiarowe?
-\\Wykorzystywane są tutaj wcześniej opisane miary odległości z których najczęściej stosowaną jest odległość euklidesowa.
-\\
-\\Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu k-NN jest wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z Rysunku 3.2 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
+
+Jak wyżej opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne w przypadku, gdy dane są więcej niż dwuwymiarowe?
+Wykorzystywane są tutaj wcześniej opisane miary odległości z których najczęściej stosowaną jest odległość euklidesowa.
+
+Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu k-NN jest wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z Rysunku 3.2 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
 
 \subsection{k-Średnich}%Analiza skupień Agnieszka Nowak-Brzezińska
 Algorytm k-średnich jest prostym i zarazem efektywnym algorytmem grupowania.
-\\Głównym celem algorytmu jest podział pewnego zbioru $X$:
+Głównym celem algorytmu jest podział pewnego zbioru $X$:
 \begin{center}
 $X = \{x_i = (x_{i1},...,x_{id}) : i \in \{1,...,N\}\}$,
 \end{center}
 gdzie $x_i$ jest $d$-wymiarowym wektorem cech opisującym obiekt na podzbiory.
-\\W wyniku grupowania $n$ - elementowego zbioru $X$ na $k$ podgrup jest macierz podziału $A$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $x_k$ przynależy do grupy.
-\\Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
+W wyniku grupowania $n$ - elementowego zbioru $X$ na $k$ podgrup jest macierz podziału $A$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $x_k$ przynależy do grupy.
+Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_0.PNG} 
+%\includegraphics[scale=0.8]{ks_0.PNG} 
 \caption{Metoda k-średnich. Wybór początkowych środków.}
 \end{figure}
 \end{center}
 W powyższym przykładzie (Rysunek 3.3) wybranymi środkami są punkty p1, p2, p3.
-\\
+
 Kolejnym krokiem jest przypisanie każdego z elementów do najbliższej mu grupy.
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_1.png} 
+%\includegraphics[scale=0.8]{ks_1.png} 
 \caption{Metoda k-średnich. Przypisanie elementów do grup.}
 \end{figure}
 \end{center}
@@ -578,13 +590,13 @@ Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzęd
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_2.png} 
+%\includegraphics[scale=0.8]{ks_2.png} 
 \caption{Metoda k-średnich. Wybór nowych środków.}
 \end{figure}
 \end{center}
 Kroki te są wykonywane do momentu występowania migracji między obiektami.
-\\W algorytmie k-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
-\\W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje:
+W algorytmie k-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
+W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje:
 $$J(u,A) = \sum_{i=1}^k \sum_{k=1}^N b_{ki}d^2(u_i,x_k),$$
 gdzie 
 \begin{itemize}
@@ -597,20 +609,20 @@ gdzie
 \subsection{regresja wielowymiarowa - logistyczna - ?}
 \subsection{Sztuczna Sieć Neuronowa ???}
 Sztuczna Sieć Neuronowa jest klasyfikatorem opartym na systemie działania ludzkiego mózgu. Składa się z neuronów, które są połączone ze sobą synapsami. Te proste elementy połączone są w sieć, która posiada możliwość uczenia się problemów klasyfikacyjnych.
-\\
+
 \subsection{Maszyna Wektorów Nośnych}
 Maszyny Wektorów Nośnych (ang. Support Vector Machines (SVM)) jest algorytmem uczenia maszynowego używanym zarówno w przypadku zadań klasyfikacji jak i regresji. Głównym celem algorytmu jest znalezienie w przestrzenie $n$ - wymiarowej hiperpłaszczyzny, która wyraźnie sklasyfikuje obserwacje i podzieli na dwie klasy maksymalizując odległość między obserwacjami. Podejście to pozwala uniknąć błędnego przyporządkowania marginalnych obserwacji w przyszłości.
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{SVM.PNG} 
+%\includegraphics[scale=0.5]{SVM.PNG} 
 \caption{Maszyna Wektorów Nośnych - maksymalizacja odległości między klasami.}
 \end{figure}
 \end{center}
 Aby formalnie zdefiniować Maszyna Wektorów Nośnych zacznijmy od zdefiniowania problemu klasyfikacji.
 \begin{df}\textbf{Klasyfikacja}
-\\Nich w przestrzeni $\Omega$ znajdują się wektory danych $x_i \in \mathbb{R}^n$, $i\in \{1,...,n\}$. $P$ niech będzie próbą uczącą.
-\\Wtedy:
+Nich w przestrzeni $\Omega$ znajdują się wektory danych $x_i \in \mathbb{R}^n$, $i\in \{1,...,n\}$. $P$ niech będzie próbą uczącą.
+Wtedy:
 \begin{center}
 $P = \{(x_i,c_i): x_i \in \mathbb{R}^n, c_i \in \{1,-1\}\}_{i=1}^N$.
 \end{center}
@@ -619,14 +631,14 @@ $P = \{(x_i,c_i): x_i \in \mathbb{R}^n, c_i \in \{1,-1\}\}_{i=1}^N$.
 Należy znaleźć klasyfikator dzielący całą przestrzeń $\Omega$ na dwie klasy $\{-1,1\}$, który pozwoli na przyporządkowywać nowego elementu do klasy. Szukamy funkcji $f(x)$ - granicy między klasami.
 
 \begin{df}\textbf{Liniowa Separowalność}%https://towardsdatascience.com/support-vector-machine-introduction-to-machine-learning-algorithms-934a444fca47
-\\Dwie klasy nazywamy liniowo separowalnymi, jeżeli istnieje hiperpłaszczyzna $f(x)$ postaci:
+Dwie klasy nazywamy liniowo separowalnymi, jeżeli istnieje hiperpłaszczyzna $f(x)$ postaci:
 \begin{center}
 $f(x) = w^T x +b$
 \end{center}
 taka, że:
 \begin{center}
 $\left\{\begin{array}{ll}
-f(x_i)>0, &    x_i\in\{1\}\\
+f(x_i)>0, &    x_i\in\{1\} \\
 f(x_i)<0, &    x_i\in\{-1\}.
 \end{array} \right.$
 \end{center}
@@ -642,21 +654,21 @@ gdzie $w, b$ są parametrami spełniającymi założenia modelu:
 \begin{center}
 $f(x) = 
 \left\{\begin{array}{lll}
-1, & gdy &   \langle w,x \rangle + b > 0\\
+1, & gdy &   \langle w,x \rangle + b > 0 \\
 -1, &   gdy &   \langle w,x \rangle + b < 0.
 \end{array} \right.$
 \end{center}
 Parametry $w$ i $b$ wyznaczamy w taki sposób, by odległość między płaszczyznami
 \begin{center}
 $ b_{i1}$ $\langle w,x \rangle + b = 1$,
-\\$ b_{i2}$ $\langle w,x \rangle + b = -1$
+$ b_{i2}$ $\langle w,x \rangle + b = -1$
 \end{center}
 była maksymalna.
-\\Zatem
+Zatem
 \begin{center}
 $f(x) = 
 \left\{\begin{array}{lll}
-1, & gdy &   \langle w,x \rangle + b \geq 1\\
+1, & gdy &   \langle w,x \rangle + b \geq 1 \\
 -1, &   gdy &   \langle w,x \rangle + b \leq -1,
 \end{array} \right.$
 \end{center}
@@ -695,19 +707,19 @@ Jeżeli elementy nie są jednak separowalne liniowo:
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{SVM2.PNG} 
+%\includegraphics[scale=0.5]{SVM2.PNG} 
 \caption{Maszyna Wektorów Nośnych - elementy nieseparowalne liniowo.}
 \end{figure}
 \end{center}
 wprowadzamy klasyfikator \textbf{Soft Margin SVM} oraz zmienne osłabiające (pomocnicze).
-\\W tym przypadku należy poddać minimalizacji funkcję:
+W tym przypadku należy poddać minimalizacji funkcję:
 $$L(w) = \frac{||w||^2}{2} + C \sum_{i=1}^n \varepsilon,$$
 gdzie parametr $C$ ocenia starty związane z każdym błędnie zaklasyfikowanym punktem.
-\\Funkcja $f(x)$ jest natomiast dana wzorem:
+Funkcja $f(x)$ jest natomiast dana wzorem:
 \begin{center}
 $f(x) = 
 \left\{\begin{array}{lll}
-1, & gdy &   \langle w,x \rangle + b \geq 1 - \varepsilon\\
+1, & gdy &   \langle w,x \rangle + b \geq 1 - \varepsilon \\
 -1, &   gdy &   \langle w,x \rangle + b \leq -1 + \varepsilon.
 \end{array} \right.$
 \end{center}
@@ -722,9 +734,9 @@ Interpretacja rozwiązań:
 \section{Szacowanie Błędów Obliczeń}
 \subsection{Ocena Dokładności Metody}%RecommenderSystemsHandbook
 Kolejna kwestia często poruszana w regułach rekomendujących to dokładność przewidywań. Jak oceniamy, czy uzyskany przez nas wynik jest wystarczająco dokładny? 
-\\Załóżmy, że dla użytkownika $u$ i elementu $i$ ze zbioru testowego $P$ dostarczamy predykcję $\widehat{r_{(u,i)}}$. Aby ocenić jakość wyniku należy porównać ją ze znaną wartością $r_{(u,i)}$.
-\\
-\\Najczęściej używanymi miarami dokładności modelu są:
+Załóżmy, że dla użytkownika $u$ i elementu $i$ ze zbioru testowego $P$ dostarczamy predykcję $\widehat{r_{(u,i)}}$. Aby ocenić jakość wyniku należy porównać ją ze znaną wartością $r_{(u,i)}$.
+
+Najczęściej używanymi miarami dokładności modelu są:
 \begin{itemize}
 \item \textbf{Średni Błąd (Mean Error)}
 $$ME = \frac{1}{|P|}\sum_{(u,i)\in P}(\widehat{r_{(u,i)}}-r_{(u,i)})$$
@@ -740,12 +752,12 @@ Funkcja kwadratowa jest funkcją monotoniczną co pozwala na dość częste zast
 $RMSE = \sqrt{MSE}$
 \end{center} 
 \textbf{Normalized RMSE (NRMSE)} oraz \textbf{Normalized MAE (NMAE)} są znormalizownymi, przez użycie zakresu wartości $r_{max} - r_{min}$, wersjami błędów RMSE i MAE.
-\\Kolejnym rodzajem powszechnie używanego błędu jest \textbf{Average RMSE}, który pozwala na użycie sum ważonych. Niech $w_i>0$ będzie wagę dla elementu $i$ i $\sum w_i = 1$
+Kolejnym rodzajem powszechnie używanego błędu jest \textbf{Average RMSE}, który pozwala na użycie sum ważonych. Niech $w_i>0$ będzie wagę dla elementu $i$ i $\sum w_i = 1$
 $$ARMSE = \sqrt{\sum_{(u,i)\in P}w_{i}(\widehat{r_{(u,i)}}-r_{(u,i)})^2}.$$
 
 \subsection{Ocena Precyzji Użyteczności}
 W regułach rekomendujących częstymi są przypadki, gdzie systemy nie będą przewidywać konkretnych preferencji użytkownika, jak oceny ale samo prawdopodobieństwo podjęcia przez użytkownika akcji.
-\\Oceniając taki model wybieramy przykładowego użytkownika i ukrywamy kilka wybranych przez niego elementów aby spróbować przewidzieć zestaw elementów jakie użytkownik będzie chciał wybrać. W poniższej tabeli zostały zaprezentowane rezultaty jakie są możliwe do otrzymania przy przeprowadzaniu takiego testu:
+Oceniając taki model wybieramy przykładowego użytkownika i ukrywamy kilka wybranych przez niego elementów aby spróbować przewidzieć zestaw elementów jakie użytkownik będzie chciał wybrać. W poniższej tabeli zostały zaprezentowane rezultaty jakie są możliwe do otrzymania przy przeprowadzaniu takiego testu:
 \begin{center}
 \begin{tabular}{|r|r|r|} \hline
  & Zarekomendowane & Niezarekomendowane  \\
@@ -753,41 +765,41 @@ W regułach rekomendujących częstymi są przypadki, gdzie systemy nie będą p
 Wybrane & prawda-pozytywnie & fałsz-negatywnie \\
 przez użytkownika &(pp)&(fn) \\
 \hline
-Niewybrane & fałsz-pozytywnie & prawda-negatywnie \\
+Niewybrane & fałsz-pozytywnie & prawda-negatywnie  \\
 przez użytkownika &(fp)&(pn) \\
 \hline
 \end{tabular}
 \end{center}
 Zakładamy, że elementy nieużyte przez użytkownika nie zostałyby użyte również w przypadku gdy zostałyby zarekomendowane. Założenie to może okazać się jednak błędne, ponieważ w wyniku rekomendacji możemy otrzymać interesujące propozycje, których użytkownik nie brał pod uwagę. Jest to powód dlaczego wynik $fp$ jest bardzo często przeszacowany.
-\\W celu porównania algorytmów możemy posłużyć się następującymi statystykami:
+W celu porównania algorytmów możemy posłużyć się następującymi statystykami:
 \begin{center}
 Precyzja (ang. Precision) $= \frac{|pp|}{|pp|+|fp|}$, %czy liczność w tym przypadku może zostać zapisana przez | | 
-\\\textit{Wskaźnik pp (ang. Recall / True Positive Rate)} $ = \frac{|pp|}{|pp|+|fn|}$,
-\\\textit{Wskaźnik fp (ang. False Positive Rate)} $ = \frac{|fp|}{|fp|+|pn|}$.
+\textit{Wskaźnik pp (ang. Recall / True Positive Rate)} $ = \frac{|pp|}{|pp|+|fn|}$,
+\textit{Wskaźnik fp (ang. False Positive Rate)} $ = \frac{|fp|}{|fp|+|pn|}$.
 \end{center}
 Często jednak jest tu obserwowana zależność, która pokazuje, że przy wydłużaniu się listy rekomendacji rośnie wartość \textit{wskaźnika pp} i jednocześnie maleje \textit{precyzja}. Dla stałej długości listy rekomendacji porównanie precyzji algorytmów jest jak najbardziej miarodajne. Niemniej jednak porównanie precyzji, gdzie długości list rekomendacji są różne jest często bardzo trudne. Zostaje zatem wyznaczona krzywa przedstawiająca kompromis między \textit{wskaźnikiem pp} i \textit{precyzją}, lub między \textit{wskaźnikiem pp} i \textit{wskaźnikiem fp}. Formalnie pierwsza krzywa jest nazywana \textbf{krzywą precyzji (ang. precision - recall curve)} natomiast druga \textbf{krzywą ROC (ang. Receiver Operating Characteristic)}.
 
 \subsection{Ocena Rankingów}
 W poprzedniej sekcji została omówiona metoda wyboru odpowiedniego modelu rekomendującego. Każdy z takich modeli kończy się przedstawieniem pewnej listy rekomendowanych elementów. Często jednak również kolejność elementów jest bardzo ważna i ma duży wpływ na wybory użytkowników.
-\\W tej części zostaną zaprezentowane metody służące do oceny otrzymanych na podstawie modelu rankingów i pomagające zapewnić odpowiedni porządek rekomendowanych elementów. Jeżeli elementy posiadają oceny (np. użytkowników) intuicyjnym jest stworzyć ranking przez uporządkowanie tych ocen w malejący sposób. W przypadku gdy jednak nie mamy takich danych lub nie jest odpowiednie tworzenie takiego rankingu użyjemy \textbf{znormalizowanej miary opartej na odległości (ang. Normalized Distance-based Performance Measure (NDPM): }
-\\
-\\Niech $r_{ui}$ będzie rankingiem odniesienia i $\widehat{r}_{ui}$ rankingiem stworzonym przez wybrany system rekomendującym $n_u$ elementów $i$ użytkownikowi $u$. 
-\\Ponadto niech:
+W tej części zostaną zaprezentowane metody służące do oceny otrzymanych na podstawie modelu rankingów i pomagające zapewnić odpowiedni porządek rekomendowanych elementów. Jeżeli elementy posiadają oceny (np. użytkowników) intuicyjnym jest stworzyć ranking przez uporządkowanie tych ocen w malejący sposób. W przypadku gdy jednak nie mamy takich danych lub nie jest odpowiednie tworzenie takiego rankingu użyjemy \textbf{znormalizowanej miary opartej na odległości (ang. Normalized Distance-based Performance Measure (NDPM): }
+
+Niech $r_{ui}$ będzie rankingiem odniesienia i $\widehat{r}_{ui}$ rankingiem stworzonym przez wybrany system rekomendującym $n_u$ elementów $i$ użytkownikowi $u$. 
+Ponadto niech:
 $$C^{+} = \sum_{i<j} sgn(r_{ui} - r_{uj})sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$$
 $$C^{-} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})sgn(\widehat{r}_{uj}-\widehat{r}_{ui})$$
 $$C^{u} = \sum_{i<j} sgn^{2}(r_{ui} - r_{uj})$$
 $$C^{s} = \sum_{i<j} sgn(\widehat{r}_{ui}-\widehat{r}_{uj})$$
 $$C^{0}=C^{u}-(C^{+}-C^{-}),$$ gdzie
 $C^{u}$ jest liczbą par dla których ranking referencyjny okazuje się lepszą możliwością, 
-\\$C^{+}$ i $C^{-}$ to liczba par z poprawną i niepoprawną kolejnością,
-\\$C^{0}$ jest liczbą par dla których ranking referencyjny nie jest wiążący, kiedy ranking systemu rekomendującego jest.
-\\
-\\Ostatecznie NDPM definiujemy w następujący sposób:
+$C^{+}$ i $C^{-}$ to liczba par z poprawną i niepoprawną kolejnością,
+$C^{0}$ jest liczbą par dla których ranking referencyjny nie jest wiążący, kiedy ranking systemu rekomendującego jest.
+
+Ostatecznie NDPM definiujemy w następujący sposób:
 \begin{center}
 $NDPM = \frac{C^{-} + 0.5 C^{0}}{C^{u}}$
 \end{center}
 Powiązania w rankingu referencyjnym pojawiają się naturalnie, kiedy znamy preferencje użytkownika (np. przydziela on oceny). Czasami jednak rankingi są bardziej specyficzne (np. kiedy dajemy użytkownikowi wybór między dwoma elementami). Wtedy też system rekomendujący nie powinien tworzyć rankingu klasyfikując jedne elementy wyżej niż inne. W takich przypadkach przychodzą nam z pomocą 
-\\\textbf{miara Kendall's $\tau$}:
+\textbf{miara Kendall's $\tau$}:
 \begin{center}
 $\tau = \frac{C^{+} - C^{-} }{\sqrt{C^{u}}\sqrt{C^{s}}}$
 \end{center}
@@ -799,52 +811,100 @@ gdzie $\overline{r}$ i $\overline{\widehat{r}}$ oznaczają średnie, natomiast $
 
 
 \chapter{Modele tworzenia rekomendacji}
-Systemy rekomendujące mogą zostać podzielone na systemy oparte na kontekście i systemy oparte na użytkownikach. W pierwszym przypadku eksploracja danych jest dokonywana pod względem wektorów cech rozważanych elementów. Główne założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B. W systemach opartych na użytkownikach badaniu podlegają natomiast zależności, które występują między produktami, a użytkownikami. Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A zaopiniuje pewien przedmiot, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie opinia użytkownika B będzie podobna do opinii użytkownika A.
-\\
-\\
-\\Załóżmy, że mamy zbiór sześciu książek $\{k_1, k_2, k_3, k_4, k_5, k_6\}$, oraz zbiór sześciu czytelników $\{c_1, c_2, c_3, c_4, c_5, c_6\}$.
-\\Poniższa tabela przedstawia oceny jakie czytelnicy przyporządkowali po przeczytaniu poszczególnym pozycjom. Znak '?' oznacza, że czytelnik danej książki nie czytał.
+
+W nieniejszym rozdziale zajmiemy się formalnym zdefiniowanie zadania, które ukrywa się pod nazwą tworzenia rekomendacji. Do jego poprawnego określenia następujace pojęcia bedą przydatne.
+
+\begin{df}[Przedmiot \citep{kidzinski}]
+ Przedmiotem nazwiemy klasę obiektów tego samego typu, nierozróżnialnych dla obserwatora, reprezentowanych przez co najmniej jeden element.
+\end{df}
+
+Przedmioty stanowią podstawową grupę elementów w rozważaniach systemów rekomendujących. 
+
+\begin{df}[Użytkownik \citep{kidzinski}]
+Użytkownikiem nazywamy osobę zdolną do przedstawienia własnej oceny wybranego przedmiotu.
+\end{df}
+
+W pracy \citep{kidzinski} użyty na zawsze ten sam zbiór ocen, jednak łatwo możemy pokusić się o jego uogólnienie.
+
+\begin{df}[Zbiór ocen]
+Podzbiór skończony zbioru $\setN$ lub $\setN \cup \set{0}$ nazywamy zbiorem ocen dla przedmiotów. 
+\end{df} 
+
+\begin{df}[Macierz preferencji {\citep[Sec 1.3 Def. 3.]{kidzinski}}]
+Rozważmy zbiór przedmiotów o liczności $n$ oraz grupę użytkowników o liczności $m$. Macierzą preferencji $M$ nazwiemy macierz o wymiarach $n \times m$ i wartościach w ustalonym zbiorze ocen.
+\end{df}
+
+Z uwagi na to, że przedmioty jako wytwory świata rzeczywistego, niemożliwe do opisania za pomocą skończonej liczby cech. Rozważa się więc ich skończoną reprezentację nazywaną wektorem własności.
+
+\begin{df}[Własność \citep{kidzinski}]
+Własnością nazwiemy cechę wyrażoną za pomocą wartości liczbowej lub pewnej zmiennej kategorycznej, która reprezentuje cechę przedmiotu istotną dla użytkownika w procesie tworzenia oceny. Zbiór wszystkih własności w rozważanym modelu oznaczamy $P$. Dla każdej $p \in P$ poprzez $V_p$ rozumiemy zbiór wszystkich dopuszczalnych wartości własności $p$.
+\end{df}
+
+\begin{df}[Funkcja anotująca \citep{kidzinski}]
+Funkcją anotującą własność $p \in P$ nazwiemy funkcję 
+$$
+a_p \colon S \to V_p,
+$$
+gdzie $S$ oznacza zbiór wszystkich przedmiotów.
+\end{df}
+
+Mając na uwadze, że zbiór $P$ jest skończony (jak również zbiór $S$) można utożsamiać funkcję anotującą z wektorem o długości $|P|$ nazywanym wektorem własności.
+
+\begin{df}[Problem tworzenia rekomendacji]
+Rozważmy pewien zbiór przedmiotów $S$ oraz pewien zbiór użytkowników $U$ oraz pewien zbiór ocen $Z$. Niech ponadto $R$ będzie funkcją działającą $ R: S \times U \to Z$. Załóżmy, że dla funkcji $R$ znane są wartości dla pewnych par przedmiotów i użytkowników. Zadaniem naszym jest zaproponowanie sposobu predykcji wartości tej funkcji $R$ dla brakujących par w sposób minimalizujący wybrany funkcjonał błędu. 
+\end{df}
+
+Przyjrzyjmy się następującemu przykładowi, który wykorzystamy do ilustracji tej sytuacji.
+
+\begin{przyklad}
+Załóżmy, że mamy zbiór sześciu książek $\{k_1, k_2, k_3, k_4, k_5, k_6\}$, oraz zbiór sześciu czytelników $\{c_1, c_2, c_3, c_4, c_5, c_6\}$.
+Poniższa tabela przedstawia oceny jakie czytelnicy przyporządkowali po przeczytaniu poszczególnym pozycjom. Znak '?' oznacza, że czytelnik danej książki nie czytał lub czytał lecz jej nie ocenił.
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$ \\
 \hline
 \hline
-\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?}\\
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?} \\
 \hline
-&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?}\\
+&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?} \\
 \hline
-&$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
+&$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9  \\
 \hline
-&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8 \\
 \hline
 &$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{?} \\
 \hline
-&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2 \\
 \hline
 \end{tabular}.
 \end{center}
-Niech:
-\begin{itemize}
-\item $n_u$ oznacza liczbę użytkowników, w tym przypadku $n_u = 6$,
-\item $n_m$ oznacza liczbę elementów, w tym przypadku liczbę książek, $n_m = 6$.
-\end{itemize}
-Dodatkowo wprowadźmy parametry:
-\begin{itemize}
-\item $r(i,j)$, gdzie $r(i,j)=1$, jeżeli użytkownik $j$ ocenił książkę $i$,
-\item $y(i,j)$ - ocena jaką użytkownik $j$ przydzielił książce $i$, $y(i,j) \in \{0,1,2,3,4,5,6,7,8,9,10\}$ (ocenę definiujemy tylko wtedy gdy $r(i,j)=1$).
-\end{itemize}
-Celem jest na podstawie wskaźników $r(i,j)$, $y(i,j)$ przewidzieć brakujące oceny.
+%Niech:
+%\begin{itemize}
+%\item $n_u$ oznacza liczbę użytkowników, w tym przypadku $n_u = 6$,
+%\item $n_m$ oznacza liczbę elementów, w tym przypadku liczbę książek, $n_m = 6$.
+%\end{itemize}
+%Dodatkowo wprowadźmy parametry:
+%\begin{itemize}
+%\item $r(i,j)$, gdzie $r(i,j)=1$, jeżeli użytkownik $j$ ocenił książkę $i$,
+%\item $y(i,j)$ - ocena jaką użytkownik $j$ przydzielił książce $i$, $y(i,j) \in \{0,1,2,3,4,5,6,7,8,9,10\}$ (ocenę definiujemy tylko wtedy gdy $r(i,j)=1$).
+%\end{itemize}
+Celem jest 
+%na podstawie wskaźników $r(i,j)$, $y(i,j)$ 
+przewidzieć brakujące oceny w sposób minimalizujący błąd popełniany przez nasz model.
+\end{przyklad}
+
+Systemy rekomendujące mogą zostać podzielone na systemy oparte na kontekście i systemy oparte na użytkownikach. W pierwszym przypadku predykcja jest dokonywana pod względem wektorów cech rozważanych elementów. Główne założenie wymaga, że jeżeli użytkownik ocenił w pewien sposób przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny w podobny sposób ocenić przedmiot B. W systemach opartych na użytkownikach, badaniu podlegają natomiast zależności które występują między produktami, a użytkownikami. Zakłada się, że jeżeli użytkownicy A i B wykazują podobieństwo oraz użytkownik A oceni pewien przedmiot w określony sposób, którego użytkownik B jeszcze nie ocenił, to prawdopodobnie ocena użytkownika B będzie podobna do oceny użytkownika A.
 
 \section{Systemy rekomendujące oparte na treści 
-\\(Content-based recommender systems):}
+(Content-based recommender systems):}
 Rozważmy sytuację w której szukamy przyjemnej lektury na zimowy wieczór. Zaczynamy od przeglądania tytułów wśród interesujących nas gatunków. Następnie spojrzymy zapewne na oceny jakie inni czytelnicy wydali na temat danej pozycji. Analizując wartość uzyskanych ocen ostatecznie podejmujemy na ich podstawie najbardziej odpowiednią dla nas decyzję. 
 
 
 
 \subsection{Algorytm}
 Metody rozwiązywania podobnych problemów często spotykane są w matematyce. Jednym z przykładów są systemy oparte na treści, które wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Głównym celem tej metody jest scharakteryzowanie wektora cech, które użytkownik ceni, a następnie zasugerowanie mu produktów, które te cechy posiadają. Wspomniana metoda opiera się na obliczaniu podobieństw oraz wykorzystuje zadania uczenia maszynowego, takie jak klasyfikacja.
-\\
-\\
+
+
 W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie listy elementów, które mogę być odpowiednie użytkownikowi możemy przedstawić w trzech krokach:
 \begin{enumerate}
 \item{Wygenerowanie profilu produktu}
@@ -856,12 +916,12 @@ W typie rekomendacji opartym na treści stworzenie rekomendacji i wygenerowanie 
 Niech poniższa tabela określa w jakim stopniu (skala 0-1) każda z książek reprezentuje cechy gatunków $g_1$, $g_2$.
 \begin{center}
 \begin{tabular}{|r|r|r|r|} \hline
-\textbf{Gatunki} & & $\mathbf{g_1}$ & $\mathbf{g_2}$ \\
+\textbf{Gatunki} & & $\mathbf{g_1}$ & $\mathbf{g_2}$  \\
 \hline
 \hline
 \textbf{Książki} &$\mathbf{k_1}$ & 0,9 & 0 \\
 \hline
-&$\mathbf{k_2}$ & 1 & 0,01 \\
+&$\mathbf{k_2}$ & 1 & 0,01  \\
 \hline
 &$\mathbf{k_3}$ & 0,99 & 0 \\
 \hline
@@ -874,42 +934,42 @@ Niech poniższa tabela określa w jakim stopniu (skala 0-1) każda z książek r
 \end{tabular}
 \end{center}
 Dodatkowo zakładamy, że istnieje gatunek $g_0$, którego cechy reprezentują wszystkie książki oraz dla każdej z książek $g_0=1$.
-\\Zatem $g^{(1)}= \left[
+Zatem $g^{(1)}= \left[
         \begin{array}{c}
-         1 \\
-         0,9\\
+         1 
+         0,9
          0
          \end{array}
       \right] $ jest wektorem cech odpowiadającym książce $k_1$, $g^{(2)}= \left[
         \begin{array}{c}
-         1 \\
-         1\\
+         1 
+         1
          0,01
          \end{array}
       \right] $ jest wektorem cech odpowiadającym książce $k_2$. Analogicznie możemy wyznaczyć podobne wektory dla każdej z książek.
-\\
-\\Należy jednak zaznaczyć, że liczba wybranych przez nas cech to $n=2$.
-\\
-\\Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\Theta^{(j)} \in \mathbb{R}^3$ (w ogólnej postaci $\Theta^{(j)} \in \mathbb{R}^{n+1})$, który przedstawia (w skali 0-5) preferencje użytkownika dotyczące poszczególnych gatunków. I tak odpowiednio $\Theta^{(1)}$ to wektor preferencji czytelnika $c_1$, $\Theta^{(2)}$ wektor preferencji użytkownika $c_2$, $\Theta^{(3)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_4$, $\Theta^{(5)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_5$
-\\
-\\Aby przewidzieć ocenę jaką użytkownik $j$ wystawiłby książce $i$ po jej przeczytaniu użyjemy równania:
+
+Należy jednak zaznaczyć, że liczba wybranych przez nas cech to $n=2$.
+
+Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\Theta^{(j)} \in \mathbb{R}^3$ (w ogólnej postaci $\Theta^{(j)} \in \mathbb{R}^{n+1})$, który przedstawia (w skali 0-5) preferencje użytkownika dotyczące poszczególnych gatunków. I tak odpowiednio $\Theta^{(1)}$ to wektor preferencji czytelnika $c_1$, $\Theta^{(2)}$ wektor preferencji użytkownika $c_2$, $\Theta^{(3)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_4$, $\Theta^{(5)}$ wektor preferencji użytkownika $c_3$ i $\Theta^{(4)}$ wektor preferencji użytkownika $c_5$
+
+Aby przewidzieć ocenę jaką użytkownik $j$ wystawiłby książce $i$ po jej przeczytaniu użyjemy równania:
 \begin{center}
 $(\Theta^{(j)})^T g^{(i)}$.
 \end{center}
 \bigskip
 Obliczmy ocenę jaką książce $k_3$ wystawiłby użytkownik $c_1$ przy założeniu, że wektor preferencji użytkownika $c_1$ jest postaci $\Theta^{(j)}= \left[
         \begin{array}{c}
-         0 \\
-         5\\
+         0 
+         5
          0
          \end{array}
       \right] $. Użytkownik ten preferuje więc książki gatunku $g_1$, gdy książki gatunków $g_0$ i $g_2$ są dla niego nieatrakcyjne.
-\\Zatem:
+Zatem:
 \begin{center}
 $(\Theta^{(1)})^T g^{(3)} = [0,5,0] \left[
         \begin{array}{c}
-         1 \\
-         0,99\\
+         1 
+         0,99
          0
          \end{array}
       \right] = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95$.
@@ -917,12 +977,12 @@ $(\Theta^{(1)})^T g^{(3)} = [0,5,0] \left[
 Przewidywaną oceną jest zatem $4,95$. Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen możemy zarekomendować naszemu użytkownikowi nową lekturę.
 \subsection{Wygenerowanie profilu produktu}
 W większość systemów rekomendacji opartych na treści można zauważyć użycie prostych modeli wyszukujących. Jednym z najbardziej popularnych jest Model Przestrzeni Wektorowej (\textit{ang. Vector Space Model}) z algorytmem TF-IDF (\textit{ang. TF – term frequency, IDF - inverse document frequency}). Jest to przestrzenna forma reprezentacji dokumentów, gdzie dokument $i$ jest reprezentowany przez wektor w przestrzeni n-wymiarowej $x_{i}$, a każdy z $n$ wymiarów stanowi rozważaną cechę produktu. Dla danych w formie dokumentów tekstowych cechami, które pomagają scharakteryzować temat dokumentu, np. artykułu na stronie internetowej są słowa. Dla każdego ze słów zostaje obliczona wartość funkcji TFIDF (została ona dokładnie omówiona poniżej). W końcowym etapie słowa, które otrzymały najwyższe wyniki zostają uznane za charakteryzujące rozważany dokument.
-\\
-\\Formalnie rzecz ujmując każdy z dokumentów jest przedstawiony za pomocą wektora wag, gdzie waga w odpowiedni sposób wyraża zależność między dokumentem, a badanym terminem.
-\\
-\\Niech \begin{math} K = \{k_1, k_2,...,k_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}G = \{g_1, g_2,...,g_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} k_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} k_j = [w_{1j}, w_{2j},...,w_{nj}] \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} g_k \end{math} w dokumencie  \begin{math} k_j \end{math}.
-\\
-\\
+
+Formalnie rzecz ujmując każdy z dokumentów jest przedstawiony za pomocą wektora wag, gdzie waga w odpowiedni sposób wyraża zależność między dokumentem, a badanym terminem.
+
+Niech \begin{math} K = \{k_1, k_2,...,k_n\}, n\in{\mathbf{N}} \end{math} będzie zestawem dokumentów / analizowanych przedmiotów. Natomiast \begin{math}G = \{g_1, g_2,...,g_n\}, n\in{\mathbf{N}} \end{math} zestawem cech rozważanych w przedmiotach. Każdy z dokumentów \begin{math} k_j, j\in{\{1,...,n\}} \end{math} jest reprezentowany jako wektor w przestrzeni wektorowej n-wymiarowej. Zatem \begin{math} k_j = [w_{1j}, w_{2j},...,w_{nj}] \end{math}, gdzie \begin{math} w_{kj} \end{math}  jest wagą dla cechy \begin{math} g_k \end{math} w dokumencie  \begin{math} k_j \end{math}.
+
+
 Do generowania profilu produktu używany jest wspomniany wcześniej algorytm TFIDF pozwalający policzyć względną ważność powiązania cechy z przedmiotem. Zakładamy, że:
 \begin{itemize}
 \item rzadkie cechy są równie istotne jak częste (założenie IDF),
@@ -930,8 +990,8 @@ Do generowania profilu produktu używany jest wspomniany wcześniej algorytm TFI
 \item długość dokumentu (filmu, książki) nie ma znaczenia (założenie normalizacji).  
 \end{itemize}
 Zatem jeżeli termin występuje często w konkretnym przedmiocie rozważań (TF) i równocześnie rzadko w pozostałych elementach zboru (IDF) ma większe prawdopodobieństwo stać się jedną z istotnych cech rozważanych w temacie. Ponadto normalizacja wektorów wag pozwala zrównoważyć wartość wyników i umożliwia ich porównywanie w dalszej analizie.
-\\
-\\Powyższe założenia odzwierciedla funkcja TFIDF:
+
+Powyższe założenia odzwierciedla funkcja TFIDF:
 \begin{center}
 \begin{math}
 TFIDF(t_k, d_j) = TF(g_k, k_j) * IDF,
@@ -952,7 +1012,7 @@ $\max_{z}f_{z,j}$ - maksymalna w odniesieniu do wszystkich cech $c_z$, które po
 \begin{math}IDF = \log \frac{N}{n_k} \end{math}
 \end{center}
 $N$ - całkowita liczba dokumentów w zbiorze,
-\\$n_k$ - liczba dokumentów w których cecha $c_k$ wystąpiła przynajmniej raz.
+$n_k$ - liczba dokumentów w których cecha $c_k$ wystąpiła przynajmniej raz.
 \end{itemize}
 Ponadto w związku z założeniem o normalizacji wagi, które zostały uzyskane w wyniku \begin{math}
 TFIDF(t_k, d_j)
@@ -985,26 +1045,26 @@ Idea rozważana pod tym hasłem mówi, że jeżeli użytkownicy A i B wykazują 
 \item filtrowanie kolaboratywne oparte na  elementach (ang. item-based)
 \end{itemize}
 Cechą wspólną dla obu powyższych metod jest fakt, że oceny jednych użytkowników są podstawą do tworzenia rekomendacji dla innych. 
-\\Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach kontekstowych. Rekomendację są dokonywane tylko na podstawie ocen. Dzięki temu systemowi możemy również dokonywać rekomendacji na przestrzeni kilku kontekstów, co pozwala uniknąć nam konkretne wyspecjalizowanej przestrzeni obecnej w metodach kontekstowych.
+Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach kontekstowych. Rekomendację są dokonywane tylko na podstawie ocen. Dzięki temu systemowi możemy również dokonywać rekomendacji na przestrzeni kilku kontekstów, co pozwala uniknąć nam konkretne wyspecjalizowanej przestrzeni obecnej w metodach kontekstowych.
 \subsection{Przykład}
 Załóżmy więc przypadek gdy nie posiadamy informacji dotyczących gatunków książek ani informacji o preferencjach użytkowników.
-\\Wiemy tylko jakie oceny (z zakresu 1-10) wystawili użytkownicy książkom, które przeczytali:
+Wiemy tylko jakie oceny (z zakresu 1-10) wystawili użytkownicy książkom, które przeczytali:
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
 \textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
 \hline
 \hline
-\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?}\\
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{?} & 6 & 4 & \textbf{?} \\
 \hline
-&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?}\\
+&$\mathbf{k_2}$ & \textbf{?} & 6 & 6 & 5 & 6 & \textbf{?} \\
 \hline
 &$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
 \hline
-&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8 \\
 \hline
 &$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{?} \\
 \hline
-&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2 \\
 \hline
 \end{tabular}.
 \end{center}
@@ -1021,22 +1081,22 @@ Stworzenie rekomendacji opartej na użytkowniku wykonamy w kolejnych krokach:
 W celu dokładniejszego zrozumienia tego typu filtrowania został przedstawiony poniższy przykład.
 \subsubsection{Przykład}
 Chcąc obliczyć podobieństwo między użytkownikiem $c_2$ i $c_3$ wybierzmy książki, które przeczytali obaj użytkownicy. W tym przypadku są to: $k_2$, $k_3$, $k_4$, $k_5$, $k_6$. Na tej podstawie tworzymy odpowiednio wektory ocen użytkowników $o_{2,3} ^{(2)}$ i $o_{2,3}^{(3)}$. 
-\\Zatem
+Zatem
 \begin{center}
 $o_{2,3} ^{(2)}= \left[
         \begin{array}{c}
-         6 \\
-         7 \\
-         10 \\
-         6 \\
+         6 
+         7 
+         10 
+         6 
          7
          \end{array}
       \right]$ oraz $o_{2,3}^{(3)} = \left[
         \begin{array}{c}
-         6 \\
-         8 \\
-         10 \\
-         6 \\
+         6 
+         8 
+         10 
+         6 
          7
          \end{array}
       \right]$.
@@ -1050,39 +1110,39 @@ $d_{e}(o_{2,3}^{(2)},o_{2,3}^{(3)}) = \sqrt{(6-6)^2 + (7-8)^2 + (10-10)^2 + (6-6
 Postępując w podobny sposób dla każdej z par użytkowników otrzymamy następującą macierz odległości:
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$ \\
 \hline
 $\mathbf{c_1}$ & 0 & 5,099 & 4,243 & 3 & 4,359 & 3,606 \\
 \hline
-$\mathbf{c_2}$ & 5,099 & 0 & 1 & 4,796 & 5,196 & 5,745\\
+$\mathbf{c_2}$ & 5,099 & 0 & 1 & 4,796 & 5,196 & 5,745 \\
 \hline
-$\mathbf{c_3}$ & 4,243 & 1 & 0 & 3,873 & 5 & 5,477\\
+$\mathbf{c_3}$ & 4,243 & 1 & 0 & 3,873 & 5 & 5,477 \\
 \hline
-$\mathbf{c_4}$ & 3 & 4,796 & 3,873 & 0 & 2,828 & 3,742 \\
+$\mathbf{c_4}$ & 3 & 4,796 & 3,873 & 0 & 2,828 & 3,742  \\
 \hline 
 $\mathbf{c_5}$ & 4,359 & 5,196 & 5 & 2,828 & 0 & 3 \\
 \hline 
-$\mathbf{c_6}$ & 3,606 & 5,745 & 5,477 & 3,742 & 3 & 0 \\
+$\mathbf{c_6}$ & 3,606 & 5,745 & 5,477 & 3,742 & 3 & 0  \\
 \hline 
 \end{tabular}.
 \end{center}
 W celu uzyskania wartości z przedziału $[0,1]$ poddajemy macierz normalizacji 
-\\($max\{0,1,2,3,4,5,6,7,8,9,10\} - min\{0,1,2,3,4,5,6,7,8,9,10\}$):
+($max\{0,1,2,3,4,5,6,7,8,9,10\} - min\{0,1,2,3,4,5,6,7,8,9,10\}$):
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$ \\
 \hline
 $\mathbf{c_1}$ & 0 & 0,5099 & 0,4243 & 0,3 & 0,4359 & 0,3606 \\
 \hline
-$\mathbf{c_2}$ & 0,5099 & 0 & 0,1 & 0,4796 & 0,5196 & 0,5745\\
+$\mathbf{c_2}$ & 0,5099 & 0 & 0,1 & 0,4796 & 0,5196 & 0,5745 \\
 \hline
-$\mathbf{c_3}$ & 0,4243 & 0,1 & 0 & 0,3873 & 0,5 & 0,5477\\
+$\mathbf{c_3}$ & 0,4243 & 0,1 & 0 & 0,3873 & 0,5 & 0,5477 \\
 \hline
-$\mathbf{c_4}$ & 0,3 & 0,4796 & 0,3873 & 0 & 0,2828 & 0,3742 \\
+$\mathbf{c_4}$ & 0,3 & 0,4796 & 0,3873 & 0 & 0,2828 & 0,3742 \\ 
 \hline 
 $\mathbf{c_5}$ & 0,4359 & 0,5196 & 0,5 & 0,2828 & 0 & 0,3 \\
 \hline 
-$\mathbf{c_6}$ & 0,3606 & 0,5745 & 0,5477 & 0,3742 & 0,3 & 0 \\
+$\mathbf{c_6}$ & 0,3606 & 0,5745 & 0,5477 & 0,3742 & 0,3 & 0 \\ 
 \hline 
 \end{tabular}.
 \end{center}
@@ -1090,19 +1150,19 @@ Im większa odległość między czytelnikami tym mniejsze jest podobieństwo ja
 Zakładając, że największa wartość prawdopodobieństwa to $1$ macierz podobieństwa przyjmuje wartości:
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\textbf{Czytelnicy} & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$ \\
 \hline
 $\mathbf{c_1}$ & 1 & 0,4901 & 0,5757 & 0,7 & 0,5641 & 0,6394 \\
 \hline
-$\mathbf{c_2}$ & 0,4901 & 1 & 0,9 & 0,5204 & 0,4804 & 0,4255\\
+$\mathbf{c_2}$ & 0,4901 & 1 & 0,9 & 0,5204 & 0,4804 & 0,4255 \\
 \hline
-$\mathbf{c_3}$ & 0,5757 & 0,9 & 1 & 0.6127 & 0,5 & 0,4523\\
+$\mathbf{c_3}$ & 0,5757 & 0,9 & 1 & 0.6127 & 0,5 & 0,4523 \\
 \hline
-$\mathbf{c_4}$ & 0,7 & 0,5204 & 0.6127 & 1 & 0,7172 & 0,6258 \\
+$\mathbf{c_4}$ & 0,7 & 0,5204 & 0.6127 & 1 & 0,7172 & 0,6258 \\ 
 \hline 
 $\mathbf{c_5}$ & 0,5641 & 0,4804 & 0,5 & 0,7172 & 1 & 0,7 \\
 \hline 
-$\mathbf{c_6}$ & 0,6394 & 0,4255 & 0,4523 & 0,6258 & 0,7 & 1 \\
+$\mathbf{c_6}$ & 0,6394 & 0,4255 & 0,4523 & 0,6258 & 0,7 & 1 \\ 
 \hline 
 \end{tabular}.
 \end{center}
@@ -1111,31 +1171,31 @@ Bazując na przedstawionych podobieństwach wyestymujmy ocenę jaką użytkownik
 $\frac{0,4901 \cdot 6 + 0,5757 \cdot 6 + 0,7 \cdot 5 + 0,5641 \cdot 6}{0,4901 + 0,5757  + 0,7  + 0,5641} = 5,7$
 \end{center}
 Na podstawie metody filtrowania kolaboratywnego opartej na użytkownikach wnioskujemy, że użytkownik $c_1$ wystawiłby książce $k_2$ ocenę $5,7$.
-\\Postępując w analogiczny sposób przewidzimy wszystkie brakujące oceny :
+Postępując w analogiczny sposób przewidzimy wszystkie brakujące oceny :
 \begin{center}
 \begin{tabular}{|r|r|r|r|r|r|r|r|} \hline
-\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$\\
+\textbf{Czytelnicy} & & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $\mathbf{c_3}$ & $\mathbf{c_4}$ & $\mathbf{c_5}$ & $\mathbf{c_6}$ \\
 \hline
 \hline
-\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{4,57} & 6 & 4 & \textbf{4,88}\\
+\textbf{Książki} &$\mathbf{k_1}$ & 6 & 3 & \textbf{4,57} & 6 & 4 & \textbf{4,88} \\
 \hline
-&$\mathbf{k_2}$ & \textbf{5,7} & 6 & 6 & 5 & 6 & \textbf{5,72}\\
+&$\mathbf{k_2}$ & \textbf{5,7} & 6 & 6 & 5 & 6 & \textbf{5,72} \\
 \hline
 &$\mathbf{k_3}$ & 7 & 7 & 8 & 7 & 8 & 9 \\
 \hline
-&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8\\
+&$\mathbf{k_4}$ & 8 & 10 & 10 & 7 & 6 & 8 \\
 \hline
-&$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{6,67} \\
+&$\mathbf{k_5}$ & 9 & 6 & 6 & 6 & 6 & \textbf{6,67}  \\
 \hline
-&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2\\
+&$\mathbf{k_6}$ & 5 & 7 & 7 & 5 & 4 & 2 \\
 \hline
 \end{tabular}.
 \end{center}
 na których podstawie możemy dokonać rekomendacji dla naszych użytkowników.
-\\Możemy wnioskować, że dla użytkownika $c_3$ książka $k_1$ prawdopodobnie nie będzie zbyt atrakcyjna. Użytkownik $c_6$, natomiast, z chęcią przeczyta książkę $k_5$. 
+Możemy wnioskować, że dla użytkownika $c_3$ książka $k_1$ prawdopodobnie nie będzie zbyt atrakcyjna. Użytkownik $c_6$, natomiast, z chęcią przeczyta książkę $k_5$. 
 \subsection{Filtrowanie kolaboratywne oparte na  elementach}
 W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez  wartości podobieństwa między elementami.
-\\W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
+W tym przypadku założenie mówi, że jeżeli użytkownik wybrał przedmiot A w przeszłości oraz przedmiot B jest podobna do A, to użytkownik będzie skłonny wybrać również przedmiot B.
 \subsubsection{Algorytm}
 Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykonać dwa kroki.
 \begin{enumerate}
@@ -1145,73 +1205,73 @@ Podobnie jak w przypadku opartym na użytkowniku, w tym również należy wykona
 
 \subsubsection{Przykład}
 W tym przypadku wektory odzwierciedlają zbiory ocen wystawione poszczególnym książkom przez użytkowników.
-\\Wektor mają zatem postać:
+Wektor mają zatem postać:
 \begin{center}
 $o^{(k_1)} = \left[
         \begin{array}{c}
-         6 \\
-         3 \\
-         6 \\
+         6 
+         3 
+         6 
          4 
          \end{array}
       \right]$, $o^{(k_2)} = \left[
         \begin{array}{c}
-         6 \\
-         6 \\
-         5 \\
+         6 
+         6 
+         5 
          6
          \end{array}
       \right]$, $o^{(k_3)} = \left[
         \begin{array}{c}
-         7 \\
-         7 \\
-         8 \\
-         7 \\
-         8 \\
+         7 
+         7 
+         8 
+         7 
+         8 
          9
          \end{array}
       \right]$, $o^{(k_4)} = \left[
         \begin{array}{c}
-         8 \\
-         10 \\
-         10 \\
-         7 \\
-         6 \\
+         8 
+         10 
+         10 
+         7 
+         6 
          8
          \end{array}
       \right]$, $o^{(k_5)} = \left[
         \begin{array}{c}
-         9 \\
-         6 \\
-         6 \\
-         6 \\
+         9 
+         6 
+         6 
+         6 
          6
          \end{array}
       \right]$, $o^{(k_6)} = \left[
         \begin{array}{c}
-         5 \\
-         7 \\
-         7 \\
-         5 \\
-         4 \\
+         5 
+         7 
+         7 
+         5 
+         4 
          2
          \end{array}
       \right]$
 \end{center}
 Warto zauważyć, że wektory są różnej długości.
-\\Aby obliczyć podobieństwo między książkami $k_1$ i $k_2$ wyznaczmy wektory ocen w których uwzględnimy przypadki, gdzie jeden użytkownik ocenił obie pozycje.
-\\Zatem:
+Aby obliczyć podobieństwo między książkami $k_1$ i $k_2$ wyznaczmy wektory ocen w których uwzględnimy przypadki, gdzie jeden użytkownik ocenił obie pozycje.
+Zatem:
 \begin{center}
 $\overline{o^{(k_1)}} = \left[
         \begin{array}{c}
-         3 \\
-         6 \\
+         3 
+         6 
          4
          \end{array}
       \right]$, $\overline{o^{(k_2)}} = \left[
         \begin{array}{c}
-         6 \\
-         5 \\
+         6 
+         5 
          6
          \end{array}
       \right]$.
@@ -1248,32 +1308,32 @@ Wyestymujmy teraz ocenę jaką użytkownik $c_6$ zaproponuje dla książki $k_2$
 $\frac{(0,7951 \cdot 9 + 0,8150 \cdot 8 + 0,8898 \cdot 2)}{(0,7951 + 0,8150 + 0,8898)} = 6,16 $.
 \end{center}
 Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby po przeczytaniu użytkownik $c_6$ książce $k_2$ to $6,16$.
-\\Powtarzając powyższe obliczenia dla każdej z pozycji wcześniej nieocenionej przez wybranego użytkownika otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania użytkownikowi.
+Powtarzając powyższe obliczenia dla każdej z pozycji wcześniej nieocenionej przez wybranego użytkownika otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania użytkownikowi.
 
 \section{Inne wykorzystanie algorytmów}
 Jak znając wektory preferencji użytkowników $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ odnaleźć wektor cech konkretnej książki $g^{(i)}$, gdzie $i \in \{1,...,n_m\}$?
-\\Minimalizując następujące równanie:
+Minimalizując następujące równanie:
 $$\min \limits_{g^{(i)}} \frac{1}{2} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{k=1}^n (g_k^{(i)})^2.$$
-\\
-\\Aby odnaleźć wektory cech $g^{(1)}, g^{(2)},...,g^{(n_m)}$ wszystkich książek równanie, które minimalizujemy przyjmuje następującą postać:
+
+Aby odnaleźć wektory cech $g^{(1)}, g^{(2)},...,g^{(n_m)}$ wszystkich książek równanie, które minimalizujemy przyjmuje następującą postać:
 $$\min \limits_{g^{(1)},...,g^{(n_m)}} \frac{1}{2} \sum_{i=1}^{n_m} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{i=1}^{n_m} \sum_{k=1}^n (g_k^{(i)})^2.$$
-\\
-\\Znając wektory cech książek i oceny wystawione przez użytkowników możemy przewidzieć wektory preferencji użytkowników $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ poprzez:
+
+Znając wektory cech książek i oceny wystawione przez użytkowników możemy przewidzieć wektory preferencji użytkowników $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ poprzez:
 $$\min \limits_{\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}} \frac{1}{2} \sum_{i=1}^{n_u} \sum_{j:r(i,j)=1} ((\Theta^{(j)})^T g^{(i)} - y(i,j))^2 + \frac{\lambda}{2} \sum_{i=1}^{n_u} \sum_{k=1}^n (\Theta^{(j)})^2.$$
 Ponownie znając $\Theta^{(1)}, \Theta^{(2)},...,\Theta^{(n_u)}$ możemy wyestymować $g^{(1)}, g^{(2)},...,g^{(n_m)}$.
-\\
-\\Powtarzając powyższe kroki odnajdowania wektorów cech elementów i wektorów preferencji użytkowników stworzymy algorytm, który z każdą iteracją będzie dokładniej estymował szukane wartości.
+
+Powtarzając powyższe kroki odnajdowania wektorów cech elementów i wektorów preferencji użytkowników stworzymy algorytm, który z każdą iteracją będzie dokładniej estymował szukane wartości.
 \section{Systemy rekomendujące kontekstowe ( Context – aware recommender systems):}
 
 \subsection{Algorytm}
 Systemy rekomendujące kontekstowe są systemami rekomendującymi opartymi na treści w których zostaje uwzględniony dodatkowy wymiar zwany kontekstem.
 
 \begin{df}\textbf{(Kontekst)}
-\\Kontekstem w rozumieniu eksploracji danych nazywamy obecny stan użytkownika. Autorzy książki "Recommender Systems Handbook" definiują kontekst jako wydarzenie charakteryzujące etap życia użytkownika i wpływające na jego preferencje, status. Pod pojęciem tym kryje się nie tylko miejsce, czas, pogoda, dzień, ale także fakt, że użytkownik spędza czas samotnie lub w gronie innych osób, narodziny dziecka, zmiana pracy, małżeństwo. Wiedza na temat kontekstowych informacji pozwala zbudować wzorce i algorytmy w odniesieniu do konkretnych, istotnych danych.
+Kontekstem w rozumieniu eksploracji danych nazywamy obecny stan użytkownika. Autorzy książki "Recommender Systems Handbook" definiują kontekst jako wydarzenie charakteryzujące etap życia użytkownika i wpływające na jego preferencje, status. Pod pojęciem tym kryje się nie tylko miejsce, czas, pogoda, dzień, ale także fakt, że użytkownik spędza czas samotnie lub w gronie innych osób, narodziny dziecka, zmiana pracy, małżeństwo. Wiedza na temat kontekstowych informacji pozwala zbudować wzorce i algorytmy w odniesieniu do konkretnych, istotnych danych.
 \end{df}
 Przykładem, który dobrze obrazuje podejście kontekstowe w tworzeniu rekomendacji są biura podroży, które w tworzeniu ofert uwzględniają sezon, miejsca, czas, sytuację finansowa klienta oraz czas, kiedy oferta zostaje przedstawiona. 
-\\
-\\Warto zauważyć również, że uprzednio opisane metody opierały się głownie na rozważaniu problemów dwu-wymiarowych. W tym podejściu, przez dodanie nowego wymiaru, jakim jest kontekst, zaczynamy rozważać problemy trój-wymiarowe:
+
+Warto zauważyć również, że uprzednio opisane metody opierały się głownie na rozważaniu problemów dwu-wymiarowych. W tym podejściu, przez dodanie nowego wymiaru, jakim jest kontekst, zaczynamy rozważać problemy trój-wymiarowe:
 \begin{center}
 R: Użytkownik x element x kontekst $ \Rightarrow$ Rekomendacja
 \end{center}
@@ -1281,14 +1341,14 @@ W modelu kontekstowym rekomendacje są generowane w dwóch krokach:
 \begin{enumerate}
 \item Metody systemów rekomendujących opartych na treści służące do wygenerowania listy rekomendacji bazującej na  preferencjach użytkownika.
 \item Odfiltrowanie rekomendacji, które odpowiadają przyjętemu kontekstowi.
-\\Wyróżniamy tutaj dwa warianty. W pierwszym etap filtrowania zostaje dokonany na końcu, natomiast w drugim filtrowanie jest etapem wstępnym do tworzenia rekomendacji.
-\\
-\\
+Wyróżniamy tutaj dwa warianty. W pierwszym etap filtrowania zostaje dokonany na końcu, natomiast w drugim filtrowanie jest etapem wstępnym do tworzenia rekomendacji.
+
+
 \textbf{Filtrowanie jako etap wstępny (ang. Pre-Filtering)}
-\\W tym podejściu informacje kontekstowe używane są do odfiltrowania najbardziej istotnyc    h informacji i skonstruowania dwuwymiarowego zbioru danych. Bardzo dużą zaletą tego podejścia jest możliwość implementacji w kolejnym kroku wcześniej opisanych metod rekomendacji. 
-\\
-\\ \textbf{Filtrowanie jako etap końcowy (ang. Post-Filtering)}
-\\Informacje o kontekście są ignorowane w wejściowych danych, a rekomendacja dokonywana jest na całym zbiorze. To w następnym kroku lista rekomendacji stworzona dla użytkownika jest zawężana przez uwzględnienie kontekstu.
+W tym podejściu informacje kontekstowe używane są do odfiltrowania najbardziej istotnyc    h informacji i skonstruowania dwuwymiarowego zbioru danych. Bardzo dużą zaletą tego podejścia jest możliwość implementacji w kolejnym kroku wcześniej opisanych metod rekomendacji. 
+
+ \textbf{Filtrowanie jako etap końcowy (ang. Post-Filtering)}
+Informacje o kontekście są ignorowane w wejściowych danych, a rekomendacja dokonywana jest na całym zbiorze. To w następnym kroku lista rekomendacji stworzona dla użytkownika jest zawężana przez uwzględnienie kontekstu.
 \end{enumerate}
 
 \section{Hybrydowe systemy rekomendujące (): ????}
