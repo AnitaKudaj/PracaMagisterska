@@ -57,7 +57,8 @@
 \newcommand{\standardh}{\sigma_h}
 \newcommand{\standardij}{\sigma_{ij}}
 \newcommand{\p}[1]{\operatorname{P}\left({#1} \right)}
-\newcommand{\sigmacialo}[1]{\operatorname{\beta}\left({#1} \right)}
+\newcommand{\sigmacialo}[1]{\operatorname{B}\left({#1} \right)}
+
 
 \author{Anita Kudaj}
 \title{Matematyczne modele wykorzystywane w systemach rekomendacji.}
@@ -128,20 +129,13 @@ napisana w Instytucie Matematyki
 \section{Oznaczenia używane w pracy}
 $\setN$ - zbiór liczb naturalnych,
 \\$\setR$ - zbiór liczb rzeczywistych,
-\\$\setK$ - ciało,
+\\$\setK$ - ciało liczb rzeczywistych lub zespolonych,
 \\$\mathit{X}$ - zbiór,
-\\$\mathbf{X}$ - wektor,
+\\$\mathbf{x}$ - wektor,
 \\$\mathrm{X}$ - zmienna losowa,
 \\$\mathbb{X}$ - macierz,
 \\$[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$ - macierz o $m$ wierszach i $n$ kolumnach,
 \\$[a_{ij}]$ - macierz kwadratowa,
-\\$\mathbb{E}$ - macierz jednostkowa,
-\\$\mathbb{X}^T$ - transpozycja macierzy,
-\\$\tr{\mathbb{X}} $ - ślad macierzy  $\mathbb{X}$,
-\\$diag(x_{11}, x_{22}, \ldots , x_{nn})$ - macierzy diagonalna $\mathbb{X}$,
-\\$\rk{\mathbb{X}}$ - rząd kolumnowy macierzy $\mathbb{X}$,
-\\${\rw{\mathbb{X}}}$ - rząd wierszowy macierzy $\mathbb{X}$,
-\\${\rz{\mathbb{X}}}$ - rząd macierzy $\mathbb{X}$,
 \\$\mathbb{M}_{m \times n}(\setK)$ - zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$,
 \\$\mathcal{V}$ - przestrzeń liniowa,
 \\$\przestrzen{\mathit{X}}$ - przestrzeń generowana przez zbiór $\mathit{X}$,
@@ -166,14 +160,14 @@ $\setN$ - zbiór liczb naturalnych,
 \\ ${\norm{\cdot}}_F$ - norma Frobeniusa.
 \section{Elementy algebry liniowej}
 
-W definicjach poniżej korzystamy z pojęcia ciała, którego wyjaśnienie odnajdziemy w publikacji {\citep[Sec 4.4]{alzega}}.
+W definicjach poniżej korzystamy z pojęcia ciała, którego wyjaśnienie odnajdziemy w książce Tadeusza Poredy i Jacka Jędrzejewskiego \textit{Algebra liniowa z elementami geometrii analitycznej} {\citep[Sec 4.4]{alzega}}.
 
 \begin{df}[Macierz {\citep[Sec 8.1 Def. 8.1]{alzega}}]
-Macierzą o $m$ wierszach, $n$ kolumnach (o wymiarach $m \times n$) i wyrazach w ciele $\setK$ nazywamy funkcję 
+Niech $n,m \in \setN$. Macierzą o $m$ wierszach, $n$ kolumnach (o wymiarach $m \times n$) i wyrazach w ciele $\setK$ nazywamy funkcję 
 $$
-\mathbb{A}: \set{1,2, \ldots ,m}\times \set{1,2, \ldots ,n} \to \setK,
+\mathbb{A}: \set{1,2, \ldots ,m}\times \set{1,2, \ldots ,n} \to \setK.
 $$
-gdzie $n \in \setN, m \in \setN$. Wartością funkcji dla argumentu $(i,j)$ jest element $a_{ij}$  należący do ciała $\setK$. Macierz zapisujemy w postaci tabeli
+Wartością funkcji dla argumentu $(i,j)$ jest element $a_{ij}$  należący do ciała $\setK$. Macierz zapisujemy w postaci tabeli
 $$
 \mathbb{A} = \left[
         \begin{array}{cccc}
@@ -185,6 +179,8 @@ $$
       \right].
 $$
 \end{df}
+\bigskip
+Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczmy zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$.
 
 \begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
 Przykładowe sposoby zapisu macierzy:
@@ -198,13 +194,12 @@ W tej pracy używać będziemy zapisu $[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldot
 \end{uwaga}
 
 \begin{df}[Macierz transponowana {\citep[Sec 8.1 ]{alzega}}]
-Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczmy zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$.
 Niech $\mathbb{A}$, gdzie $\mathbb{A} = [a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$, będzie macierzą ze zbioru $\mathbb{M}_{m \times n}(\setK)$.
-Macierz $\mathbb{B}$, gdzie $\mathbb{B} = [b_{ij}]_{j = 1, \ldots, m}^{i = 1, \ldots , n}$ ze zbioru $\mathbb{M}_{n \times m}(\setK)$ nazywamy macierzą transponowaną macierzy $\mathbb{A}$, jeśli 
+Macierz $\mathbb{B} = [b_{ij}]_{j = 1, \ldots, m}^{i = 1, \ldots , n}$ nazywamy macierzą transponowaną macierzy $\mathbb{A}$, jeśli 
 $$
 b_{ji} = a_{ij}
 $$ 
-dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$. Macierz transponowaną macierzy $\mathbb{A}$ oznaczamy jako $\mathbb{A}^T$.
+dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$ i oznaczamy jako $\mathbb{A}^T$.
 \end{df}
 
 \begin{uwaga}[Rodzaje macierzy {\citep[Sec 8.1, Sec 10.4]{alzega}}]
@@ -213,10 +208,10 @@ Poniżej zostały zdefiniowane niektóre rodzaje macierzy.
 \item Macierzą kwadratową nazywamy macierz, w której liczb wierszy i liczba kolumn są równe. Liczbę tę nazywamy stopniem macierzy kwadratowej.
 \item Macierzą diagonalną nazywamy macierz kwadratową $[a_{ij}]$, gdzie wszystkie elementy poza główną przekątną są równe $0$. Macierz diagonalną oznaczamy 
 \\$diag(a_{11}, a_{22}, \ldots , a_{nn})$.
-\item Macierzą jednostkową stopnia $n$ nazywamy macierz diagonalną, w której na głównej przekątnej wszystkie elementy są równe $1$. Macierz jednostkową będziemy oznaczać $\mathbb{E}$.
+\item Macierzą jednostkową stopnia $n$ nazywamy macierz diagonalną, w której na głównej przekątnej wszystkie elementy są równe $1$. Macierz jednostkową będziemy oznaczać $\mathbb{I}$.
 \item Macierz kwadratową $\mathbb{C}$, gdzie $\mathbb{C} = [c_{ij}]$, nazywamy macierzą ortogonalną, jeżeli spełniony jest warunek
 $$
-\mathbb{C}^T \cdot \mathbb{C} = \mathbb{C} \cdot \mathbb{C}^T = \mathbb{E}. 
+\mathbb{C}^T \cdot \mathbb{C} = \mathbb{C} \cdot \mathbb{C}^T = \mathbb{I}. 
 $$
 \item Macierzą nieosobliwą nazywamy macierz kwadratową, której wyznacznik jest różny od $0$.
 \item Macierzą osobliwą nazywamy macierz kwadratową, której wyznacznik jest równy $0$.
@@ -259,7 +254,7 @@ Element $c_{lj}$ tego iloczynu to iloczyn $l$ - tego wiersza macierzy $\mathbb{B
 
 \begin{df}[Dodawanie macierzy {\citep[Sec 8.1]{alzega}}]
 Niech $\mathbb{A}, \mathbb{B} \in \mathbb{M}_{m \times n} (\setK)$.
-Dodawaniem macierzy  $\mathbb{B}$ i $\mathbb{A}$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
+Dodawaniem macierzy $(\mathbb{B} + \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
 $$
 c_{ij} = b_{ij} + a_{ij}.
 $$
@@ -267,7 +262,7 @@ $$
 
 \begin{df}[Mnożenie macierzy przez element ciała {\citep[Sec 8.1]{alzega}}]
 Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
-Mnożeniem macierzy $\mathbb{A}$ przez $\lambda$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
+Mnożeniem macierzy przez element z ciała $(\lambda \cdot \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
 $$
 c_{ij} = \lambda \cdot a_{ij}.
 $$
@@ -285,7 +280,7 @@ Zachodzą następujące równości:
 \end{tw}
 
 \begin{df}[Ślad macierzy]
-Śladem macierzy  $\mathbb{A}\in \mathbb{M}_{n,n}(\setK)$ nazywamy wielkość:
+Śladem macierzy  $\mathbb{A} = [a_{ij}]$ nazywamy wielkość:
 $$
 \tr{\mathbb{A}} = \sum_{i=1}^n a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}.
 $$
@@ -303,7 +298,7 @@ Niech $\mathbb{A} \in \mathbb{M}_{m\times n}(\setK)$. Rzędem kolumnowym macierz
 Rzędem macierzy $\mathbb{A}$ nazywamy wspólną wartość rzędu kolumnowego i wierszowego macierzy $\mathbb{A}$. Rząd macierzy oznaczamy symbolem $\rz{\mathbb{A}}$.
 \end{df}
 
-W definicji poniżej korzystamy z pojęcia przestrzeni liniowej. Wyjaśnienie tego pojęcia możemy odnaleźć w publikacji {\citep[Sec 7.1]{alzega}}.
+W definicji poniżej korzystamy z pojęcia przestrzeni liniowej. Wyjaśnienie tego pojęcia możemy odnaleźć w książce \textit{Algebra liniowa z elementami geometrii analitycznej} {\citep[Sec 7.1]{alzega}}.
 
 \begin{df}[Przestrzeń generowana przez zbiór {\citep[Sec 7.1 Def 7.13]{alzega}}]
 Niech $\mathit{X}$ będzie dowolnym i niepustym podzbiorem przestrzeni liniowej $\mathcal{V}$. Podprzestrzenią generowaną przez zbiór $\mathit{X}$ nazywamy zbiór wszystkich  skończonych kombinacji liniowych wektorów ze zbioru $\mathit{X}$. Zbiór ten oznaczamy symbolem $\przestrzen{\mathit{X}}$.
@@ -315,10 +310,18 @@ $$
 gdzie $\mathcal{V}$ jest przestrzenią liniową nad ciałem liczb rzeczywistych lub ciałem liczb zespolonych $\setK$.
 \end{df}
 
+\begin{df}[Wartość własna macierzy kwadratowej {\citep[Sec 12.2]{alzega}}]
+Liczbę $\lambda$ nazywamy wartością własną macierzy kwadratowej $\mathbb{A}$, jeżeli istnieje niezerowy wektor $\mathbf{x}$ taki, że
+$$
+\mathbb{A}\mathbf{x}=\lambda\mathbf{v}.
+$$
+Każdy niezerowy wektor $\mathbf{x}$ spełniający powyższe równania nazywamy wektorem własnym macierzy $\mathbb{A}$ odpowiadającym wartości własnej $\lambda$.
+\end{df}
+
 \section{Elementy rachunku prawdopodobieństwa i statystyki}
 
 \begin{df}[Przestrzeń probabilistyczna {\citep[Sec 1.2, Sec 1.4]{wztp}}]
-Przestrzenią probabilistyczną nazywamy trójką $(\Omega, \mathcal{F}, P)$, gdzie:
+Przestrzenią probabilistyczną nazywamy uporządkowaną trójkę $(\Omega, \mathcal{F}, P)$, gdzie:
 \begin{itemize}
 \item $\Omega$ to zbiór wszystkich zdarzeń elementarnych i $\Omega \neq \varnothing$,
 \item $ \mathcal{F} $ rodzina podzbiorów zbioru $\Omega$ taka, że:
@@ -347,7 +350,7 @@ Najmniejszą $\sigma$-algebrę $\sigma(\mathcal{I})$ generowaną przez klasę zb
 \end{df}
 
 \begin{df}[Zmienna losowa {\citep[Sec 5.1 Def. 1]{jakubowski}}]
-Odwzorowanie $\mathrm{X}: \Omega \to \setR^n$ nazywamy zmienną losową o wartościach w $\setR^n$, jeśli dla każdego $\mathit{A} \in \sigmacialo{\setR^n}$ zbiór $\mathrm{X}^{(-1)}(\mathit{A}) \in \mathcal{F}$.
+Odwzorowanie $\mathrm{X}: \Omega \to \setR^n$ nazywamy zmienną losową o wartościach w $\setR^n$, jeśli dla każdego $\mathit{A} \in \sigmacialo{\setR^n}$ zbiór $\mathrm{X}^{-1}(\mathit{A}) \in \mathcal{F}$.
 \end{df}
 
 \begin{df}[Wartość oczekiwana {\citep[Sec 5.6 Def. 2]{jakubowski}}]
@@ -355,7 +358,7 @@ Wartością oczekiwaną zmiennej losowej $\mathrm{X}$ o wartościach w $\setR$ n
 $$
 \e{\mathrm{X}} = \int_{\Omega} \mathrm{X} dP,
 $$
-jeżeli $\mathrm{X}$ jest całkowalna, tzn. jeżeli zachodzi:
+jeżeli $\mathrm{X}$ jest $P$-całkowalna, tzn. jeżeli zachodzi:
 $$
 \e{\mathrm{X}} = \int_{\Omega} |\mathrm{X}| dP < \infty.
 $$
@@ -370,7 +373,7 @@ $$
 \begin{df}[Wariancja zmiennej losowej {\citep[Sec 2.8 Def.2.28]{wztp}}]
 Wariancją zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
-\variance{\mathrm{X}}=\e{[\mathrm{X}-\e{\mathrm{X}}]^2},
+\variance{\mathrm{X}}=\e{(\mathrm{X}-\e{\mathrm{X}})^2},
 $$
 jeżeli po prawej stronie równości wartość oczekiwana istnieje.
 \end{df} 
@@ -441,9 +444,9 @@ Najprostszym i jednocześnie najczęściej używanym podejściem jest odległoś
 
 \begin{df}[Odległość euklidesowa \citep{rsh}]%Spodzieja S.: Wstęp do analizy matematycznej funkcje jednej zmiennej.
 
-Niech $x,y \in \setR^n $, $n \in\setN$. Odległością euklidesową punktów $x$ i $y$ nazywamy:
+Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością euklidesową $\mathbf{x}$ i $\mathbf{y}$ nazywamy:
 $$
-\distanceee{x}{y} = \sqrt{\sum_{k=1}^n(x_k-y_k)^2}.
+\distanceee{x}{y} = \sqrt{\sum_{k=1}^n(\mathbf{x}_k-\mathbf{y}_k)^2}.
 $$
 \end{df}
 
@@ -463,20 +466,20 @@ W zależności od wartości stopnia odległości $r$ odległość Minkowskiego p
 Kolejnym podejściem, gdzie poszczególne elementy są postrzegane jako $n$ - wymiarowe wektory, a podobieństwo między nimi jest obliczane na podstawie kąta, który tworzą jest odległość kosinusowa.
 
 \begin{df}[Odległość kosinusowa \citep{rsh}] %https://pqstat.pl/?mod_f=macpod
-Niech $\mathbf{X},\mathbf{Y} \in \setR^n $, $n \in\setN$. Odległością kosinusową nazywamy:
+Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością kosinusową nazywamy:
 $$
-\distance{\mathbf{X}}{\mathbf{Y}} = 1 - \similarity{\mathbf{X}}{\mathbf{Y}},
+\distance{\mathbf{x}}{\mathbf{y}} = 1 - \similarity{\mathbf{x}}{\mathbf{y}},
 $$ 
-gdzie $\similarity{\mathbf{X}}{\mathbf{Y}}$ to współczynnik podobieństwa wektorów $\mathbf{X}$ i $\mathbf{Y}$:
+gdzie $\similarity{\mathbf{x}}{\mathbf{y}}$ to współczynnik podobieństwa wektorów $\mathbf{x}$ i $\mathbf{y}$:
 $$
-\similarity{\mathbf{X}}{\mathbf{Y}} = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}.
+\similarity{\mathbf{x}}{\mathbf{y}} = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}.
 $$
 \end{df}
 Innym podejściem jest korelacja Pearsona, którą definiujemy następująco:
 
 \begin{df}[Współczynnik korelacji Pearsona \citep{rsh}]
 
-Niech $\mathrm{X},\mathrm{Y} \in \setR^n$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\set{1, \ldots, n}$  oznaczają wartości prób losowych tych zmiennych. 
+Niech $\mathrm{X},\mathrm{Y}$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\set{1, \ldots, n}$  oznaczają wartości prób losowych tych zmiennych. 
 Przez $\overline{x}$ i $\overline{y}$ oznaczmy:
 $$
 \overline{x}=\frac{1}{n} \sum_{k=1}^n x_k, \: \overline{y}=\frac{1}{n} \sum_{k=1}^n y_k.
@@ -496,264 +499,40 @@ $$
 \end{df}
 
 \subsection{Redukcja wymiaru}
-Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć, że tym samym rośnie stopień komplikacji w interpretacji otrzymanych wyników. Zbyt duża ilość zmiennych, które opisują obserwacje powoduje wzrost prawdopodobieństwa, że zmienne te są ze sobą skorelowane, a informacje wnoszone przez część zmiennych są redundantne. Proces redukcji wymiaru pozwala przezwyciężyć ten problem poprzez transformację przestrzeni danych do przestrzeni o mniejszej liczbie wymiarów. W poniższym rozdziale przyjrzymy się najczęściej wybieranym algorytmom redukcji wymiarów w kontekście reguł rekomendujących. Są to analiza głównych składowych oraz rozkład według wartości osobliwych.
+Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć, że tym samym rośnie stopień komplikacji w interpretacji otrzymanych wyników. Zbyt duża ilość zmiennych, które opisują obserwacje powoduje wzrost prawdopodobieństwa, że zmienne te są ze sobą skorelowane, a informacje wnoszone przez część zmiennych są redundantne. Proces redukcji wymiaru pozwala przezwyciężyć ten problem poprzez transformację przestrzeni danych do przestrzeni o mniejszej liczbie wymiarów. W poniższym rozdziale przyjrzymy się najczęściej wybieranemu algorytmom redukcji wymiarów w kontekście reguł rekomendujących. Jest to Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD)).
 
-\subsubsection{Analiza czynnikowa}
-Opis analizy czynnikowej oparty został na {\citep[Sec 11.1]{sadzwpr}}.
-
-Głównym celem analizy czynnikowej jest odnalezienie nowego zbioru zmiennych, który jest mniej liczny niż zbiór zmiennych wejściowych a jednocześnie wyraża zależności między zmiennymi obserwowalnymi.
-
-\begin{df}[Matematyczny model analizy czynnikowej {\citep[Sec 11.1]{sadzwpr}}]
-Matematycznym modelem analizy czynnikowej nazywamy zapis postaci:
-$$
-\mathbb{Y} = \mathbb{A}\mathbb{X} + \mathbb{B}\mathbb{Z},
-$$
-gdzie:
-\begin{itemize}
-\item $\mathbb{Y} = [\mathrm{Y}_1,\mathrm{Y}_2,\ldots ,\mathrm{Y}_m]^T$, $m \in \setN $ to macierz standaryzowanych zmiennych, $\mathrm{Y}_j=(y_{1j}, y_{2j},\ldots , y_{Tj})$, $j \in \set{1, \ldots , m}$ - numer zmiennej, $T$ - liczba obserwacji,
-\item $\mathbb{A} = [a_{jl}]_{m \times k}$, gdzie $k \leq m$ - macierz ładunków czynnikowych czynników wspólnych, $l \in \set{1,2, \ldots,k}$ - numer czynnika wspólnego,
-\item $\mathbb{X} = [\mathrm{X}_1, \mathrm{X}_2, \ldots \mathrm{X}_k]^T$ - macierz czynników wspólnych, gdzie $\mathrm{X}_l = (x_{l1}, x_{l2}, \ldots , x_{lT})$,
-\item $\mathbb{B} = [\diag{b_j})]_{m \times m}$ - macierz ładunków czynnikowych czynników specyficznych,
-\item $\mathbb{Z} = [\mathrm{Z}_1, \mathrm{Z}_2, \ldots , \mathrm{Z}_m]^T$ - macierz czynników specyficznych, gdzie , $Z_j=(z_{1j}, z_{2j},\ldots , z_{Tj})$.
-\end{itemize}
-\end{df}
-Zmienne obserwowalne poddaje się procesowi standaryzacji. Czynniki wspólne i specyficzne są standaryzowane i wzajemnie ortogonalne. 
-
-\begin{df}[Normalizacja]
-Normalizacją nazywamy procedurę wstępnej obróbki danych umożliwiającą ich dalsze porównanie i analizę.
-\end{df}
-
-\begin{df}[Standaryzacja {\citep[Sec 11.1]{sadzwpr}}]
-Standaryzacją nazywamy rodzaj normalizacji zmiennej losowej, w którym wartość oczekiwana zmiennej losowej otrzyma wartość $0$, natomiast odchylenie standardowe wartość $1$, opisany za pomocą wzoru:
-$$
-y_{ij} = \frac{v_{ij}-\overline{v}_j}{\standardj},
-$$
-gdzie:
-\begin{itemize}
-\item $i \in \set{1,2, \ldots , n}$ - numer obiektu, 
-\item $j \in \set{1,2, \ldots , m}$ - numer zmiennej,
-\item $v_{ij} $ - wartość $j$ - tej zmiennej pierwotnej dla $i$ - tego obiektu
-\item $\overline{v}_j$ - średnia arytmetyczna $j$ - tej zmiennej pierwotnej,
-\item $\standardj$ - odchylenie standardowe dla  $j$ - tej zmiennej pierwotnej.
-\end{itemize}
-\end{df}
-
-W wyniku standaryzacji otrzymamy zmienne, których wartość oczekiwana $\overline{v}_j = 0$ i odchylenie standardowe $\standardj =1$.
-
-Równanie $(3.1)$ można zapisać w następujący sposób:
-$$
-y_{ij}=a_{j1}x_{1i} + a_{j2}x_{2i} + \ldots + a_{jk}x_{ki} + b_jz_{ij} = \sum_{t=1}^{k} a_{jt}x_{ti} + b_jz_{ij}.
-$$
-Celem analizy czynnikowej jest wyznaczenie ładunki czynnikowych $a_{jl}$ oraz $b_j$ na podstawie zmiennych wejściowych $v_{ij}$. Między zmiennymi zachodzą związki, które są określane za pomocą współczynników korelacji Pearsona i określone w macierzy:
-$$
-\mathbb{R} = [\rho_{{jh}}^p]_{m\times m}.
-$$ 
-Wyrazy macierzy obliczane są za pomocą wzoru:
-$$
-\rho_{{jh}}^p = \frac{\frac{1}{T}\sum_{i=1}^T(y_{ij}-\overline{y}_j)(y_{ih}-\overline{y}_h)}{\standardj\standardh},
-$$
-gdzie:
-\begin{itemize}
-\item $\overline{y}_j, \overline{y}_h$ - średnie arytmetyczne odpowiednio $j$ - tej i $h$ - tej zmiennej,
-\item $\standardj, \standardh$ - odchylenie standardowe $j$ - tej i $h$ - tej zmiennej.
-\end{itemize}
-
-Zauważmy, że współczynnik korelacji $\rho_{{jh}}^p$ między $j$-tą i $h$-tą zmienną możemy zapisać w następujący sposób:
-$$
-\rho_{{jh}}^p = \frac{1}{T}\sum_{i=1}^T y_{ij}y_{ih},
-$$
-gdzie $j,h \in \set{1,2, \ldots, m}$.
-
-Na głównej przekątnej macierzy korelacji znajdują się współczynniki korelacji zmiennej z nią samą. Zatem:
-$$
-\rho_{{jj}}^p = \frac{1}{T} \sum_{i=1}^{T} y_{ij} y_{ij} = \frac{1}{T} \sum_{i=1}^{T} y_{ij}^2 = \frac{1}{T} \sum_{i=1}^{T} (y_{ij}-\overline{y}_j)^2 = \standardij =1.
-$$
-Pozostałe elementy macierzy $\mathbb{R}$ są współczynnikami korelacji między różnymi zmiennymi i przyjmują postać:
-$$
-\rho_{{jh}}^p =\frac{1}{T} \sum_{i=1}^{T} y_{ij} y_{ih}.
-$$
-Stąd:
-$$
-\rho_{{jh}}^p =\frac{1}{T} \sum_{i=1}^{T} [(a_{j1}x_{1i} + a_{j2}x_{2i} + \ldots + a_{jk}x_{ki} + b_jz_{ij}) 
-\cdot(a_{h1}x_{1i} + a_{h2}x_{2i} + \ldots + a_{hk}x_{ki} + b_hz_{ih})],
-$$
-a zatem:
-$$
-\rho_{{jh}}^p =\frac{1}{T} \sum_{i=1}^{T} [a_{j1}a_{h1}x_{1i}^2 + a_{j2}a_{h2}x_{2i}^2 + \ldots + a_{jk} a_{hk} x_{ki}^2 + b_jb_hz_{ij}z_{ih}
-$$
-$$
-+ a_{j1}a_{h2}x_{1i}x_{2i} + \ldots + a_{j1}b_h x_{1i}z_{ih} + \ldots + b_j a_{hk} z_{ij}x_{ki}]. 
-$$
-Czynniki są standaryzowane i nieskorelowane stąd otrzymujemy wariancję
-$$
-\variance{\mathrm{X_l}} = \frac{1}{T} \sum_{i=1}^{T} x_{li}^2 = 1,
-$$
-oraz wyrażenia, które są współczynnikami korelacji czynników swoistych i wspólnych:
-$$
-\sigma(\mathrm{X_l}, \mathrm{X_o}) = \frac{1}{T} \sum_{i=1}^{T} x_{li} x_{oi}, 
-$$
-$$
-\sigma(\mathrm{Z_j}, \mathrm{Z_h}) = \frac{1}{T} \sum_{i=1}^{T} z_{ij} z_{ih}, 
-$$
-$$
-\sigma(\mathrm{X_o}, \mathrm{Z_j}) = \frac{1}{T} \sum_{i=1}^{T} x_{oi} z_{ij},
-$$
-gdzie
-$o \in \set{1,2, \ldots ,k}$. Stąd też $\sigma(\mathrm{X_l}, \mathrm{X_o}), \sigma(\mathrm{Z_j}, \mathrm{Z_h})3, \sigma(\mathrm{X_o}, \mathrm{Z_j}) = 0$.
-
-$\rho_{{jh}}^p$ przyjmuje zatem postać:
-$$
-\rho_{{jh}}^p=a_{j1}a_{h1} \frac{1}{T} \sum_{i=1}^{T} x_{1i}^2 + a_{j2}a_{h2} \frac{1}{T} \sum_{i=1}^{T} x_{2i}^2 + \ldots + a_{jk} a_{hk} \frac{1}{T} \sum_{i=1}^{T} x_{ki}^2 + b_jb_h \frac{1}{T} \sum_{i=1}^{T} z_{ij}z_{ih}
-$$
-$$
-+ a_{j1}a_{h2} \frac{1}{T} \sum_{i=1}^{T} x_{1i}x_{2i} + \ldots + a_{j1}b_h \frac{1}{T} \sum_{i=1}^{T} x_{1i}z_{ih} + \ldots + b_j a_{hk} \frac{1}{T} \sum_{i=1}^{T} z_{ij}x_{ki}
-$$
-$$
- = a_{j1}a_{h1} + a_{j2}a_{h2}+ \ldots + a_{jk}a_{hk}.
-$$
-
-Elementem odgrywającym dużą rolę w analizie czynnikowej jest podział wariancji całkowitej $j$ - tej zmiennej na wariancję wspólną i specyficzną. Niech więc:
-$$
-\standardj^2 = h_j^2 + d_j^2.
-$$
-Zakładamy przy tym, że $ h_j^2 = \sum_{l=1}^k a_{jl}^2$ i oznacza zmienność wspólną $j$ - tej zmiennej objaśnianą przez czynniki główne oraz $d_{j}^2 = 1 - h_j^2$ i oznacza zmienność specyficzną $j$ - tej zmiennej.
-
-Zależności między składowymi wariancji całkowitej zostały wyprowadzone ze wzoru:
-$$
-\standardj^2 = \frac{1}{T} \sum_{i=1}^T (y_{ij} - \overline{y}_j)^2.
-$$
-Zauważmy, że $\overline{y}_j =0$. Otrzymujemy zatem zależność:
-$$
-\standardj^2 = \frac{1}{T} \sum_{i=1}^T (a_{i1} x_{1i} + a_{j2} x_{2i} + \ldots + a_{jk} x_{ki} + b_j z_{ij})^2
-$$
-$$
-=\frac{1}{T}[a_{j1}^2 \sum_{i=1}^T x_{1i}^2 + a_{j2}^2 \sum_{i=1}^T x_{2i}^2 + \ldots + a_{jk}^2 \sum_{i=1}^T x_{ki}^2 + b_j^2 \sum_{i=1}^T z_{ij}^2
-$$
-$$
-+ 2 (a_{j1} a_{j2} \sum_{i=1}^T x_{1i} x_{2i} + \ldots + a_{j1} a_{jk} \sum_{i=1}^T x_{1i} x_{ki}
-$$
-$$
-+ a_{j1} b_j \sum_{i=1}^T x_{1i} z_{ij} + \ldots + a_{jk} b_j \sum_{i=1}^T x_{ki} z_{ij})].
-$$
-Ze standaryzacji czynników i zmiennych wynika, że wariancja $l$ - tego czynnika ma następującą postać:
-$$
-\variance{\mathrm{X_l}} = \frac{1}{T} \sum_{i=1}^T x_{li}^2,
-$$
-natomiast współczynnik korelacji między $o$ - tym i $l$-tym czynnikiem:
-$$
-\ro{X_o}{X_l} = \frac{1}{T} \sum_{i=1}^T x_{oi} x_{li} = \frac{\sum_{i=1}^T (x_{oi} - \overline{x}_{o})(x_{li} - \overline{x}_{l})}{s_{X_o} s_{X_1}}.
-$$
-
-Ponieważ wiadomo, że czynniki nie są skorelowane otrzymujemy wzór na wariancję zmiennych:
-$$
-\standardj^2 = 1 = a_{j1}^2+a_{j2}^2 + \ldots + a_{jk}^2 + b_j^2.
-$$
-
-Głównym celem analizy czynnikowej jest zmaksymalizowanie wpływu czynników swoistych na rzecz czynników głównych.
-Uzyskujemy to przez zastąpienie w macierzy korelacji całkowitych zredukowaną macierzą korelacji:
-$$
-\overline{\mathbb{R}} = [\overline{\rho_{{jh}}^p}]_{m\times m}.
-$$ 
-gdzie: $\overline{\rho_{{jh}}^p} = \rho_{{jh}}^p$ dla $j\neq h$ oraz $\overline{\rho_{{jh}}^p} = h_j^2$ dla $j=h$.
-
-W postaci macierzowej przedstawimy ją jako:
-$$
-\overline{\mathbb{R}} = \mathbb{A} \mathbb{A}^T.
-$$
-
-Jednocześnie początkowy układ równań $\mathbb{Y} = \mathbb{A}\mathbb{X} + \mathbb{B}\mathbb{Z}$ przyjmuje postać:
-$$
-\mathbb{Y} = \mathbb{A}\mathbb{X}.
-$$
-
-W praktyce do szacowania wartości ładunków czynnikowych najczęściej stosowany jest algorytm Hotellinga, którego opis znajdziemy w pozycji {\citep[Sec 11.1]{sadzwpr}}.
-
-\subsubsection{Analiza głównych składowych}
-Opis analizy głównych składowych oparty został na {\citep[Sec 11.1]{sadzwpr}}.
-
-Jedną z najczęściej stosowanych metod wyodrębniania czynników głównych jest analiza głównych składowych.
-Celem tej metody nie jest wyjaśnienie korelacji między zmiennymi ale objaśnienie wariancji danych. 
-
-\begin{df}[Matematyczny model analizy głównych składowych {\citep[Sec 11.1]{sadzwpr}} ]
-
-Matematycznym modelem analizy głównych składowych nazywamy model bazujący na równaniu charakterystycznym 
-$$
-\mathbb{R} \mathbf{V} = \lambda \mathbf{V}, 
-$$
-gdzie:
-\begin{itemize}
-\item $\mathbb{R}$ - macierz korelacji zmiennych,
-\item $\mathbf{V}$ - wektor własny, 
-\item $\lambda $ - wartość własna.
-\end{itemize}
-\end{df}
-
-Rozwiązanie można przedstawić w postaci:
-$$
-det(\mathbb{R} - \mathbb{E} \lambda)=0.
-$$
-Zauważmy, że 
-$$det \left[
-        \begin{array}{cc}
-         1 - \lambda & \rho_{{12}}^p\\
-         \rho_{{12}}^p & 1 - \lambda\\
-         \end{array}
-      \right] = 0 \Leftrightarrow (1-\lambda)(1-\lambda)- \rho_{{12}}^p \rho_{{12}}^p = 0 \Leftrightarrow \lambda^2 - 2\lambda + (1 - (\rho_{{12}}^p)^2)=0.$$
-Zatem dla macierzy kowariancji stopnia drugiego wartości własne są następujące:
-$$
-\lambda_1 = 1 + \rho_{{12}}^p,
-$$
-$$
-\lambda_2 = 1 - \rho_{{12}}^p.
-$$
-Warto zauważyć, że jeżeli wartość korelacji między dwiema zmiennymi jest równa $1$ to wartości własne przyjmują wartości $2$ i $0$. W przypadku, gdy korelacja wynosi $0$ wartości własne przyjmują wartość $1$. Suma:
-$$
-\lambda_1+\lambda_2=(1 +\rho_{{12}}^p)+(1 - \rho_{{12}}^p) = 2
-$$
-i jest równa liczbie zmiennych. Iloczyn:
-$$
-\lambda_1\lambda_2=(1 - r_{12})^2
-$$
-jest natomiast równy wyznacznikowi macierzy kowariancji. W macierzach korelacji każdego wymiaru powyższe własności są spełnione. 
-
-Dodatkowo warto zauważyć, że największa wartość własna odzwierciedla liczbę wariancji wyjaśnioną przez pierwszą oś główną, druga co do wielkości wartość odzwierciedla liczbę wariancji wyjaśnioną przez drugą oś i kolejne wartości analogicznie. 
-
-Kolejną rzeczą wartą uwagi jest, że skoro suma wartości własnych jest równa liczbie zmiennych to dzieląc $i$ - tą wartość własną przez ilość zmiennych otrzymamy propozycję wariancji wyjaśnioną przez $i$ - tą oś składową. Zatem:
-$$
-p_i = \frac{\lambda_i}{m},
-$$
-gdzie:
-\begin{itemize}
-\item $p_i$ - propozycja wariancji,
-\item $\lambda_i$ - $i$ - ta wartość własna,
-\item $m$ - liczb zmiennych.
-\end{itemize}
-
-Dla wartości własnych wyznacza się odpowiadające wektory własne, przy czym długość każdego z nich wynosi $1$. Kolejnym krokiem jest wyznaczenie ładunków głównych składowych przez iloczyn macierzy, której wiersze składają się z wektorów własnych i macierzy zawierającej względne stosunki liczb wariancji opisane przez odpowiedni zmienne.
-
-Analiza głównych składowych często jest błędnie postrzegana jako odmiana analizy czynnikowej. Analiza czynnikowa dąży do wyjaśnienia wariancji wspólnej pozostającej pod wpływem wspólnego czynnika. Analiza głównych składowych ma natomiast na celu wyjaśnienie całkowitej wariancji wszystkich zmiennych.
-
-
-\subsubsection{Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD))} 
 \begin{df} [Rozkład Według Wartości Osobliwych {\citep{ulafiir}}]%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
-Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ oraz $\rz{\mathbb{X}} \in \setN$ nazywamy rozkład:
+Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ nazywamy rozkład:
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T,
 $$
 gdzie:
 \begin{itemize}
-\item $\mathbb{U}^T \mathbb{U} = \mathbb{V}^T \mathbb{V} = \mathbb{E}$,
-\item $\Sigma$ jest macierzą diagonalną o nieujemnych wartościach, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$, $n \in \setN$ taką, że $\sigma_1>0$ dla $1\leq i \leq \rz{\mathbb{X}}$ i $\sigma_1=0$ dla $i\geq \rz{\mathbb{X}}+1$.	
+\item $\mathbb{U}^T \mathbb{U} = \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m \times m$ oraz $\mathbb{V}$ wymiaru $n \times n$,
+\item $\Sigma$ jest macierzą diagonalną o nieujemnych wartościach, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$, $n \in \setN$ taką, że $\sigma_1>0$ dla $1\leq i \leq \rz{\mathbb{X}}$ i $\sigma_1=0$ dla $i\geq \rz{\mathbb{X}}+1$ (macierz $\Sigma$ jest macierzą wymiary $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$).	
 \end{itemize}
+\end{df}
+
+\begin{uwaga}
+Niezerowe wyrazy macierzy $\Sigma$ nazywamy wartościami osobliwymi macierzy $\mathbb{X}$.
+Kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$ nazywamy odpowiednio lewymi i prawymi wektorami szczególnymi macierzy $\mathbb{X}$.
+\end{uwaga}
+
+\begin{df}[Wartość osobliwa macierzy {\citep{wayls}}]
+Wartością osobliwą $\sigma_k$ macierzy $\mathbb{X}$ nazywamy
+$$
+\sigma_k = \sqrt{\lambda_k},
+$$
+gdzie $\lambda_k, \: k \in \setN$ jest wartością własną macierzy $\mathbb{X} \mathbb{X}^T$.
 \end{df}
 
 \begin{df}[Norma Frobeniusa{\citep{ulafiir}}] %Using Linear Algebra for Intelligent Information Retrival.pdf
 Normą Frobeniusa nazywamy:
 $$
-{\norm{A}}_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{tr \overline{A}^T A},
+{\norm{A}}_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\tr{\overline{A}^T A}},
 $$
-gdzie $A$ jest macierzą $m\times n$ - wymiarową. $\overline{A}^T$ nazywamy transpozycją sprzężenia macierzy, a $tr(A)$ śladem macierzy $A$.
+gdzie $A$ jest macierzą $m\times n$ - wymiarową. $\overline{A}^T$ nazywamy transpozycją sprzężenia macierzy.
 \end{df}
 
 \begin{tw}[Warunki równoważne SVD {\citep{ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
@@ -774,7 +553,7 @@ $R(\mathbb{X}) = \przestrzen{u_1,u_2,...,u_r}$,
 \end{tw}
 
 \begin{tw}[Twierdzenie Eckart - Younga {\citep{ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
-Niech $\mathbb{X}$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\Sigma \mathbb{V}^T$, $\rz{\mathbb{X}} \in \setN$ niech będzie rzędem macierzy i $\rz{\mathbb{X}} \leq p = min(m,n)$.
+Niech $\mathbb{X}$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\Sigma \mathbb{V}^T$, $\rz{\mathbb{X}} \in \setN$ niech będzie rzędem macierzy i $\rz{\mathbb{X}} \leq p$.
 Zdefiniujmy:
 $$
 \mathbb{X}_k = \sum_{i=1}^k u_i\cdot \sigma_i \cdot v_i^T,
@@ -784,6 +563,19 @@ $$
 \min \limits_{\rz{\mathbb{B}} = k } ||\mathbb{X} - \mathbb{B}||_F^2 = ||\mathbb{X} - \mathbb{X}_k||_F^2 = \sigma_{k+1}^2 + ... + \sigma_p^2.
 $$
 \end{tw}
+
+Aby udowodnić twierdzenie Eckart - Younga wprowadźmy twierdzenie Weylsa:
+
+\begin{tw}[Twierdzenie Weylsa {\citep{wayls}}]
+Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setK)$ oraz $r=\min\{m,n\}$.
+Dodatkowo niech odpowiednio $\sigma_1(\mathbb{X}) \geq \sigma_2(\mathbb{X})\geq \ldots \geq \sigma_r(\mathbb{X})\geq 0$, $\sigma_1(\mathbb{Y}) \geq \sigma_2(\mathbb{Y})\geq \ldots \geq \sigma_r(\mathbb{Y})\geq 0$ i $\sigma_1(\mathbb{Z}) \geq \sigma_2(\mathbb{Z})\geq \ldots \geq \sigma_r(\mathbb{Z})\geq 0$ będą wartościami osobliwymi macierzy $\mathbb{X}, \mathbb{Y}, \: \mathbb{Z}=\mathbb{X} + \mathbb{Y}$. Wtedy:
+$$
+\sigma_{i+j-1}(\mathbb{Z}) \leq \sigma_i(\mathbb{X}) + \sigma_j(\mathbb{Y}),
+$$
+gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
+\end{tw}
+
+
 \begin{proof}
 Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o wartościach rzeczywistych, gdzie $m\geq n$.
 Załóżmy, że
@@ -796,7 +588,7 @@ $$
 \mathbb{X}_k = \sum_{i=1}^k u_i\cdot \sigma_i \cdot v_i^T,
 $$
 gdzie $u_i$ i $v_i$ oznaczają odpowiednio $i$-te kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$.
-Zauważmy, że
+Zauważmy, że z własności 3. twierdzenia o warunkach równoważnych SVD mamy:
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot \sigma_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n \sigma_i^2.
 $$
@@ -804,11 +596,10 @@ Stąd należy udowodnić, że $\mathbb{B}_k = \mathbb{X}\mathbb{Y}^T$, gdzie $\m
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = \sum_{i=k+1}^n \sigma_i^2 = ||\mathbb{X} - B_k||_F^2.
 $$
-Niech $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. Korzystając z Twierdzenia Weylsa {\citep{wayls}} mamy:
+Niech $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. Korzystając z Twierdzenia Weylsa mamy:
 $$
 \sigma_{i+j-1}(\mathbb{X})\leq \sigma_{i}(\mathbb{X}^{`}) + \sigma_j(\mathbb{X}^{``}).
 $$ 
-
 Jeżeli 
 \begin{center}
 $\sigma_{k+1}(\mathbb{B}_k)=0$,
@@ -818,8 +609,15 @@ kiedy $\mathbb{X}^{`} = \mathbb{X} - \mathbb{B}_k$ i $\mathbb{X}^{``} = \mathbb{
 $\sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{k+1}(\mathbb{X})$.
 \end{center}
 Stąd:
-$$||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^n \sigma_i(\mathbb{X}-\mathbb{B}_k)^2\geq \sum_{k+1}^n \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2.$$
+$$
+||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^n \sigma_i(\mathbb{X}-\mathbb{B}_k)^2\geq \sum_{k+1}^n \sigma_i(\mathbb{X})^2.
+$$
+Z własności 3. twierdzenia o warunkach równoważnych SVD mamy:
+$$
+\sum_{k+1}^n \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2.
+$$
 \end{proof}
+
 
 Zawsze jest możliwe dokonać dekompozycji macierzy $\mathbb{X}$ do postaci $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$.
 
@@ -1183,15 +981,15 @@ Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom u
 \begin{algorytm}
 W metodzie celem stworzenia rekomendacji i wygenerowania listy przedmiotów, które mogę być odpowiednie użytkownikowi opieramy się na treści rozważanych elementów. Algorytm tego rodzaju rekomendacji możemy przedstawić w następujących krokach:
 \begin{enumerate}
-\item stworzenie wektora własności $\mathbf{W} = [w_1, \ldots, w_n]$, $n \in \setN$, gdzie $\forall_{i \in \set{1, \ldots, n}} \: w_i \in \setWlasnosci$,
+\item stworzenie wektora własności $\mathbf{w} = [w_1, \ldots, w_n]$, $n \in \setN$, gdzie $\forall_{i \in \set{1, \ldots, n}} \: w_i \in \setWlasnosci$,
 
-\item wygenerowanie profilów produktów - stworzenie wektorów własności $\mathbf{W}_{p_i}$ gdzie poszczególne elementy wektora określają przynależność przedmiotu $p_i$, $i \in \setN$ do odpowiednich elementów wektora własności $\mathbf{W}$ określonego w kroku 1.,
+\item wygenerowanie profilów produktów - stworzenie wektorów własności $\mathbf{w}_{p_i}$ gdzie poszczególne elementy wektora określają przynależność przedmiotu $p_i$, $i \in \setN$ do odpowiednich elementów wektora własności $\mathbf{w}$ określonego w kroku 1.,
 
-\item wygenerowanie profilów użytkowników - stworzenie wektorów własności $\mathbf{W}_{u_j}$ przypisanych użytkownikom, gdzie poszczególne elementy wektora określają przynależność opinii użytkownika $u_j$, $j \in \setN$ do elementów wektora własności $\mathbf{W}$ określonego w kroku 1.,
+\item wygenerowanie profilów użytkowników - stworzenie wektorów własności $\mathbf{w}_{u_j}$ przypisanych użytkownikom, gdzie poszczególne elementy wektora określają przynależność opinii użytkownika $u_j$, $j \in \setN$ do elementów wektora własności $\mathbf{w}$ określonego w kroku 1.,
 
 \item obliczmy ocenę $\widehat{o}_{j,i}$ jaką użytkownik $j$ wystawiłby dla przedmiotu $i$, którego wcześniej nie oceniał za pomocą funkcji
 $$
-\widehat{o}_{j,i} = \mathbf{W}_{u_j}^T \mathbf{W}_{p_i},
+\widehat{o}_{j,i} = \mathbf{w}_{u_j}^T \mathbf{w}_{p_i},
 $$
 
 \item porównując otrzymane w kroku 3. oceny dokonujemy rekomendacji nowego przedmiotu.
@@ -1199,7 +997,7 @@ $$
 \end{algorytm}
 
 \begin{przyklad}
-Niech wektor własności będzie określony następująco $\mathbf{W} = [w_1, w_2]$, a każdy z elementów wektora $\mathbf{W}$ niech reprezentuje inny gatunek. Poniższa tabela określa przynależność (w przedziale $[0,1]$) każdej z książek do elementów wektora własności $w$. 
+Niech wektor własności będzie określony następująco $\mathbf{w} = [w_1, w_2]$, a każdy z elementów wektora $\mathbf{w}$ niech reprezentuje inny gatunek. Poniższa tabela określa przynależność (w przedziale $[0,1]$) każdej z książek do elementów wektora własności $w$. 
 \begin{center}
 \begin{tabular}{|r|r|r|r|} \hline
 \textbf{Gatunki} & & $\mathbf{w_1}$ & $\mathbf{w_2}$  \\
@@ -1223,21 +1021,21 @@ Dodatkowo zakładamy, że istnieje gatunek $w_0$, którego cechy reprezentują w
 
 Zatem wektor własności odpowiadające poszczególnym książkom mają postać
 $$
-\mathbf{W}_{p_1} = [1, 0.9, 0] ^ T, \: \mathbf{W}_{p_2} = [1, 1, 0.01] ^ T, \: \mathbf{W}_{p_3} = [1, 0.99, 0] ^ T,
+\mathbf{w}_{p_1} = [1, 0.9, 0] ^ T, \: \mathbf{w}_{p_2} = [1, 1, 0.01] ^ T, \: \mathbf{w}_{p_3} = [1, 0.99, 0] ^ T,
 $$
 $$
-\mathbf{W}_{p_4} = [1, 0.1, 1] ^ T, \: \mathbf{W}_{p_5} = [1, 0, 0.9] ^ T, \: \mathbf{W}_{p_6} = [1, 0.8, 0.3] ^ T.
+\mathbf{w}_{p_4} = [1, 0.1, 1] ^ T, \: \mathbf{w}_{p_5} = [1, 0, 0.9] ^ T, \: \mathbf{w}_{p_6} = [1, 0.8, 0.3] ^ T.
 $$
-Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\mathbf{W}_{u_j} \in \setR^3$, który przedstawia przynależność (w przedziale $[0,1]$) opinii użytkownika do elementów wektora własności. 
+Dla każdego użytkownika $j$ wyznaczamy wektor parametrów $\mathbf{w}_{u_j} \in \setR^3$, który przedstawia przynależność (w przedziale $[0,1]$) opinii użytkownika do elementów wektora własności. 
 
 Preferencje czytelników zostaną więc opisane za pomocą wektorów:
 $$
-\mathbf{W}_{u_1}, \: \mathbf{W}_{u_2}, \: \mathbf{W}_{u_3}, \: \mathbf{W}_{u_4}, \: \mathbf{W}_{u_5}, \: \mathbf{W}_{u_6}.
+\mathbf{w}_{u_1}, \: \mathbf{w}_{u_2}, \: \mathbf{w}_{u_3}, \: \mathbf{w}_{u_4}, \: \mathbf{w}_{u_5}, \: \mathbf{w}_{u_6}.
 $$
-Obliczmy ocenę jaką książce $p_3$ wystawiłby użytkownik $u_1$ przy założeniu, że wektor preferencji użytkownika $u_1$ jest postaci $\mathbf{W}_{u_1}= [0,5,0]^T$. Użytkownik ten preferuje więc książki gatunku $w_1$, gdy książki gatunków $w_0$ i $w_2$ są dla niego nieatrakcyjne.
+Obliczmy ocenę jaką książce $p_3$ wystawiłby użytkownik $u_1$ przy założeniu, że wektor preferencji użytkownika $u_1$ jest postaci $\mathbf{w}_{u_1}= [0,5,0]^T$. Użytkownik ten preferuje więc książki gatunku $w_1$, gdy książki gatunków $w_0$ i $w_2$ są dla niego nieatrakcyjne.
 Zatem:
 $$
-\widehat{o}_{1,3} = \mathbf{W}_{u_1}^T \mathbf{W}_{p_3} = [0,5,0] \cdot [1, 0.99, 0] ^ T = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95.
+\widehat{o}_{1,3} = \mathbf{w}_{u_1}^T \mathbf{w}_{p_3} = [0,5,0] \cdot [1, 0.99, 0] ^ T = 0 \cdot 1 + 5 \cdot 0,99 + 0 \cdot 0 = 4,95.
 $$
 
 Przewidywaną oceną jest zatem $4,95$. 
@@ -1509,40 +1307,91 @@ wyróżniamy tutaj dwa podejścia:
 \end{enumerate}
 \end{algorytm}
 
+\section{Dekompozycja macierzy ocen - SVD}
+Poniższe rozważania zostały przeprowadzone na podstawie publikacji Desrosiers K. i Karypis G. \textit{A comprehensive survey of neighborhood-based recommendation methods} {\citep[Sec 4.1.1]{acsonbrs}}.
+
+Popularnym podejściem redukcji wymiaru w regułach rekomendujących jest Ukryte Indeksowanie Semantyczne (ang. Latent Semantic Indexing (LSI)). LSI to matematyczna metoda opracowana w celu dokładniejszego wyszukiwania informacji.
+
+W podejściu tym macierz ocen $\mathbb{O}$ o wymiarach $|\mathit{U}| \times |\mathit{P}|$ i $\rz{\mathbb{O}} = n$ jest aproksymowana przez macierz $\widehat{\mathbb{O}}$ taką, że $\rz{\widehat{\mathbb{O}}} = k$, $k<n$. 
+
+Zatem
+$$
+\widehat{\mathbb{O}} = \mathbb{P}\mathbb{Q}^T,
+$$
+gdzie:
+\begin{itemize}
+\item $\mathbb{P}$ jest $(|\mathit{U}| \times k)$-wymiarową macierzą zawierającą koordynaty użytkowników,
+\item $\mathbb{Q}$ jest $(|\mathit{P}| \times k)$-wymiarową macierzą zawierającą koordynaty przedmiotów.
+\end{itemize}
+
+Intuicyjnie, $u$-ty rząd macierzy $\mathbb{P}$, $\mathbf{p}_u \in \setR^k$, reprezentuje współrzędne użytkownika $u$ rzutowane w $k$-wymiarowej przestrzeni. Podobnie $i$-ty wiersz macierzy $\mathbb{Q}$, $\mathbf{q}_i \in \setR^k$, reprezentuje współrzędne przedmiotu $i$ w tej przestrzeni.
+
+Macierze $\mathbb{P}$ i $\mathbb{Q}$ są odnajdowane przez minimalizowanie błędu przybliżenia zdefiniowanego przez kwadrat normy Frobeniusa:
+$$
+\e{\mathbb{P}, \mathbb{Q}} = ||\mathbb{O}-\mathbb{P} \mathbb{Q}^T||_F^2 = \sum_{u,i}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2.
+$$
+
+Minimalizacja tego błędu jest równoważna wyprowadzeniu SVD macierzy $\mathbb{O}$:
+$$
+\mathbb{O} = \mathbb{U} \Sigma \mathbb{V}^T,
+$$
+gdzie:
+\begin{itemize}
+\item $\mathbb{U}$ jest $(|\mathit{U}| \times n)$-wymiarową lewą macierzą wektorów szczególnych,
+\item $\mathbb{V}$ jest $(|\mathit{P}| \times n)$-wymiarową prawą macierzą wektorów szczególnych,
+\item $\Sigma$ jest $(n\times n)$-wymiarową macierzą wartości osobliwych.
+\end{itemize}
+
+Przez $\Sigma_k, \mathbb{U}_k, \mathbb{V}_k$ oznaczmy macierze uzyskane w wyniku wyboru $k$ największych wartości osobliwych oraz ich odpowiednich wektorów. 
+
+Macierze $\mathbb{P}$ i $\mathbb{Q}$ odpowiadają więc postaciom:
+$$
+\mathbb{P}=\mathbb{U}_k \Sigma_k^{\frac{1}{2}}, \: oraz \: \mathbb{Q}=\mathbb{V}_k \Sigma_k^{\frac{1}{2}}.
+$$
+
+Predykcja oceny zostaje dokonana na podstawie równania:
+$$
+o_{u,i} = \mathbf{p}_u \mathbf{q}_i^T.
+$$
+
+Główny problem jaki pojawia się przy implementacji metody SVD jest bark dużej liczby wyrazów macierzy $\mathbb{O}$. 
+Rozwiązaniem tego problemy jest odnalezienie brakujących elementów macierzy $\mathbb{P}$ i $\mathbb{Q}$ używając znanych ocen oraz równania:
+$$
+\e{\mathbb{P}, \mathbb{Q}} = \sum_{o_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2 + \lambda(\norm{\mathbf{p}_u}^2 + \norm{\mathbf{q}_i}^2),
+$$
+gdzie $\lambda$ jest parametrem kontroli poziomu regularyzacji.
+
+To samo podejście może zostać zastosowane w przypadku obliczania podobieństwa między użytkownikami lub przedmiotami w metodzie filtrowania opartego na treści.
+
+Rozwiązujemy tutaj następujący problem:
+$$
+\e{\mathbb{P}, \mathbb{Q}} = \sum_{z_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2,
+$$
+gdzie:
+\begin{itemize}
+\item $\forall_{u \in \mathit{U}} \: \norm{\mathbf{p}_u} = 1$,
+\item $\forall_{i \in \mathit{P}} \: \norm{\mathbf{q}_i} = 1$,
+\item $z_{ui}$ jest średnią ocen $o_{ui}$ znormalizowaną do zakresu $[-1,1]$.
+\end{itemize}
+
+Powyższy problem odnosi się do znalezienia koordynat dla każdego użytkownika $u$ i każdego przedmiotu $i$ w przestrzeni $k$-wymiarowej. Zakładamy, że użytkownik $u$ nada wysoką ocenę przedmiotowi $i$ jeżeli ich koordynaty są blisko siebie. 
+
+Jeżeli dwaj użytkownicy $u$ i $v$ są blisko siebie w przestrzeni, to  nadadzą oni podobne oceny dla przedmiotów. Podobieństwo między tymi użytkownikami można obliczyć za pomocą równania:
+$$
+w_{uv} = \mathbf{p}_u \mathbf{p}_v^T.
+$$
+Podobnie, podobieństwo między przedmiotami obliczymy następująco:
+$$
+w_{ij} = \mathbf{q}_i \mathbf{q}_j^T.
+$$
+
+
 \chapter{Eksperymenty / cześć praktyczne}
-\section{Faktoryzacja macierzy w regułach rekomendujących}
+
 Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego w którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom i którego zadaniem jest predykcja ocen użytkowników dla elementów przez nich nieocenionych. 
 
 Załóżmy, że mamy $n$ użytkowników i $m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w której wyrazy $o_{u_i,p_j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ elementowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
 
-W przypadku filtrowania kolaboratywnego znanym podejściem do rozwiązania takiego problemu jest faktoryzacja macierzy.
-
-\begin{df}[Faktoryzacja macierzy {\citep{mcvals}}]
-Faktoryzacją macierzy nazywamy rozkład macierzy na produkt macierzy.  
-\end{df}
-
-W kontekście rekomendacji algorytm faktoryzacji macierzy działa przez dekompozycję macierzy $\mathbb{O}$ w produkt dwóch  macierzy $\mathbb{X}$ i $\mathbb{Y}$. $\mathbb{X}$ jest macierzą użytkowników - wiersze reprezentują poszczególnych użytkowników, natomiast macierz $\mathbb{Y}$ to macierz elementów - kolumny oznaczają elementy.
-
-\begin{df}[Postać macierzowa faktoryzacji macierzy {\citep{mcvals}}]
-Niech $x_1, \ldots , x_n \in \setR ^k$ będą faktorami użytkowników oraz $y_1, \ldots, y_m \in \setR^k$ będą faktorami przedmiotów. Wtedy $k \times n$ - wymiarowa macierz użytkowników $\mathbb{X}$ oraz $k \times m$ - wymiarowa macierz elementów $\mathbb{Y}$ mają następujące postaci:
-$$
-\mathbb{X} = \left[
-        \begin{array}{ccc}
-         | & & | \\
-         x_1 & \ldots & x_n \\
-         | & & | \\
-         \end{array}
-      \right],
-      \qquad
-\mathbb{Y} = \left[
-        \begin{array}{ccc}
-         | & & | \\
-         y_1 & \ldots & y_m \\
-         | & & | \\
-         \end{array}
-      \right].
-$$      
-\end{df}
 
 \section{ALS z Apache Spark i MLlib}
 \subsection{Apache Spark}
@@ -1575,17 +1424,20 @@ Powtarzamy:
 \begin{itemize}
 \item dla $i = 1, \ldots, n $ wykonujemy: 
 $$
-x_{u_i} = (\sum_{o_{u_i,p_j} \in o_{u_i,*}} y_{p_j} y_{p_j}^T + \lambda \mathbb{E}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{u_i,*}} o_{u_i,p_j}y_{p_j}
+x_{u_i} = (\sum_{o_{u_i,p_j} \in o_{u_i,*}} y_{p_j} y_{p_j}^T + \lambda \mathbb{I}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{u_i,*}} o_{u_i,p_j}y_{p_j}
 $$
 koniec
 \item dla $j = 1, \ldots, m$ wykonujemy:
 $$
-y_{p_j} = (\sum_{o_{u_i,p_j} \in o_{*,p_j}} x_u x_u^T + \lambda \mathbb{E}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{*,p_j}} o_{u_i,p_j}x_{u_i}
+y_{p_j} = (\sum_{o_{u_i,p_j} \in o_{*,p_j}} x_u x_u^T + \lambda \mathbb{I}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{*,p_j}} o_{u_i,p_j}x_{u_i}
 $$
 koniec
 \end{itemize}
 do momentu zbieżności.
 \end{algorytm}
+\begin{uwaga}[Różnica między SVD i ALS]
+\end{uwaga}
+
 \subsection{Implementacja algorytmu}
 \chapter{Podsumowanie}
 %TODO napiszemy na koncu
