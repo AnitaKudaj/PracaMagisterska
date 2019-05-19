@@ -53,6 +53,7 @@
 \newcommand{\variance}[1]{\operatorname{Var}\left({#1} \right)}
 \newcommand{\e}[1]{\operatorname{E}\left({#1} \right)}
 \newcommand{\standard}[1]{\operatorname{\sigma}\left({#1} \right)}
+\newcommand{\wyznacznik}[1]{\operatorname{det}\left({#1} \right)}
 \newcommand{\standardj}{\sigma_j}
 \newcommand{\standardh}{\sigma_h}
 \newcommand{\standardij}{\sigma_{ij}}
@@ -127,13 +128,14 @@ napisana w Instytucie Matematyki
 %TODO napiszemy na końcu
 \chapter{Preliminaria} %definicje
 \section{Oznaczenia używane w pracy}
-$\setN$ - zbiór liczb naturalnych,
+W niniejszej pracy zostały użyte następujące oznaczenia:
+\\$\setN$ - zbiór liczb naturalnych,
 \\$\setR$ - zbiór liczb rzeczywistych,
 \\$\setK$ - ciało liczb rzeczywistych lub zespolonych,
-\\$\mathit{X}$ - zbiór,
-\\$\mathbf{x}$ - wektor,
-\\$\mathrm{X}$ - zmienna losowa,
-\\$\mathbb{X}$ - macierz,
+\\$\mathit{X}$ - (duże, pochylone litery) jako oznaczania zbiorów,
+\\$\mathbf{x}$ - (małe, pogrubione litery) jako oznaczania wektorów,
+\\$\mathrm{X}$ - (duże litery) jako oznaczania zmiennych losowych,
+\\$\mathbb{X}$ - (duże litery z wyłączeniem $\setN, \: \setR, \: \setK$) jako oznaczania macierzy,
 \\$[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$ - macierz o $m$ wierszach i $n$ kolumnach,
 \\$[a_{ij}]$ - macierz kwadratowa,
 \\$\mathbb{M}_{m \times n}(\setK)$ - zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$,
@@ -143,14 +145,12 @@ $\setN$ - zbiór liczb naturalnych,
 \\$\Omega$ - zbiór zdarzeń elementarnych,
 \\$\mathcal{F}$ - rodzina podzbiorów zbioru $\Omega$,
 \\$P$ - funkcja prawdopodobieństwa,
-\\$\sigmacialo{\setR^n}$ - $\sigma$-algebra borelowska zbiorów w $\setR^n$,
+\\$\sigmacialo{\setR^n}$ - $\sigma$-ciało zbiorów borelowskich w $\setR^n$,
 \\$\e{\mathrm{X}}$ - wartość oczekiwana,
 \\$\Covariance{X}{Y}$ - kowariancja zmiennych losowych $\mathrm{X},\mathrm{Y}$,
 \\$\variance{\mathrm{X}}$ - wariancją zmiennej losowej $\mathrm{X}$,
 \\$\standard{\mathrm{X}}$ - odchylenie standardowe zmiennej losowej $\mathrm{X}$,
 \\$\ro{\mathrm{X}}{\mathrm{Y}}$ - współczynnik korelacji zmiennych losowych $\mathrm{X},\mathrm{Y}$,
-\\$\Sigma$ - macierz kowariancji,
-\\$\mathcal{P}$ - macierz korelacji,
 \\$\distance{x}{y}$ - odległość punktów $x$ i $y$,
 \\$\distanceee{x}{y}$ - odległość euklidesowa punktów $x$ i $y$,
 \\$\distancee{x}{y}$ - odległość Minkowskiego punktów $x$ i $y$,
@@ -180,7 +180,34 @@ $$
 $$
 \end{df}
 \bigskip
-Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczmy zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$.
+Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczamy zbiór wszystkich macierzy o wymiarach $m \times n$ i elementach z ciała $\setK$.
+
+\begin{df}[Wyznacznik macierzy {\citep[Sec 10.1, Def. 10.1]{alzega}}]
+Niech $\mathcal{M}(\setK)=\bigcup_{n\in \setN} \mathbb{M}_{n \times n}(\setK)$ oznacza zbiór wszystkich macierzy kwadratowych o wyrazach z $\setK$.
+
+Funkcję:
+$$
+\mathrm{det} : \mathcal{M}(\setK) \to \setK
+$$ 
+określamy następująco:
+\begin{itemize}
+\item jeżeli $\mathbb{A}=[a_{11}]$, to $\wyznacznik{\mathbb{A}}=a_{11}$,
+\item jeżeli $\mathbb{A} = \left[
+        \begin{array}{cccc}
+         a_{11} & a_{12} & \cdots & a_{1n} \\
+         a_{21} & a_{22} & \cdots & a_{2n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{n1} & a_{n2} & \cdots & a_{nn} \\
+         \end{array}
+      \right]$, gdy $n>1$, to
+$$
+\wyznacznik{\mathbb{A}} = \sum_{i=1}^n (-1)^{1+i} \cdot a_{i1} \cdot \wyznacznik{\mathbb{A}_{i1}},
+$$
+gdzie 
+$\mathbb{A}_{ij}$ jest macierzą powstałą z macierzy $\mathbb{A}$ przez skreślenie $i$-tego wiersza i $j$-tej kolumny.
+\end{itemize}
+Funkcję $\mathrm{det}$ nazywamy wyznacznikiem, natomiast wartość tej funkcji dla macierzy $\mathbb{A}$ wyznacznikiem macierzy $\mathbb{A}$.
+\end{df}
 
 \begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
 Przykładowe sposoby zapisu macierzy:
@@ -194,12 +221,12 @@ W tej pracy używać będziemy zapisu $[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldot
 \end{uwaga}
 
 \begin{df}[Macierz transponowana {\citep[Sec 8.1 ]{alzega}}]
-Niech $\mathbb{A}$, gdzie $\mathbb{A} = [a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$, będzie macierzą ze zbioru $\mathbb{M}_{m \times n}(\setK)$.
+Niech $\mathbb{A} = [a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$, będzie macierzą ze zbioru $\mathbb{M}_{m \times n}(\setK)$.
 Macierz $\mathbb{B} = [b_{ij}]_{j = 1, \ldots, m}^{i = 1, \ldots , n}$ nazywamy macierzą transponowaną macierzy $\mathbb{A}$, jeśli 
 $$
 b_{ji} = a_{ij}
 $$ 
-dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$ i oznaczamy jako $\mathbb{A}^T$.
+dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$. Piszemy wtedy $\mathbb{B} = \mathbb{A}^T$.
 \end{df}
 
 \begin{uwaga}[Rodzaje macierzy {\citep[Sec 8.1, Sec 10.4]{alzega}}]
@@ -219,8 +246,7 @@ $$
 \end{uwaga}
 
 \begin{df}[Mnożenie macierzy {\citep[Sec 9.3 Def 9.13]{alzega}}]
-Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ i $\mathbb{B} \in \mathbb{M}_{k \times m} (\setK)$.
-Jeśli
+Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ i $\mathbb{B} \in \mathbb{M}_{k \times m} (\setK)$. Przyjmując następujące notacje:
 $$
 \mathbb{A} = \left[
         \begin{array}{cccc}
@@ -240,23 +266,18 @@ $$
          \end{array}
       \right]
 $$
-to iloczynem macierzy $\mathbb{B}$ i $\mathbb{A}$ nazywamy macierz $\mathbb{C}$ taką, że 
+iloczynem macierzy $\mathbb{B}$ i $\mathbb{A}$ nazywamy taką macierz $\mathbb{C} = [c_{lj}]_{j = 1, \ldots, n}^{l = 1, \ldots , k}$, że
 $$
-\mathbb{C} = [c_{lj}]_{j = 1, \ldots, n}^{l = 1, \ldots , k},
+\forall_{l \in 1, \ldots, k, \: j \in 1, \ldots, n} \:c_{lj} = \sum_{i=1}^m b_{li} \cdot a_{ij}.
 $$
-gdzie
-$$
-c_{lj} = \sum_{i=1}^m b_{li} \cdot a_{ij}.
-$$
-
-Element $c_{lj}$ tego iloczynu to iloczyn $l$ - tego wiersza macierzy $\mathbb{B}$ przez $j$ - tą kolumnę macierzy $\mathbb{A}$.
+Piszemy wtedy $\mathbb{C} = \mathbb{B} \cdot \mathbb{A}$.
 \end{df}
 
 \begin{df}[Dodawanie macierzy {\citep[Sec 8.1]{alzega}}]
 Niech $\mathbb{A}, \mathbb{B} \in \mathbb{M}_{m \times n} (\setK)$.
 Dodawaniem macierzy $(\mathbb{B} + \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
 $$
-c_{ij} = b_{ij} + a_{ij}.
+\forall_{i \in 1, \ldots, m, \: j \in 1, \ldots, n} \: c_{ij} = b_{ij} + a_{ij}.
 $$
 \end{df}
 
@@ -264,18 +285,18 @@ $$
 Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
 Mnożeniem macierzy przez element z ciała $(\lambda \cdot \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
 $$
-c_{ij} = \lambda \cdot a_{ij}.
+\forall_{i \in 1, \ldots, m, \: j \in 1, \ldots, n} \: c_{ij} = \lambda \cdot a_{ij}.
 $$
 \end{df}
 
 \begin{tw}[Własności transpozycji macierzy {\citep[Sec 5.1 Tw. 5.1]{ealIII}}]
-Niech $\mathbb{A}$ i $\mathbb{B}$ będą macierzami o współczynnikach z $\setK$ oraz niech posiadają tyle kolumn i wierszy, że operacje występujące powyżej są określone. Niech $\lambda \in \setK$.
+Niech $\mathbb{A} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{B} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
 Zachodzą następujące równości:
 \begin{itemize}
 \item $(\mathbb{A}^T)^T = \mathbb{A}$,
 \item $(\mathbb{A} + \mathbb{B})^T = \mathbb{A}^T + \mathbb{B}^T$,
 \item $(\lambda \mathbb{A})^T = \lambda \mathbb{A}^T$,
-\item $(\mathbb{A}\mathbb{B})^T = \mathbb{B}^T \mathbb{A}^T$.
+\item $(\mathbb{A}\mathbb{C})^T = \mathbb{B}^T \mathbb{C}^T$.
 \end{itemize}
 \end{tw}
 
@@ -286,8 +307,10 @@ $$
 $$
 \end{df}
 
+W kolejnych definicjach korzystamy z pojęcia przestrzeni liniowej oraz pojęcia wymiaru, których wyjaśnienia możemy odnaleźć w książce \textit{Algebra liniowa z elementami geometrii analitycznej} odpowiednio w {\citep[Sec 7.1]{alzega}} oraz {\citep[Sec 7.5]{alzega}}.
+
 \begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
-Wiersz macierzy o wymiarach $m \times n$ traktować możemy jako wektor z przestrzeni $\setK^n$, natomiast kolumną jako wektor przestrzeni $\setK^m$.
+Wiersze macierzy o wymiarach $m \times n$ traktować możemy jako wektor z przestrzeni $\setK^n$, natomiast kolumną jako wektor przestrzeni $\setK^m$.
 \end{uwaga}
 
 \begin{df}[Rząd kolumnowy i wierszowy macierzy {\citep[Sec 8.1]{alzega}}]
@@ -298,22 +321,20 @@ Niech $\mathbb{A} \in \mathbb{M}_{m\times n}(\setK)$. Rzędem kolumnowym macierz
 Rzędem macierzy $\mathbb{A}$ nazywamy wspólną wartość rzędu kolumnowego i wierszowego macierzy $\mathbb{A}$. Rząd macierzy oznaczamy symbolem $\rz{\mathbb{A}}$.
 \end{df}
 
-W definicji poniżej korzystamy z pojęcia przestrzeni liniowej. Wyjaśnienie tego pojęcia możemy odnaleźć w książce \textit{Algebra liniowa z elementami geometrii analitycznej} {\citep[Sec 7.1]{alzega}}.
-
 \begin{df}[Przestrzeń generowana przez zbiór {\citep[Sec 7.1 Def 7.13]{alzega}}]
 Niech $\mathit{X}$ będzie dowolnym i niepustym podzbiorem przestrzeni liniowej $\mathcal{V}$. Podprzestrzenią generowaną przez zbiór $\mathit{X}$ nazywamy zbiór wszystkich  skończonych kombinacji liniowych wektorów ze zbioru $\mathit{X}$. Zbiór ten oznaczamy symbolem $\przestrzen{\mathit{X}}$.
 
 Symbolicznie zapisujemy zbiór $\przestrzen{\mathit{X}}$ jako:
 $$
-\set{x \in \mathcal{V} : \exists_{n \in \setN} \: \exists_{(\alpha_1, \ldots, \alpha_n) \in \setK^n } \: \exists_{(a_1, \ldots, a_n) \in \mathit{X}^n} \: (x = \alpha_1 \cdot a_1 + \ldots + \alpha_n \cdot a_n)},
+\set{x \in \mathcal{V} : \exists_{n \in \setN} \: \exists_{(\alpha_1, \ldots, \alpha_n) \in \setK^n } \: \exists_{(x_1, \ldots, x_n) \in \mathit{X}^n} \: (x = \alpha_1 \cdot x_1 + \ldots + \alpha_n \cdot x_n)},
 $$
 gdzie $\mathcal{V}$ jest przestrzenią liniową nad ciałem liczb rzeczywistych lub ciałem liczb zespolonych $\setK$.
 \end{df}
 
 \begin{df}[Wartość własna macierzy kwadratowej {\citep[Sec 12.2]{alzega}}]
-Liczbę $\lambda$ nazywamy wartością własną macierzy kwadratowej $\mathbb{A}$, jeżeli istnieje niezerowy wektor $\mathbf{x}$ taki, że
+Liczbę $\lambda \in \setR$ nazywamy wartością własną macierzy kwadratowej $\mathbb{A}$, jeżeli istnieje niezerowy wektor $\mathbf{x}$ taki, że
 $$
-\mathbb{A}\mathbf{x}=\lambda\mathbf{v}.
+\mathbb{A}\mathbf{x}=\lambda\mathbf{x}.
 $$
 Każdy niezerowy wektor $\mathbf{x}$ spełniający powyższe równania nazywamy wektorem własnym macierzy $\mathbb{A}$ odpowiadającym wartości własnej $\lambda$.
 \end{df}
@@ -323,12 +344,12 @@ Każdy niezerowy wektor $\mathbf{x}$ spełniający powyższe równania nazywamy 
 \begin{df}[Przestrzeń probabilistyczna {\citep[Sec 1.2, Sec 1.4]{wztp}}]
 Przestrzenią probabilistyczną nazywamy uporządkowaną trójkę $(\Omega, \mathcal{F}, P)$, gdzie:
 \begin{itemize}
-\item $\Omega$ to zbiór wszystkich zdarzeń elementarnych i $\Omega \neq \varnothing$,
+\item $\Omega$ to zbiór wszystkich zdarzeń elementarnych i $\Omega \neq \varnothing$
 \item $ \mathcal{F} $ rodzina podzbiorów zbioru $\Omega$ taka, że:
 \begin{itemize}
 \item $\varnothing \in \mathcal{F} $,
 \item jeżeli $ \mathit{A} \in \mathcal{F}$, to $\overline{\mathit{A}} = \Omega \backslash \mathit{A} \in \mathcal{F}$,
-\item jeżeli $ \mathit{A}_n \in \mathcal{F}$ dla $n=1,2,\ldots$, to $\bigcup_{n=1}^{\infty} \mathit{A}_n \in \mathcal{F}$,
+\item jeżeli $ \mathit{A}_n \in \mathcal{F}$ dla $n=1,2,\ldots$, to $\bigcup_{n=1}^{\infty} \mathit{A}_n \in \mathcal{F}$
 \end{itemize}
 \item $P : \mathcal{F} \to [0,1]$ taka, że:
 \begin{itemize}
@@ -375,7 +396,7 @@ Wariancją zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
 \variance{\mathrm{X}}=\e{(\mathrm{X}-\e{\mathrm{X}})^2},
 $$
-jeżeli po prawej stronie równości wartość oczekiwana istnieje.
+jeżeli wyznaczona wartość oczekiwana istnieje.
 \end{df} 
 \begin{df}[Odchylenie standardowe {\citep[Sec 2.8 Def.2.28]{wztp}}]
 Odchyleniem standardowym zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
@@ -386,44 +407,10 @@ $$
 \begin{df}[Współczynnik korelacji {\citep{wztp}}]
 Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $\mathrm{X}$ i $\mathrm{Y}$ zdefiniowaną następująco:
 $$
-\ro{\mathrm{X}}{\mathrm{Y}} = \frac{\Covariance{\mathrm{X}}{\mathrm{Y}}}{\standard{\mathrm{X}} \standard{\mathrm{X}}}.
+\ro{\mathrm{X}}{\mathrm{Y}} = \frac{\Covariance{\mathrm{X}}{\mathrm{Y}}}{\standard{\mathrm{X}} \standard{\mathrm{Y}}}.
 $$
 \end{df}
-\begin{df}[Macierz kowariancji]
-Macierzą kowariancji nazywamy macierz 
-$$
-\Sigma= \left[
-        \begin{array}{cccc}
-         \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1n} \\
-         \sigma_{21} & \sigma_{22} & \cdots & \sigma_{2n} \\
-         \vdots & \vdots & \ddots & \vdots \\
-         \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_{nn}\\
-         \end{array}
-      \right], 
-$$
-gdzie:
-\begin{itemize}
-\item $\sigma_{ii}$ - wariancja zmiennej $\mathrm{X}_i$,
-\item $\sigma_{ij}=\Covariance{\mathrm{X}_i}{\mathrm{X}_j}$ - kowariancja między zmiennymi $\mathrm{X}_i$ i $\mathrm{X}_j$.
-\end{itemize}
-\end{df}
-\begin{df}[Macierz korelacji]
-Macierzą korelacji nazywamy
-$$
-\mathcal{P}= \left[
-        \begin{array}{cccc}
-         1 & \rho{12} & \cdots & \rho{1n} \\
-         \rho{21} & 1 & \cdots & \rho{2n} \\
-         \vdots & \vdots & \ddots & \vdots \\ 
-         \rho{n1} & \rho{n2} & \cdots & 1 \\ 
-         \end{array}
-      \right], 
-$$
-gdzie:
-\begin{itemize}
-\item $\rho{ij}=\frac{\Covariance{\mathrm{X}_i}{\mathrm{X}_j}}{\sigma_{i}\sigma_{j}}$ - współczynnik korelacji $\mathrm{X}_i$ i $\mathrm{X}_j$.
-\end{itemize}
-\end{df}
+
 
 \chapter{Elementy eksploracji danych wykorzystywane w systemach rekomendujących}
 Większość systemów rekomendujących opiera się na algorytmach, które możemy rozumieć jako różne technik eksploracji danych. 
@@ -466,20 +453,20 @@ W zależności od wartości stopnia odległości $r$ odległość Minkowskiego p
 Kolejnym podejściem, gdzie poszczególne elementy są postrzegane jako $n$ - wymiarowe wektory, a podobieństwo między nimi jest obliczane na podstawie kąta, który tworzą jest odległość kosinusowa.
 
 \begin{df}[Odległość kosinusowa \citep{rsh}] %https://pqstat.pl/?mod_f=macpod
-Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością kosinusową nazywamy:
+Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością kosinusową nazywamy funkcję $ \mathrm{d}: \setR^n \times \setR^n \to \setR$ opisaną wzorem:
 $$
 \distance{\mathbf{x}}{\mathbf{y}} = 1 - \similarity{\mathbf{x}}{\mathbf{y}},
 $$ 
-gdzie $\similarity{\mathbf{x}}{\mathbf{y}}$ to współczynnik podobieństwa wektorów $\mathbf{x}$ i $\mathbf{y}$:
+gdzie $\mathrm{sim}: \setR^n \times \setR^n \to \setR$ wyznacza współczynnik podobieństwa wektorów $\mathbf{x}$ i $\mathbf{y}$ według formuły:
 $$
 \similarity{\mathbf{x}}{\mathbf{y}} = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}.
 $$
 \end{df}
-Innym podejściem jest korelacja Pearsona, którą definiujemy następująco:
+Innym podejściem pozwalającym modelować podobieństwo wektorów jest korelacja Pearsona, którą definiujemy następująco:
 
 \begin{df}[Współczynnik korelacji Pearsona \citep{rsh}]
 
-Niech $\mathrm{X},\mathrm{Y}$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $x_k$, $y_k$, gdzie $k\in\set{1, \ldots, n}$  oznaczają wartości prób losowych tych zmiennych. 
+Niech $\mathrm{X},\mathrm{Y}$ będą zmiennymi losowymi o rozkładach ciągłych oraz niech $(x_1, \ldots, x_n), \: (y_1, \ldots, y_n)$ oznaczają losową próbę prostą. 
 Przez $\overline{x}$ i $\overline{y}$ oznaczmy:
 $$
 \overline{x}=\frac{1}{n} \sum_{k=1}^n x_k, \: \overline{y}=\frac{1}{n} \sum_{k=1}^n y_k.
@@ -490,7 +477,7 @@ $$
 $$
 \end{df}
 
-Indeks Jaccarda (współczynnik podobieństwa Jaccarda) to kolejny wskaźnik opisujący podobieństwo. 
+Przy innych rodzajach danych do opisu podobieństwa używany jest wskaźnik nazywany Indeksem Jaccarda (współczynnik podobieństwa Jaccarda). 
 \begin{df}[Indeks Jaccarda  \citep{bre}]
 Niech $\mathit{A}$ i $\mathit{B}$ oznaczają zbiory. Indeksem Jaccarda (podobieństwem Jaccrda) nazywamy funkcję:
 $$
@@ -499,18 +486,18 @@ $$
 \end{df}
 
 \subsection{Redukcja wymiaru}
-Wraz ze wzrostem ilości obserwacji rośnie ich dokładność. Warto zauważyć, że tym samym rośnie stopień komplikacji w interpretacji otrzymanych wyników. Zbyt duża ilość zmiennych, które opisują obserwacje powoduje wzrost prawdopodobieństwa, że zmienne te są ze sobą skorelowane, a informacje wnoszone przez część zmiennych są redundantne. Proces redukcji wymiaru pozwala przezwyciężyć ten problem poprzez transformację przestrzeni danych do przestrzeni o mniejszej liczbie wymiarów. W poniższym rozdziale przyjrzymy się najczęściej wybieranemu algorytmom redukcji wymiarów w kontekście reguł rekomendujących. Jest to Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD)).
+Zbyt duża ilość zmiennych, które opisują obserwacje powoduje wzrost prawdopodobności, że zmienne te są ze sobą skorelowane, a informacje wnoszone przez część zmiennych są redundantne. Proces redukcji wymiaru pozwala przezwyciężyć ten problem poprzez transformację przestrzeni danych do przestrzeni o mniejszej liczbie wymiarów. W poniższym rozdziale przyjrzymy się najczęściej wybieranemu algorytmom redukcji wymiarów w kontekście reguł rekomendujących. Jest to Rozkład Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD)).
 
 \begin{df} [Rozkład Według Wartości Osobliwych {\citep{ulafiir}}]%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
-Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ nazywamy rozkład:
+Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ nazywamy odszukanie takich macierzy $\mathbb{U}, \Sigma, \mathbb{V}$, że:
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T,
 $$
 gdzie:
 \begin{itemize}
 \item $\mathbb{U}^T \mathbb{U} = \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m \times m$ oraz $\mathbb{V}$ wymiaru $n \times n$,
-\item $\Sigma$ jest macierzą diagonalną o nieujemnych wartościach, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$, $n \in \setN$ taką, że $\sigma_1>0$ dla $1\leq i \leq \rz{\mathbb{X}}$ i $\sigma_1=0$ dla $i\geq \rz{\mathbb{X}}+1$ (macierz $\Sigma$ jest macierzą wymiary $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$).	
+\item $\Sigma$ jest macierzą diagonalną o nieujemnych wartościach, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$, $n \in \setN$ taką, że $\sigma_1>0$ dla $1\leq i \leq \rz{\mathbb{X}}$ i $\sigma_1=0$ dla $i\geq \rz{\mathbb{X}}+1$ (macierz $\Sigma$ jest macierzą wymiaru $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$).	
 \end{itemize}
 \end{df}
 
@@ -528,12 +515,13 @@ gdzie $\lambda_k, \: k \in \setN$ jest wartością własną macierzy $\mathbb{X}
 \end{df}
 
 \begin{df}[Norma Frobeniusa{\citep{ulafiir}}] %Using Linear Algebra for Intelligent Information Retrival.pdf
-Normą Frobeniusa nazywamy:
+Niech $\mathbb{A}\in \mathbb{M}_{m\times n}(\mathbb{R})$. Normą Frobeniusa nazywamy:
 $$
-{\norm{A}}_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\tr{\overline{A}^T A}},
+{\norm{\mathbb{A}}}_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\tr{\mathbb{A}^T \mathbb{A}}}.
 $$
-gdzie $A$ jest macierzą $m\times n$ - wymiarową. $\overline{A}^T$ nazywamy transpozycją sprzężenia macierzy.
 \end{df}
+
+W poniższym twierdzeniu zostaną użyte pojęcia jadra i obrazu, których wyjaśnienia możemy odnaleźć w książce \textit{Algebra liniowa z elementami geometrii analitycznej} {\citep[Sec 9.1]{alzega}}.
 
 \begin{tw}[Warunki równoważne SVD {\citep{ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
 Niech rozkład według wartości osobliwych macierzy $\mathbb{X}$ będzie dany wzorem
@@ -576,7 +564,8 @@ gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
 \end{tw}
 
 
-\begin{proof}
+\begin{proof}{[Twierdzenia Eckart - Younga]}
+
 Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o wartościach rzeczywistych, gdzie $m\geq n$.
 Załóżmy, że
 $$
@@ -641,7 +630,7 @@ W tej sekcji zostaną przedstawione te metody, które stosowane są najczęście
 \subsection{Algorytm k - najbliższych sąsiadów }
 Opis poniższego algorytmu oparty został na {\citep[Sec 2.3.1]{rsh}}.
 
-Algorytm $k$-najbliższych sąsiadów ($k$-NN) jest najczęściej używanym algorytmem klasyfikacji.
+Algorytm $k$-najbliższych sąsiadów ($k$-NN) jest powszechnie używanym algorytmem klasyfikacji.
  
 Przyporządkowanie nowych elementów zostaje przeprowadzone na podstawie porównania obserwacji z $k$ najbardziej podobnymi jej obiektami ze zbioru treningowego. Podstawowa założenie algorytmu mówi, że jeżeli nowy rekord znajduje się w pewnym otoczeniu, to na podstawie $k$ - najbliższych mu obserwacji zostanie przyporządkowana do niego klasa, której pojawienie się w rozważanym zbiorze jest najliczniejsze.
 
@@ -663,15 +652,15 @@ $$
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{kNN.PNG} 
-\caption{Metoda $k$ - najbliższych sąsiadów.}
+\caption{Metoda $k$ - najbliższych sąsiadów. (źródło własne)}
 \end{figure}
 \end{center}
 
-Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu $k$-NN. W części a) przedstawiony został zbiór treningowy z podziałem na dwie klasy (rąby, koła) oraz punkt, który będziemy chcieli przyporządkować do jednej z nich (trójkąt). W części b) przedstawiono dwa koła, jedno prezentujące najbliższe sąsiedztwo dla $k = 3$, drugie dla $k = 9$. W obu przypadkach nowy punkt (trójkąt) zostanie przyporządkowany do klasy $l_1$. Warto jednak zauważyć, że znajduje się on na granicy dwóch klastrów przez co przy innym wyborze $k$ może zostać przyporządkowany do klasy $l_2$.
+Na powyższym rysunku widzimy przykładowe zastosowanie algorytmu $k$-NN. Na pierwszym rysunku przedstawiony został zbiór treningowy z podziałem na dwie klasy (rąby, koła) oraz punkt, który będziemy chcieli przyporządkować do jednej z nich (trójkąt). Na drugim przedstawiono natomiast dwa koła, jedno prezentujące najbliższe sąsiedztwo dla $k = 3$, drugie dla $k = 9$. W obu przypadkach nowy punkt (trójkąt) zostanie przyporządkowany do klasy $l_1$. Warto jednak zauważyć, że znajduje się on na granicy dwóch klastrów przez co przy innym wyborze $k$ może zostać przyporządkowany do klasy $l_2$.
 
-Opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne wykorzystując miary odległości.
+Opisana metoda przyporządkowuje wybranemu rekordowi najbardziej mu podobne. Wykorzystuje do tego miary odległości.
 
-Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu $k$-NN jest wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z rysunku 3.1 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
+Najtrudniejszym zadaniem przy przeprowadzaniu algorytmu $k$-NN jest często wybór $k$. Jeżeli $k$ będzie zbyt małe - klasyfikator stanie się bardzo wrażliwy, jeżeli jednak $k$ będzie zbyt duże sąsiedztwo może zawierać zbyt dużo punktów z innych klas. Rozważając przypadek z rysunku 3.1 łatwo zauważyć, że nawet mała zmiana w obserwacjach zbioru treningowego może doprowadzić do zmiany wyniku.
 
 \subsection{Algorytm k - średnich} 
 Opis poniższego algorytmu oparty został na {\citep[Sec 2.3.1]{ascgdpds}}.
@@ -680,16 +669,16 @@ Algorytm k-średnich jest prostym i zarazem efektywnym algorytmem grupowania.
 
 Głównym celem algorytmu jest podział pewnego zbioru $\mathit{X}$:
 $$
-\mathit{X} = \set{x_i = (x_{i1},\ldots,x_{id}) : i \in \set{1,\ldots,N}},
+\mathit{X} = \set{\mathbf{x}_i = (\mathbf{x}_{i1},\ldots,\mathbf{x}_{id}) : i \in \set{1,\ldots,N}},
 $$
-gdzie $x_i$ jest $d$ - wymiarowym wektorem cech opisującym obiekt na podzbiory.
+gdzie $\mathbf{x}_i$ jest $d$ - wymiarowym wektorem cech opisującym obiekt na podzbiory.
 
-W wyniku grupowania $n$ - elementowego zbioru $\mathit{X}$ na $k$ podgrup jest macierz podziału $\mathbb{A}$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $x_k$ przynależy do grupy. Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
+W wyniku grupowania $n$ - elementowego zbioru $\mathit{X}$ na $k$ podgrup jest macierz podziału $\mathbb{A}$ o wymiarach $k\times n$ . Każdy z elementów tej macierzy $a_{ik}$ oznacza stopień w jakim wektor $\mathbf{x}_k$ przynależy do grupy. Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które zostaną wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
 \begin{center}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_0.PNG} 
-\caption{Metoda $k$-średnich. Wybór początkowych środków.}
+\caption{Metoda $k$-średnich. Wybór początkowych środków. (źródło własne)}
 \end{figure}
 \end{center}
 
@@ -698,7 +687,7 @@ W powyższym przykładzie (rysunek 3.2) wybranymi środkami są punkty $p1$, $p2
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_1.png} 
-\caption{Metoda $k$-średnich. Przypisanie elementów do grup.}
+\caption{Metoda $k$-średnich. Przypisanie elementów do grup.(źródło własne)}
 \end{figure}
 \end{center}
 Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzędnych, które staną się kolejnymi środkami.
@@ -706,18 +695,18 @@ Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzęd
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{ks_2.png} 
-\caption{Metoda $k$-średnich. Wybór nowych środków.}
+\caption{Metoda $k$-średnich. Wybór nowych środków.(źródło własne)}
 \end{figure}
 \end{center}
 Kroki te są wykonywane do momentu występowania migracji między obiektami.
 W algorytmie $k$-średnich liczba grup pozostaje więc niezmienną, zmienna jest tylko przynależność do grup.
 W metodzie tej poszukiwanie optymalnego podziału odpowiada wyznaczaniu takich grup, które minimalizują następującą funkcje kryterialną:
 $$
-\J{u}{\mathbb{A}} = \sum_{i=1}^k \sum_{k=1}^N a_{ki}\distance{p_i}{x_k}^2,
+\J{\mathbf{p}}{\mathbb{A}} = \sum_{i=1}^k \sum_{k=1}^N a_{ki}\distance{\mathbf{p}_i}{\mathbf{x}_k}^2,
 $$
 gdzie 
 \begin{itemize}
-\item $\distance{p_i}{x_k}$ oznacza odległość elementu $x_k$ od grupy wyznaczonej przez środek $p_i$,
+\item $\distance{\mathbf{p}_i}{\mathbf{x}_k}$ oznacza odległość elementu reprezentowanego przez wektor $\mathbf{x}$ od grupy wyznaczonej przez środek $\mathbf{p}$,
 \item $N$ to liczebność zbioru $\mathit{X}$,
 \item $\mathbb{A}$ oznacza macierz podziału.
 \end{itemize}
@@ -731,30 +720,30 @@ Najczęściej używanymi miarami dokładności modelu są:
 \item średni błąd kwadratowy (Mean Squared Error).
 \end{itemize}
 
-Niech dla elementu $i$ ze zbioru testowego $\mathit{P}$ będzie dostarczona predykcja $\widehat{r}_i$. Aby ocenić jakość jej wyniku należy porównać ją ze znaną wartością $r_i$.
+Niech dla elementu $i$ ze zbioru $\mathit{P} = \set{x_1, \ldots, x_n}$ będzie dostarczona predykcja $\widehat{r}_i$. Aby ocenić jakość jej wyniku należy porównać ją ze znaną wartością $r_i$.
 
 \begin{df}[Błąd średni {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem nazywamy wartość wyrażenia:
 $$
-ME = \frac{1}{|\mathit{P}|}\sum_{i\in \mathit{P}}(\widehat{r}_i-r_i).
+ME = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}(\widehat{r}_i-r_i).
 $$
 \end{df}
 
 \begin{df}[Średni błąd bezwzględny  {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem bezwzględnym nazywamy wartość wyrażenia:
 $$
-MAD = \frac{1}{|\mathit{P}|}\sum_{i\in \mathit{P}}|\widehat{r}_i-r_i|.
+MAD = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}|\widehat{r}_i-r_i|.
 $$
 \end{df}
 
 \begin{df}[Średni błąd kwadratowy  {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem kwadratowym nazywamy wartość wyrażenia:
 $$
-MSE = \frac{1}{|\mathit{P}|}\sum_{i\in \mathit{P}}(\widehat{r}_i-r_i)^2.
+MSE = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}(\widehat{r}_i-r_i)^2.
 $$
 \end{df}
 \begin{uwaga}{\citep[Sec 4.1.1]{rsh}}
-Funkcja kwadratowa jest funkcją monotoniczną co pozwala na dość częste zastępowanie średniego błędu kwadratowego przez średnią kwadratową błędów (Root Mean Squared Error (RMSE)):
+Funkcja kwadratowa jest funkcją wypukłą co pozwala na dość częste zastępowanie średniego błędu kwadratowego przez średnią kwadratową błędów (Root Mean Squared Error (RMSE)):
 $$
 RMSE = \sqrt{MSE}
 $$
@@ -767,7 +756,7 @@ Niech $w_i>0$ będzie wagę dla elementu $i$ oraz niech $\sum w_i = 1$.
 
 Średnim błędem RMSE nazywamy wartość wyrażenia:
 $$
-ARMSE = \sqrt{\sum_{i\in \mathit{P}}w_{i}(\widehat{r}_i-r_i)^2}.
+ARMSE = \sqrt{\sum_{x_i\in \mathit{P}}w_{i}(\widehat{r}_i-r_i)^2}.
 $$
 \end{df}
 \subsection{Ocena jakości modelu}
@@ -775,7 +764,7 @@ Ocenę jakości modelu przeprowadza się na zbiorze testowym. Dla każdego z rek
 
 W następnym kroku zliczana jest liczba rekordów poprawnie i niepoprawnie zaklasyfikowanych przez model, a wynik testu zostaje przestawiony w postaci macierzy pomyłek.
 \begin{df}[Macierz pomyłek {\citep[Sec 4.8.1]{edmia}}]
-Macierzą pomyłek nazywamy macierz kwadratową $ m \times m$ ($m$ oznacza liczbę etykiet), gdzie wiersze reprezentują etykiety początkowe, natomiast kolumny etykiety przyporządkowane rekordom przez model. Element macierzy $\mathbb{F}$ oznacza liczbę rekordów z etykietą $E_i$, którym błędnie została przypisana etykieta $E_j$.
+Macierzą pomyłek nazywamy macierz kwadratową $ m \times m$ ($m$ oznacza liczbę etykiet), gdzie wiersze reprezentują etykiety faktyczne, natomiast kolumny etykiety przyporządkowane rekordom przez model. Element macierzy $\mathbb{F}$ oznacza liczbę rekordów z etykietą $E_i$, którym błędnie została przypisana etykieta $E_j$.
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|r|r|r|} \hline
@@ -911,7 +900,7 @@ $$
 
 Mając na uwadze, że zbiór $\setWlasnosci$ jest skończony (jak również zbiór $\setPrzedmioty$) można utożsamiać funkcję anotującą z wektorem o długości $|\setWlasnosci|$ nazywanym wektorem własności.
 
-\begin{df}[Funkcja przynależności]
+\begin{df}[Funkcja przynależności {\citep[Sec 4.2]{msi}}]
 Funkcja przynależności nazywamy funkcję
 $$
 \mu_{\setWlasnosci}(p_i): \setPrzedmioty \to [0,1]
@@ -967,14 +956,20 @@ W przypadku systemów rekomendujących opartych na treści predykcja jest dokony
 
 W filtrowaniu kolaboratywnym wektory cech zostają pominięte, a predykcja dokonywana jest na podstawie ocen. Wyróżniamy dwa typy filtrowania kolaboratywnego:
 \begin{itemize}
-\item filtrowanie oparte na użytkownikach, gdzie zakładamy, że jeżeli użytkownicy $u_1$ i $u_2$ wykazują podobieństwo oraz użytkownik $u_1$ oceni pewien przedmiot, którego użytkownik $u_2$ jeszcze nie ocenił, to prawdopodobnie ocena użytkownika $u_2$ będzie podobna do oceny użytkownika $u_1$,
-\item filtrowanie oparte na elementach , gdzie zakładamy, że jeżeli użytkownik ocenił w pewien sposób przedmiot $p_1$ w przeszłości oraz przedmiot $p_2$ jest podobna do $p_1$, to użytkownik będzie skłonny w podobny sposób ocenić przedmiot $p_2$.
+\item filtrowanie oparte na użytkownikach
+
+Niech $\mathbf{u}_1 = [o_{1,1}, \ldots, o_{1,n}]$ oraz $\mathbf{u}_2 = [o_{2,1}, \ldots, o_{2,n}]$ będą wektorami opisującymi odpowiednio użytkownika $u_1$ i $u_2$. Elementami wektorów są wartości funkcji R w przypadkach, gdzie zarówno użytkownik $u_1$, jak i $u_2$ ocenili ten sam przedmiot. Główne założenie filtrowania kolaboratywnego opartego na użytkownikach mówi, że jeżeli odległość między wektorami $\mathbf{u}_1$ i $\mathbf{u}_2$ jest mała oraz użytkownik $u_1$ ocenił pewien przedmiot dla którego użytkownik $u_2$ jeszcze nie wystawił oceny, to prawdopodobnie ocena użytkownika $u_2$ będzie podobna do oceny użytkownika $u_1$.
+\item filtrowanie oparte na elementach
+
+Niech $\mathbf{p}_1 = [o_{1,1}, \ldots, o_{1,n}]$ oraz $\mathbf{p}_2 = [o_{2,1}, \ldots, o_{2,n}]$ będą wektorami opisującymi odpowiednio przedmiot $p_1$ i $p_2$. Elementami wektorów są wartości funkcji R w przypadkach, gdzie przedmiot $p_1$, jak i $p_2$ został oceniony przez tego samego użytkownika. Główne założenie filtrowania kolaboratywnego opartego na elementach mówi, że jeżeli odległość między wektorami $\mathbf{p}_1$ i $\mathbf{p}_2$ jest mała oraz użytkownik ocenił w pewien sposób przedmiot $p_1$ w przeszłości to będzie skłonny w podobny sposób ocenić przedmiot $p_2$.
 \end{itemize}
 
 Systemy rekomendujące kontekstowe są natomiast systemami rekomendującymi opartymi na treści w których zostaje uwzględniony dodatkowy wymiar - kontekst.
 \end{uwaga}
 
 \section{Systemy rekomendujące oparte na treści - Content-based recommender systems}
+Rozważania zawarte w tej sekcji zostały przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}} oraz kursu autorstwa Andrew N.: \textit{Recommender Systems} {\citep{rs}}.
+\bigskip
 
 Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Metoda ta opiera się na obliczaniu podobieństw oraz wykorzystuje techniki uczenia maszynowego, takie jak klasyfikacja.
 
@@ -1044,23 +1039,29 @@ Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen
 \end{przyklad}
 
 \subsection{Wygenerowanie profilu dokumentu tekstowego - algorytm TFIDF}
+Rozważania na temat algorytmu TFIDF zawarte w tym rozdziale zostały przeprowadzone na podstawie książki \textit{Recommender Systems Handbook} {\citep[Sec 3.3.1.1]{rsh}}.
+\bigskip
+\bigskip
+
 W większość systemów rekomendacji opartych na treści używamy gotowych modeli wyszukujących. 
 
-W przypadku rozważań przeprowadzanych na dokumentach tekstowych jednym z najbardziej popularnych jest model przestrzeni wektorowej (\textit{ang. Vector Space Model}) z algorytmem TFIDF.
+W przypadku rozważań przeprowadzanych na dokumentach tekstowych jednym z najbardziej popularnych jest model przestrzeni wektorowej (\textit{ang. Vector Space Model}) z algorytmem TFIDF. 
 \bigskip
 
 Niech $\setPrzedmioty = \set{p_1, p_2, \ldots ,p_n}, n\in \setN$ będzie zestawem analizowanych przedmiotów. $W = \set{w_1, w_2, \ldots ,w_n}, \: n\in \setN $ niech będzie zbiorem rozważanych własności.
 
 \begin{df}[Model przestrzeni wektorowej {\citep[Sec 3.3.1.1]{rsh}}]
-Modelem przestrzeni wektorowej nazywamy formę reprezentacji przedmiotów, w której przedmiot $p_i$ jest reprezentowany przez wektor z przestrzeni $n$-wymiarowej, a każdy z $n$ wymiarów reprezentuje jedną z rozważanych wartości przedmiotu. 
+Modelem przestrzeni wektorowej nazywamy formę reprezentacji przedmiotów, w której przedmiot $p_i$ jest reprezentowany przez wektor z przestrzeni $n$-wymiarowej, a każdy z $n$ wymiarów reprezentuje jedną z rozważanych własności przedmiotu. 
 \end{df}
+
+Dla danych w formie dokumentów tekstowych przedmiotem $p_i$ jest dokument (artykuł, książka), natomiast własnościami, które charakteryzują temat dokumentu są słowa. Mając na uwadze te założenia możemy zdefiniować kolejne elementy algorytmu $TFIDF$.
 
 \begin{df}[Liczność {\citep[Sec 3.3.1.1]{rsh}}]
 Licznością $f_{k,j}$ nazywamy liczbę wystąpień własności $w_k$ w przedmiocie $p_j$.
 \end{df}
 
 \begin{df}[TF {\citep[Sec 3.3.1.1]{rsh}}]
-$TF$ (ang. \textit{term frequency}) nazywamy funkcję przedstawiającą zależność wartości $w_k$ od przedmiotu $p_j$:
+$TF$ (ang. \textit{term frequency}) nazywamy funkcję przedstawiającą zależność własności $w_k$ od przedmiotu $p_j$:
 $$
 TF(w_k, p_j)=\frac{f_{k,j}}{\max_{z}f_{z,j}},
 $$
@@ -1092,20 +1093,19 @@ $$
 \begin{df}[Waga własności w przedmiocie]
 Wagą własności $w_k$ w przedmiocie $p_i$ nazywamy wartość:
 $$
-w_{k,i} = \frac{TFIDF(w_k, p_i)}{\sqrt{ \sum_{j=1}^{|W|}{TFIDF(w_j, p_i)}^2}}.
+s_{k,i} = \frac{TFIDF(w_k, p_i)}{\sqrt{ \sum_{j=1}^{|W|}{TFIDF(w_j, p_i)}^2}}.
 $$
 \end{df}
 
 \begin{uwaga}
-Każdy z dokumentów $p_i, \: i\in\set{1,\ldots,n} $ przedstawiamy jako wektor liczb rzeczywistych w przestrzeni $n$-wymiarowej. Zatem $ p_i = [w_{1i}, w_{2i},...,w_{ni}] $, gdzie $w_{ki}$, $k \in \set{1, \ldots, n}$ jest wagą własności $w_k$ w przedmiocie $p_i$.
-\end{uwaga}
-
-\begin{uwaga}
-Dla danych w formie dokumentów tekstowych własnościami, które charakteryzują temat dokumentu są słowa. Dla każdego ze słów zostaje obliczona wartość funkcji $TFIDF$, a otrzymany następnie wektor wag charakteryzuje rozważany dokument.
+Każdy z dokumentów $p_i, \: i\in\set{1,\ldots,n} $ przedstawiamy jako wektor wag własności (słowa) $w_k$ w przedmiocie $p_i$. Zatem $ p_i = [s_{1i}, s_{2i},...,s_{ni}] $.
 \end{uwaga}
 
 \section{Filtrowanie kolaboratywne - Collaborative filtering}
-Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach kontekstowych. Dzięki temu systemowi możemy dokonywać rekomendacji na przestrzeni kilku kontekstów, co pozwala uniknąć nam konkretne wyspecjalizowanej przestrzeni obecnej w metodach kontekstowych.
+Rozważania na temat filtrowania kolaboratywnego zostały przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}}.
+\bigskip
+
+Podejście kolaboratywne omija niektóre ograniczenia występujące w metodach opartych na treści. Dzięki temu systemowi możemy dokonywać rekomendacji z pominięciem wektorów preferencji. 
 
 \subsection{Filtrowanie kolaboratywne oparte na użytkowniku}
 
@@ -1285,6 +1285,8 @@ Powtarzając powyższe obliczenia dla każdej z pozycji wcześniej nieocenionej 
 \end{przyklad}
 
 \section{Systemy rekomendujące kontekstowe - Context–aware recommender systems}
+Rozważania w tej sekcji zostały również przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}}.
+\bigskip
 
 Uprzednio opisane metody opierały się głownie na rozważaniu problemów dwu-wymiarowych. W tym podejściu, przez dodanie nowego wymiaru, jakim jest kontekst $(K)$, zaczynamy rozważać problemy trój-wymiarowe:
 $$
