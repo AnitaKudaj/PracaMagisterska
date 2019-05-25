@@ -1,81 +1,105 @@
 \begin{thebibliography}{10}
 
-\bibitem{rsh}
-Ricci F. and Rokach L. and Shapira B. and Kantor P.:
-{\em Recommender Systems Handbook.}
-\newblock Springer, 2011.
-
-\bibitem{wztp}
-Krzyśko M.:
-{\em Wykład z teorii prawdopodobieństwa.}
-\newblock Wydawnictwo Naukowe - Techniczne, 2000.
-
-\bibitem{jakubowski}
-Jakubowski J., Sztencel R.:
-{\em Wstęp do teorii prawdopodobieństwa.}
-\newblock SCRIPT, 2001.
-
 \bibitem{ealIII}
 Banaszak G., Gajda W.:
 {\em Elementy algebry liniowej część I.}
 \newblock Wydawnictwo Naukowe - Techniczne, 2002.
 
-\bibitem{sadzwpr}
-Walesiak M., Gantar E.:
-{\em Statystyczna analiza danych z wykorzystaniem programu R.}
-\newblock Wydawnictwo Naukowe PWN, 2009.
-
-\bibitem{alzega}
-Poreda T., Jędrzejewski J.:
-{\em Algebra liniowa z elementami geometrii analitycznej.}
-\newblock Politechnika Łódzka, 2011.
-
-\bibitem{edmia}
-Morzy T.:
-{\em Eksploracja danych. Metody i algorytmy.}
-\newblock Wydawnictwo Naukowe PWN, 2013.
+\bibitem{acsonbrs}
+Desrosiers K., Karypis G.:
+\newblock A comprehensive survey of neighborhood-based recommendation methods.
+\newblock Springer, 2011.
 
 \bibitem{bre}
 Gorakala S. K.:
 {\em Building Recommendation Engines.}
 \newblock Packt, 2016.
 
-\bibitem{ascgdpds}
-Nowak~Brzezińska A.:
-\newblock Analiza skupień. konspekt do zajęć: Statystyczne metody analizy
-  danych.
-\newblock 2012.
-
-\bibitem{ulafiir}
-O'Brien~G.W. Berry~M.W., Dumais~S.T.:
-\newblock Using linear algebra for intelligent information retrival.
-\newblock 1995.
-
-\bibitem{mcvals}
-Lublin M. Pere~Y. Haoming~L., Bangzheng~H.:
-\newblock Matrix completion via alternating least square (als).
-\newblock 2015.
+\bibitem{jakubowski}
+Jakubowski J., Sztencel R.:
+{\em Wstęp do teorii prawdopodobieństwa.}
+\newblock SCRIPT, 2001.
 
 \bibitem{kidzinski}
 Kidziński Ł.:
 \newblock Statistical foundation of recommender systems.
 \newblock Master's thesis, University of Warsaw, 2011.
 
-\bibitem{wayls}
-\nolinkurl{ http://comisef.wikidot.com/concept:eigenvalue-and-singular-value-inequalities}
-\newblock (dostęp 07.05.2019).
-
-\bibitem{acsonbrs}
-Desrosiers K., Karypis G.:
-\newblock A comprehensive survey of neighborhood-based recommendation methods.
+\bibitem{wztp}
+Krzyśko M.:
+{\em Wykład z teorii prawdopodobieństwa.}
+\newblock Wydawnictwo Naukowe - Techniczne, 2000.
 
 \bibitem{rs}
-\nolinkurl{www.youtube.com/watch?v=giIXNoiqO_U&list=PL-6SiIrhTAi6x4Oq28s7yy94ubLzVXabj}
-\newblock (dostęp 19.05.2019).
+{\em Kurs Recommender Systems, Andrew Ng :}
+\\ \nolinkurl{www.youtube.com/watch?v=giIXNoiqO_U&list=PL-6SiIrhTAi6x4Oq28s7yy94ubLzVXabj}
+\\ \newblock (dostęp 19.05.2019).
+
+\bibitem{mcvals}
+Lublin M. Pere~Y. Haoming~L., Bangzheng~H.:
+\newblock Matrix completion via alternating least square (ALS).
+\newblock Stanford University, 2015.
+
+\bibitem{tsvdalra}
+Mazeika M.:
+{\em The singular value decomposition and low rank approximation.}
+\newblock The University of Chicago, 2016.
+
+\bibitem{edmia}
+Morzy T.:
+{\em Eksploracja danych. Metody i algorytmy.}
+\newblock Wydawnictwo Naukowe PWN, 2013.
+
+\bibitem{ascgdpds}
+Nowak~Brzezińska A.:
+\newblock Analiza skupień. konspekt do zajęć: Statystyczne metody analizy
+  danych.
+\newblock Uniwersytet Śląski, 2012.
+
+\bibitem{ulafiir}
+O'Brien G.W. Berry M.W., Dumais S.T.:
+\newblock Using linear algebra for intelligent information retrival.
+\newblock SIAM, 1995.
+
+\bibitem{alzega}
+Poreda T., Jędrzejewski J.:
+{\em Algebra liniowa z elementami geometrii analitycznej.}
+\newblock Politechnika Łódzka, 2011.
+
+\bibitem{rsh}
+Ricci F. and Rokach L. and Shapira B. and Kantor P.:
+{\em Recommender Systems Handbook.}
+\newblock Springer, 2011.
 
 \bibitem{msi}
 Rutkowski L.:
 \newblock Metody sztucznej inteligencji.
 \newblock Wydawnictwo Naukowe PWN, 2012.
+
+\bibitem{sadzwpr}
+Walesiak M., Gantar E.:
+{\em Statystyczna analiza danych z wykorzystaniem programu R.}
+\newblock Wydawnictwo Naukowe PWN, 2009.
+
+\bibitem{apache}
+{\em Dokumentacja Apache Spark}
+\\ {\em Przewodnik biblioteki MLlib:}
+\\ \nolinkurl{https://spark.apache.org/docs/latest/ml-guide.html}
+\\ {\em Informacje o filtrowaniu kolaboratywnym:}
+\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/mllib-collaborative-filtering.html}
+\\ \nolinkurl{http://spark.apache.org/docs/latest/ml-collaborative-filtering.html?fbclid=IwAR05mYhbkFUTfBE0NScVhNaK1GiM4o8R4nqW1iiDePpp85_OBvKM5QiJ58Y}
+\\ {\em Informacje o metodzie predictAll(user\_product):}
+\\ \nolinkurl{https://spark.apache.org/docs/2.2.0/api/python/pyspark.mllib.html#pyspark.mllib.recommendation.MatrixFactorizationModel.predictAll}
+\\ {\em Informacje o metodzie train(ratings, rank, iterations=5, lambda=0.01, blocks=-1, nonnegative=False, seed=None) :}
+\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/api/python/pyspark.mllib.html#pyspark.mllib.recommendation.ALS}
+\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/api/python/_modules/pyspark/mllib/recommendation.html#ALS.train}
+\\ {\em Informacje o metodzie recommendProducts(int uzytkownik,int numer):}
+\\ \nolinkurl{https://spark.apache.org/docs/2.2.0/api/java/org/apache/spark/mllib/recommendation/MatrixFactorizationModel.html#recommendProducts-int-int-}
+\\ \newblock (dostęp 24.05.2019).
+
+\bibitem{dane}
+{\em Źródło danych:}
+\\ \nolinkurl{https://grouplens.org/datasets/movielens/}
+\newblock (dostęp 25.05.2019).
 
 \end{thebibliography}

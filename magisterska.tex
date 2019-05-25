@@ -7,6 +7,7 @@
 \usepackage{polski}
 \usepackage{natbib}
 \usepackage[hidelinks]{hyperref}
+\usepackage{url}
 \usepackage[left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 \linespread{1.3}
 
@@ -125,7 +126,23 @@ napisana w Instytucie Matematyki
 
 
 \chapter{Wstęp}
-%TODO napiszemy na końcu
+Znaczny wzrost ilości informacji dostępnych w internecie wywołał zapotrzebowanie na systemy, które mogą pomóc użytkownikom znaleźć cenne dla nich dane. W tym kontekście filtrowanie informacji zapewnia konkretne narzędzia - reguły rekomendujące, których celem jest uszeregowanie danych według częściowo ujawnionych preferencji, otrzymanych z uprzednio przeprowadzonych badaniach, aby w efekcie zasugerować odbiorcy odpowiedni dla niego produkt. 
+
+Celem tej pracy jest przedstawienie matematycznej strony metod systemów rekomendujących poprzez analizę algorytmów ukrytych pod ich nazwami.
+
+Niniejsza praca składa się z czterech części.
+
+Pierwsza część zawiera wykaz oznaczeń, przypomnienie podstawowych definicji z zakresu algebry liniowej oraz rachunku podobieństwa i statystyki wykorzystanych w dalszych częściach pracy. 
+
+W drugim rozdziale przedstawione zostały elementy eksploracji danych stanowiące nieodzowną część systemów rekomendujących. Rozdział ten składa się z kilku sekcji. Zaczynając od wstępnego przetwarzania danych oraz definicji i twierdzeń związanych z miarami podobieństwa i redukcją wymiaru (tutaj w szczególności algorytm Rozkładu Według Wartości Osobliwych (ang. Singular Value Decomposition (SVD))) przechodzimy do opisu dwóch metod eksploracji danych - algorytmu k-najbliższych sąsiadów i algorytmu k-średnich aby zakończyć oceną dokładności i jakości modeli.
+
+Rozdział trzeci opisuje tytułowe modele tworzenia rekomendacji. Zostały tu zawarte sformułowania definicji związanych z systemami rekomendującymi, informacje dotyczące systemów opartych na treści, filtrowania kolaboratywnego oraz systemów kontekstowych. Rozdział został wzbogacony o algorytmy i przykłady, które w klarowny sposób pokazują zastosowanie poszczególnych metod. Ponadto znajdziemy tu przedstawienie dekompozycji macierzy ocen metodą SVD.
+
+Ostatnia część to praktyczne zastosowanie filtrowania kolaboratywnego. W rozdziale tym podstawę stanowią informacje na temat Apache Spark oraz algorytmu ALS (ang. Alternating Least Square) z biblioteki MLlib. Dodatkowo w ostatniej sekcji rozdziału została umieszczona przykładowa implementacja algorytmu ALS wraz z komentarzami wyjaśniającymi poszczególne kroki. 
+
+W poniższej pracy wszelkie uzupełnione o brakujące szczegóły definicje, przykłady, twierdzenia i dowód zostały oznaczone numerami pozycji w bibliografii z których zostały zaczerpnięte.
+
+
 \chapter{Preliminaria} %definicje
 \section{Oznaczenia używane w pracy}
 W niniejszej pracy zostały użyte następujące oznaczenia:
@@ -497,7 +514,7 @@ $$
 gdzie:
 \begin{itemize}
 \item $\mathbb{U}^T \mathbb{U} = \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m \times m$ oraz $\mathbb{V}$ wymiaru $n \times n$,
-\item $\Sigma$ jest macierzą diagonalną o nieujemnych wartościach, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$, $n \in \setN$ taką, że $\sigma_1>0$ dla $1\leq i \leq \rz{\mathbb{X}}$ i $\sigma_1=0$ dla $i\geq \rz{\mathbb{X}}+1$ (macierz $\Sigma$ jest macierzą wymiaru $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$).	
+\item $\Sigma$ jest macierzą wymiaru $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
 \end{itemize}
 \end{df}
 
@@ -528,35 +545,58 @@ Niech rozkład według wartości osobliwych macierzy $\mathbb{X}$ będzie dany w
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T
 $$
-gdzie $\mathbb{U}=[u_1,u_2,...u_m]$, $\mathbb{V} = [v_1,v_2,...v_n]$, $\Sigma = diag(\sigma_1, \sigma_2,..., \sigma_n)$ oraz 
-$\sigma_1\geq \sigma_2 \geq ... \geq \sigma_r > \sigma_{r+1} = ... = \sigma_n = 0$.
+gdzie 
+$$\mathbb{U}=[\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u}_m], \: \mathbb{V} = [\mathbf{v}_1,\mathbf{v}_2,...,\mathbf{v}_n], \: \Sigma = \left[
+        \begin{array}{cccc}
+         \sigma_{1} & 0 & \ldots & 0 \\
+         0 & \sigma_{2} & \ldots & 0 \\
+         \ldots & \ldots& \ddots & \ldots \\
+         0 & 0 & \ldots & \sigma_{n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         0 & 0 & \ldots & 0 \\
+         \end{array}
+      \right],$$
+oraz 
+$\sigma_{1}\geq \sigma_{2} \geq ... \geq \sigma_{r} > \sigma_{r+1} = ... = \sigma_{n} = 0$. Dla macierzy $\Sigma$ przyjmujemy skrócony zapis $\sigma_{i} = \sigma_{ii}$. Przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i $\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$.
 $R(\mathbb{X})$ i $N(\mathbb{X})$ oznaczają zakres i jądro macierzy.
 Wtedy:
 \begin{enumerate}
-\item właściwości rzędu macierzy: $\rz{\mathbb{X}} = r$, $N(\mathbb{X}) = \przestrzen{v_{r+1},...,v_n}$, 
-$R(\mathbb{X}) = \przestrzen{u_1,u_2,...,u_r}$,
-\item $\mathbb{X} = \sum_{i=1}^r u_i \cdot\sigma_i \cdot v_i^T,$
-\item $||\mathbb{X}||_F^2 = \sigma_1^2+...+\sigma_r^2$ i $||\mathbb{X}||_2^2 = \sigma_1$.
+\item właściwości rzędu macierzy: $\rz{\mathbb{X}} = r$, $N(\mathbb{X}) = \przestrzen{\mathbf{v}_{r+1},...,\mathbf{v}_n}$, 
+$R(\mathbb{X}) = \przestrzen{\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u}_r}$,
+\item $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T,$
+\item $||\mathbb{X}||_F^2 = \sigma_{1}^2+...+\sigma_{r}^2$.
 \end{enumerate}
 \end{tw}
 
 \begin{tw}[Twierdzenie Eckart - Younga {\citep{ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
-Niech $\mathbb{X}$ będzie macierzą $m \times n$ - wymiarową z rozkładem według wartości osobliwych $\mathbb{X}=\mathbb{U}\Sigma \mathbb{V}^T$, $\rz{\mathbb{X}} \in \setN$ niech będzie rzędem macierzy i $\rz{\mathbb{X}} \leq p$.
-Zdefiniujmy:
+Niech $\mathbb{X}=\mathbb{U}\Sigma \mathbb{V}^T$ będzie rozkładem według wartości osobliwych $m \times n$ - wymiarowej macierzy $\mathbb{X}$, $m,n \in \setN$, $m \geqslant n$ oraz $\rz{\mathbb{X}} \leqslant \min \set{m,n}$ . Niech $\mathbb{U}$, $\Sigma$ i $\mathbb{V}$ będą przedstawione następująco:
 $$
-\mathbb{X}_k = \sum_{i=1}^k u_i\cdot \sigma_i \cdot v_i^T,
+\mathbb{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_m], \: \Sigma = \left[
+        \begin{array}{cccc}
+         \sigma_{1} & 0 & \ldots & 0 \\
+         0 & \sigma_{2} & \ldots & 0 \\
+         \ldots & \ldots& \ddots & \ldots \\
+         0 & 0 & \ldots & \sigma_{n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         0 & 0 & \ldots & 0 \\
+         \end{array}
+      \right], \: \mathbb{V} = [\mathbf{v}_1, \ldots, \mathbf{v}_n],
+$$
+gdzie przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i $\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$. Zdefiniujmy:
+$$
+\mathbb{X}_k = \sum_{i=1}^k \mathbf{u}_i\cdot \sigma_{i} \cdot \mathbf{v}_i^T,
 $$
 wtedy
 $$
-\min \limits_{\rz{\mathbb{B}} = k } ||\mathbb{X} - \mathbb{B}||_F^2 = ||\mathbb{X} - \mathbb{X}_k||_F^2 = \sigma_{k+1}^2 + ... + \sigma_p^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = \min \limits_{\rz{\mathbb{B}} \leqslant k } ||\mathbb{X} - \mathbb{B}||_F^2 = \sigma_{k+1}^2 + ... + \sigma_{n}^2.
 $$
 \end{tw}
 
 Aby udowodnić twierdzenie Eckart - Younga wprowadźmy twierdzenie Weylsa:
 
-\begin{tw}[Twierdzenie Weylsa {\citep{wayls}}]
+\begin{tw}[Twierdzenie Weylsa {\citep[Tw. 4.17]{tsvdalra}}]
 Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setK)$ oraz $r=\min\{m,n\}$.
-Dodatkowo niech odpowiednio $\sigma_1(\mathbb{X}) \geq \sigma_2(\mathbb{X})\geq \ldots \geq \sigma_r(\mathbb{X})\geq 0$, $\sigma_1(\mathbb{Y}) \geq \sigma_2(\mathbb{Y})\geq \ldots \geq \sigma_r(\mathbb{Y})\geq 0$ i $\sigma_1(\mathbb{Z}) \geq \sigma_2(\mathbb{Z})\geq \ldots \geq \sigma_r(\mathbb{Z})\geq 0$ będą wartościami osobliwymi macierzy $\mathbb{X}, \mathbb{Y}, \: \mathbb{Z}=\mathbb{X} + \mathbb{Y}$. Wtedy:
+Dodatkowo niech odpowiednio $\sigma_1(\mathbb{X}) \geq \sigma_2(\mathbb{X})\geq \ldots \geq \sigma_r(\mathbb{X})\geq 0$, $\sigma_1(\mathbb{Y}) \geq \sigma_2(\mathbb{Y})\geq \ldots \geq \sigma_r(\mathbb{Y})\geq 0$ i $\sigma_1(\mathbb{Z}) \geq \sigma_2(\mathbb{Z})\geq \ldots \geq \sigma_r(\mathbb{Z})\geq 0$ będą kolejnymi wartościami osobliwymi macierzy $\mathbb{X}, \mathbb{Y}, \: \mathbb{Z}=\mathbb{X} + \mathbb{Y}$. Wtedy:
 $$
 \sigma_{i+j-1}(\mathbb{Z}) \leq \sigma_i(\mathbb{X}) + \sigma_j(\mathbb{Y}),
 $$
@@ -564,9 +604,9 @@ gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
 \end{tw}
 
 
-\begin{proof}{[Twierdzenia Eckart - Younga]}
+\begin{proof}{[Twierdzenia Eckart - Younga {\citep[Tw. 4.21]{tsvdalra}}]} 
 
-Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o wartościach rzeczywistych, gdzie $m\geq n$.
+Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o wartościach rzeczywistych, gdzie $m \geqslant n$.
 Załóżmy, że
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T
@@ -574,41 +614,54 @@ $$
 jest rozkładem według wartości osobliwych macierzy $\mathbb{X}$.
 Chcemy pokazać, że najlepszym przybliżeniem macierzy $\mathbb{X}$ w normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
 $$
-\mathbb{X}_k = \sum_{i=1}^k u_i\cdot \sigma_i \cdot v_i^T,
+\mathbb{X}_k = \sum_{i=1}^k \mathbf{u}_i\cdot \sigma_i \cdot \mathbf{v}_i^T,
 $$
-gdzie $u_i$ i $v_i$ oznaczają odpowiednio $i$-te kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$.
-Zauważmy, że z własności 3. twierdzenia o warunkach równoważnych SVD mamy:
+gdzie $\mathbf{u}_i$ i $\mathbf{v}_i$ oznaczają odpowiednio $i$-te kolumny macierzy $\mathbb{U}$ i $\mathbb{V}$.
+Zauważmy, że z własności 3. twierdzenia o warunkach równoważnych SVD mamy
 $$
-||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n u_i \cdot \sigma_i \cdot v_i^T||_F^2 = \sum_{i=k+1}^n \sigma_i^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 = \sum_{i=k+1}^n \sigma_i^2.
 $$
-Stąd należy udowodnić, że $\mathbb{B}_k = \mathbb{X}\mathbb{Y}^T$, gdzie $\mathbb{X}$ i $\mathbb{Y}$ są macierzami oraz 
+Stąd należy udowodnić, że jeżeli $\mathbb{B}_k = \mathbb{Z}\mathbb{Y}^T$, gdzie $\mathbb{Z}$ i $\mathbb{Y}$ są macierzami $k$-kolumnowymi to
 $$
-||\mathbb{X} - \mathbb{X}_k||_F^2 = \sum_{i=k+1}^n \sigma_i^2 = ||\mathbb{X} - B_k||_F^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = \sum_{i=k+1}^n \sigma_i^2 \leqslant ||\mathbb{X} - B_k||_F^2.
 $$
-Niech $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. Korzystając z Twierdzenia Weylsa mamy:
+Niech $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. Korzystając z Twierdzenia Weylsa mamy
 $$
 \sigma_{i+j-1}(\mathbb{X})\leq \sigma_{i}(\mathbb{X}^{`}) + \sigma_j(\mathbb{X}^{``}).
 $$ 
-Jeżeli 
-\begin{center}
-$\sigma_{k+1}(\mathbb{B}_k)=0$,
-\end{center} 
-kiedy $\mathbb{X}^{`} = \mathbb{X} - \mathbb{B}_k$ i $\mathbb{X}^{``} = \mathbb{B}_k$ wnioskujemy, że dla $i\geq 1, j= k+1$
-\begin{center}
-$\sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{k+1}(\mathbb{X})$.
-\end{center}
-Stąd:
+Przyjmijmy, że $\mathbb{X}^{`} = \mathbb{X} - \mathbb{B}_k$ i $\mathbb{X}^{``} = \mathbb{B}_k$ otrzymujemy
+$$
+\sigma_{i+j-1}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_j(\mathbb{B}_k).
+$$ 
+Dla $i\geq 1, j= k+1$
+$$
+\sigma_{i+k}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_{k+1}(\mathbb{B}_k).
+$$ 
+Załóżmy, że
+$$
+\sigma_{k+1}(\mathbb{B}_k)=0,
+$$
+wtedy
+$$
+\sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{k+1}(\mathbb{X}).
+$$
+Stąd
 $$
 ||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^n \sigma_i(\mathbb{X}-\mathbb{B}_k)^2\geq \sum_{k+1}^n \sigma_i(\mathbb{X})^2.
 $$
-Z własności 3. twierdzenia o warunkach równoważnych SVD mamy:
+Z własności 3. twierdzenia o warunkach równoważnych SVD
 $$
 \sum_{k+1}^n \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2.
 $$
+Zatem
+$$
+||\mathbb{X} - \mathbb{B}_k||_F^2 \geqslant ||\mathbb{X}-\mathbb{X}_k||_F^2.
+$$
 \end{proof}
 
-
-Zawsze jest możliwe dokonać dekompozycji macierzy $\mathbb{X}$ do postaci $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$.
+\begin{uwaga}
+Zawsze jest możliwe dokonać dekompozycji macierzy $\mathbb{X}$ do postaci $\mathbb{U} \Sigma \mathbb{V}^T$.
+\end{uwaga}
 
 \section{Metody eksploracji danych}
 
@@ -651,7 +704,7 @@ $$
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{kNN.PNG} 
+\includegraphics[scale=0.5]{obrazy/kNN.PNG} 
 \caption{Metoda $k$ - najbliższych sąsiadów. (źródło własne)}
 \end{figure}
 \end{center}
@@ -677,7 +730,7 @@ W wyniku grupowania $n$ - elementowego zbioru $\mathit{X}$ na $k$ podgrup jest m
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_0.PNG} 
+\includegraphics[scale=0.8]{obrazy/ks_0.PNG} 
 \caption{Metoda $k$-średnich. Wybór początkowych środków. (źródło własne)}
 \end{figure}
 \end{center}
@@ -686,7 +739,7 @@ W powyższym przykładzie (rysunek 3.2) wybranymi środkami są punkty $p1$, $p2
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_1.png} 
+\includegraphics[scale=0.8]{obrazy/ks_1.png} 
 \caption{Metoda $k$-średnich. Przypisanie elementów do grup.(źródło własne)}
 \end{figure}
 \end{center}
@@ -694,7 +747,7 @@ Dla każdej z tak ustalonych grup obliczamy średnią arytmetyczną współrzęd
 \begin{center}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{ks_2.png} 
+\includegraphics[scale=0.8]{obrazy/ks_2.png} 
 \caption{Metoda $k$-średnich. Wybór nowych środków.(źródło własne)}
 \end{figure}
 \end{center}
@@ -968,7 +1021,7 @@ Systemy rekomendujące kontekstowe są natomiast systemami rekomendującymi opar
 \end{uwaga}
 
 \section{Systemy rekomendujące oparte na treści - Content-based recommender systems}
-Rozważania zawarte w tej sekcji zostały przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}} oraz kursu autorstwa Andrew N.: \textit{Recommender Systems} {\citep{rs}}.
+Rozważania zawarte w tej sekcji zostały przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}} oraz kursu autorstwa Andrew Ng: \textit{Recommender Systems} {\citep{rs}}.
 \bigskip
 
 Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Metoda ta opiera się na obliczaniu podobieństw oraz wykorzystuje techniki uczenia maszynowego, takie jak klasyfikacja.
@@ -1348,7 +1401,7 @@ Przez $\Sigma_k, \mathbb{U}_k, \mathbb{V}_k$ oznaczmy macierze uzyskane w wyniku
 
 Macierze $\mathbb{P}$ i $\mathbb{Q}$ odpowiadają więc postaciom:
 $$
-\mathbb{P}=\mathbb{U}_k \Sigma_k^{\frac{1}{2}}, \: oraz \: \mathbb{Q}=\mathbb{V}_k \Sigma_k^{\frac{1}{2}}.
+\mathbb{P}=\mathbb{U}_k \sqrt{\Sigma_k}, \: oraz \: \mathbb{Q}=\mathbb{V}_k \sqrt{\Sigma_k}.
 $$
 
 Predykcja oceny zostaje dokonana na podstawie równania:
@@ -1392,7 +1445,7 @@ $$
 
 Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego w którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom i którego zadaniem jest predykcja ocen użytkowników dla elementów przez nich nieocenionych. 
 
-Załóżmy, że mamy $n$ użytkowników i $m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w której wyrazy $o_{u_i,p_j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ elementowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
+Załóżmy, że mamy $n$ użytkowników i $m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w której wyrazy $o_{i,j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ elementowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
 
 
 \section{ALS z Apache Spark i MLlib}
@@ -1405,50 +1458,242 @@ Jedną z głównych bibliotek Apache Spark jest biblioteka MLlib. Jest to biblio
 \subsection{ALS i MLlib}
 Alternating Least Square (ALS) jest algorytmem faktoryzacji macierzy, który został zaimplementowany bibliotece uczenia maszynowego MLlib należącej do Apache Spark. Algorytm ten został opracowany z myślą o rozwiązywaniu problemów filtrowania na dużą skalę. Jest prosty a zarazem dobrze skalowalny w stosunku do dużych zbiorów danych.
 
-Problem predykcji brakujących ocen formułujemy jako problem optymalizacyjny, gdzie celem jest zminimalizowanie funkcji celu oraz odnalezienie najbardziej optymalnych macierzy $\mathbb{X}$ i $\mathbb{Y}$. 
+Niech macierz $\mathbb{O}=[o_{i,j}]_{m \times n}$, gdzie $o_{i,j}$ oznacza ocenę nadaną przedmiotowi $p_j$ przez użytkownika $u_i$, $m$ to liczba użytkowników, natomiast $n$ jest liczbą przedmiotów.
 
-W szczególności staramy się zminimalizować błąd najmniejszych kwadratów postaci {\citep{mcvals}}:
+Zauważmy, że niektóre wartości macierzy $\mathbb{O}$ są nieznane. W procesie faktoryzacji macierzy $\mathbb{O}$ z liczbą $n_f$ faktorów każdy użytkownik $u_i$ jest utożsamiany z wektorem $\mathbf{u}_i \in \setR^{n_f}$ oraz każdy z przedmiotów $p_j$ z wektorem $\mathbf{p}_j \in \setR^{n_f}$. Elementy wektora $\mathbf{p}_j$ mierzą stopień w jakim przedmiot $p_j$ posiada czynnik lub cechę, elementy wektora $\mathbf{u}_i$ natomiast powinowactwo użytkownika $u_i$ do każdej z cech lub czynników.
+
+Iloczyn skalarny $\mathbf{u}_i^T \mathbf{p}_j$ przedstawia interakcję między użytkownikiem $u_i$ i przedmiotem $p_j$ przybliżając ocenę użytkownika $u_i$ dla przedmiotu $p_j$: $o_{i,j} \approx \mathbf{u}_i^T \mathbf{p}_j$. 
+
+Oznaczając $\mathbb{U}=[\mathbf{u}_i] \in \mathbb{M}_{n_f,m}(\setR)$ jako macierz cech użytkowników oraz $\mathbb{P}=[\mathbf{p}_j] \in \mathbb{M}_{n_f,n}(\setR)$ jako macierz cech przedmiotów staramy się zminimalizować błąd najmniejszych kwadratów postaci {\citep{mcvals}}:
+
 $$
-\min_{\mathbb{X}, \mathbb{Y}} \sum_{o_{u_i,p_j}} (o_{u_i,p_j} - x_{u_i}^Ty_{p_j})^2 + \lambda (\sum_{u_i} \norm{x_{u_i}}^2 + \sum_{p_j} \norm{y_{p_j}}^2),
+\min_{\mathbb{U}, \mathbb{P}} \sum_{o_{i,j}} (o_{i,j} - \mathbf{u}_i^T \mathbf{p}_j)^2 + \lambda (\sum_{u_i} \norm{\mathbf{u}_i}^2 + \sum_{p_j} \norm{\mathbf{p}_j}^2),
 $$
 gdzie 
 \begin{itemize}
-\item $o_{u_i,p_j}$ są znanymi ocenami wystawionymi przez użytkowników,
-\item $\lambda$ jest czynnikiem regulującym.
+\item $o_{i,j}$ są znanymi elementami macierzy $\mathbb{O}$ wystawionymi przez użytkowników,
+\item $\lambda (\sum_{u_i} \norm{\mathbf{u}_i}^2 + \sum_{p_j} \norm{\mathbf{p}_j}^2)$ jest czynnikiem powszechnie stosowanym w funkcji straty zapobiegającym przeuczeniu modelu .
 \end{itemize}
 
-Powyższa funkcja nie jest funkcją wypukłą (ze względu na obiekt $x_{u_i}^Ty_{p_j}$). Ustalając jednak jedną z macierzy $\mathbb{X}$ lub $\mathbb{Y}$, otrzymujemy postać kwadratową, którą można rozwiązać. Rozwiązanie zmodyfikowanego problemu gwarantuje monotoniczne obniżenie ogólnej funkcji kosztów. Stosując ten krok naprzemiennie do macierzy $\mathbb{X}$ i $\mathbb{Y}$, możemy iteracyjnie poprawiać faktoryzację macierzy. Podejście to określamy jako algorytm ALS (Alternating Least Squares).
+Powyższa funkcja nie jest funkcją wypukłą (ze względu na obiekt $u_i^Tp_j$). Ustalając jednak jedną z macierzy $\mathbb{U}$ lub $\mathbb{P}$, otrzymujemy postać kwadratową, którą można rozwiązać. Rozwiązanie zmodyfikowanego problemu gwarantuje monotoniczne obniżenie ogólnej funkcji kosztów. Stosując ten krok naprzemiennie do macierzy $\mathbb{U}$ i $\mathbb{P}$, możemy iteracyjnie poprawiać dopasowanie modelu. Podejście to określamy jako algorytm ALS (Alternating Least Squares).
 
 \begin{algorytm}[ALS {\citep{mcvals}}]
-Zainicjowanie $\mathbb{X}$ i $\mathbb{Y}$.
+Zainicjowanie $\mathbb{P}$ z losowymi wartościami.
 
 Powtarzamy:
 \begin{itemize}
-\item dla $i = 1, \ldots, n $ wykonujemy: 
+\item Wykonujemy:
 $$
-x_{u_i} = (\sum_{o_{u_i,p_j} \in o_{u_i,*}} y_{p_j} y_{p_j}^T + \lambda \mathbb{I}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{u_i,*}} o_{u_i,p_j}y_{p_j}
+\mathbf{u}_i = (\sum_{o_{i,j} \in o_{i,*}} \mathbf{p}_j \mathbf{p}_j^T + \lambda \mathbb{I}_k)^{-1} \sum_{o_{i,j} \in o_{i,*}} o_{i,j}\mathbf{p}_j
 $$
-koniec
-\item dla $j = 1, \ldots, m$ wykonujemy:
+dla $i = 1, \ldots, n $,
+\item wykonujemy:
 $$
-y_{p_j} = (\sum_{o_{u_i,p_j} \in o_{*,p_j}} x_u x_u^T + \lambda \mathbb{I}_k)^{(-1)} \sum_{o_{u_i,p_j} \in o_{*,p_j}} o_{u_i,p_j}x_{u_i}
+\mathbf{p}_j = (\sum_{o_{i,j} \in o_{*,j}} \mathbf{u}_i \mathbf{u}_i^T + \lambda \mathbb{I}_k)^{-1} \sum_{o_{i,j} \in o_{*,j}} o_{i,j}\mathbf{u}_i
 $$
-koniec
+dla $j = 1, \ldots, m$ .
 \end{itemize}
-do momentu zbieżności.
+do momentu spełnienia kryteriów końcowych.
+
+Otrzymujemy macierze $\mathbb{U}$ i $\mathbb{P}$.
 \end{algorytm}
-\begin{uwaga}[Różnica między SVD i ALS]
-\end{uwaga}
+%https://ieeexplore.ieee.org/document/7384354
 
 \subsection{Implementacja algorytmu}
+Poniższa implementacja została stworzona na podstawie dokumentacji Apache Spark {\citep{apache}}. Dane użyte w implementacji zostały zaczerpnięte ze strony internetowej grouplens.org {\citep{dane}}. Wszystkie element graficzne umieszczone w rozdziale pochodzą ze źródła własnego i stanowią części kodu, którego całość została załączona do pracy w plikach \textit{rekomendacja\_podejscie\_1.py} i \textit{rekomendacja\_podejscie\_2.py} (płyta CD).
+\bigskip
+
+ALGORYTM FILTROWANIA KOLABORATYWNGO
+
+\textbf{1. Biblioteki:}
+\\Załadowanie bibliotek pyspark i  MLlib.
+\begin{itemize}
+\item pyspark - język do przeprowadzania eksploracyjnej analizy danych, budowania algorytmów uczenia maszynowego i tworzenia narzędzi ETL,
+\item MLlib - jest częścią frameworku Apache Spark. Pozwala aplikować uczenie maszynowe na dużych zbiorach danych bez problemów ze skalowalnością. Dysponuje dużą liczbą algorytmów uczenia maszynowego, które można zastosować w zależności od przypadku biznesowego.
+\end{itemize}
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS1.PNG} 
+\end{figure}
+
+\textbf{2. Dane:}
+\\Zbiór danych składa się z następujących plików: 
+\begin{itemize}
+\item \textit{ratings.dat} w formacie: UserID::MovieID::Rating::Timestamp,
+\item \textit{users.dat} w formacie: UserID::Gender::Age::Occupation::Zip-code,
+\item \textit{movies.dat} w formacie: MovieID::Title::Genres.
+\end{itemize}
+Podczas tworzenia algorytmu zostaną wykorzystane dwa z trzech plików \textit{ratings.dat} i \textit{movies.dat}. 
+Ze względu na wygodę przetwarzania i czytelność separator w plikach został zamieniony z "::" na ",".
+Plik \textit{ratings.dat} składa się kolejno z id\_użytkownika w zakresie od 1 do 6040, id\_filmu w zakresie od 1 do 3952, oceny wystawionej przez użytkownika dla filmu w pięciostopniowej skali i znacznika czasu. Istotne jest, że plik nie zawiera oceny każdego użytkownika dla każdego filmu, ale każdy z użytkowników wystawił co najmniej dwadzieścia ocen.
+Plik \textit{movies.dat} zawiera id\_filmu w zakresie od 1 do 3952, tytuł filmu oraz gatunek.
+\bigskip
+
+\textbf{3. Przygotowanie danych:}
+\\Wczytanie pliku \textit{ratings.dat} oraz sprawdzenie ilości obserwacji.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS2.PNG} 
+\end{figure}
+
+
+Po wczytaniu łańcuch danych zostaje podzielony na wieloelementową listę. Proces ten zostaje przeprowadzony przy użyciu dwóch funkcji:
+\begin{itemize}
+\item map() - pobiera jako parametry funkcję oraz listę, a zwraca nową listę, która powstaje w wyniku wywołania funkcji przekazanej w pierwszym parametrze dla każdego elementu listy przekazanej w drugim parametrze,
+\item split() - dzieli łańcuch znaków na wieloelementową listę, jako argument funkcji podaje się separator. W tym przypadku jest to ','. Domyślnym parametrem funkcja split() jest biały znak.
+\end{itemize}
+Z pliku \textit{ratings.dat} wybieramy tylko te dane, które są interesujące pod względem tworzenia modelu. Pominięto tutaj ostatnie pole, które jest znacznikiem czasu. W procesie rekomendacji nie wnosi ono bowiem żadnej wartości, a jest jedynie zbędną informacją, która w efekcie wydłuża czas przetwarzania.
+Dodatkowo w celu wypisania elementów nowej listy użyta zostaje funkcja collect(), która zwraca tablicę wszystkich elementów w RDD (ang. Resilient Distributed Dataset). RDD to rdzeń Sparka,  zbiór elementów podzielonych na węzły klastra, które mogą być obsługiwane równolegle.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS3.PNG} 
+\end{figure}
+
+Dane zostają przekształcone w obiekty typu Rating, gdzie jako argumenty podajemy id\_użytkownika, id\_produktu oraz ocenę: Rating(int user, int product, double rating). Obiekt pochodzi z biblioteki MLlib, a jego składowe zawierają dane postaci użytkownik-produkt-wartość.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS4.PNG} 
+\end{figure}
+
+Wczytanie pliku \textit{movies.dat}. 
+Zostają tu wykorzystane informacje z pierwszej i drugiej kolumny. Pomijamy parametry dotyczące gatunków filmów, gdyż tak jak dane o czasie są one bezwartościowe w modelu filtrowania kolaboratywnego.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS5.PNG} 
+\end{figure}
+
+Po przygotowaniu danych przechodzimy do budowy algorytmu.
+\bigskip
+
+\textbf{4. Algorytm ALS:}
+
+Podzielmy zbiór danych \textit{oceny3} na dwa zbiory : \textit{testowy} i \textit{treningowy}.
+Zbiór \textit{testowy} będzie stanowił 20\% całgo zbioru, natomiast zbiór \textit{treningowy} 80\%.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS6.PNG} 
+\end{figure}
+
+Sprawdźmy liczbę rekordów w każdym ze zbiorów.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS7.PNG} 
+\end{figure}
+
+Matematyczny opis algorytmu został przestawiony we wcześniejszej sekcji pracy.
+Aby zaimplementować algorytm ALS przyjrzyjmy się metodzie train(ratings, rank, iterations=5, lambda=0.01, blocks=-1, nonnegative=False, seed=None) z klasy pyspark.mllib.recommendation.ALS. Według dokumentacji metoda przyjmuje następujące parametry:
+\begin{itemize}
+\item ratings – RDD ocen lub (id\_użytkownika, id\_produktu, ocena) krotka,
+\item rank - liczba wyszukiwanych cech,
+\item iterations – numer iteracji algorytmu ALS - domyślnie przyjmuje wartość 5,
+\item lambda – parametr regulujący algorytmu ALS - domyślnie przyjmuje wartość 0.01,
+\item blocks – liczba bloków używanych do przeprowadzania równoległych obliczeń - domyślnie przyjmuje wartość -1, co powoduje użycie automatycznie skonfigurowanej liczby bloków,
+\item nonnegative – określa, czy należy stosować nieujemne ograniczenia - domyślnie wartość false,
+\item seed – losowy parametr dla zainicjalizowania modelu faktoryzacji macierzy - domyślnie przyjmuje wartość None, co powoduje użycie czasu systemowego jako wartości parametru.
+\end{itemize}
+
+Przeprowadzimy uczenie modelu faktoryzującego macierzy na zbiorze RDD ocen nadanych przez użytkowników określonemu podzbiorowi produktów. Macierz ocen jest aproksymowana jako iloczyn dwóch macierzy niższego rzędu. Aby rozwiązać rozważany problem algorytm ALS jest uruchamiany iteracyjnie z konfigurowalnym poziomem równoległości.
+
+Algorytm został przeprowadzony z wyborem różnych parametrów aby następnie porównać wyniki i wybrać najlepszy z nich.
+Poniżej został przedstawiony model dla którego otrzymano najmniejszy błąd średni kwadratowy.
+Pozostałe modele wykazujące przebieg prób zostały załączone w postaci załącznika do pracy \textit{rekomendacja\_podejscie\_1.py}. 
+
+W próbie tej przyjęto następujące parametry rank = 5 i iterations = 20. Załóżmy również, że seed = 2019. Zbiorem danych (ratings) jest przygotowany wcześniej zbiór treningowy.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS8.PNG} 
+\end{figure}
+
+Aby ocenić jakoś zaproponowanego model\_2 przygotowano dane\_testowe. Zbiór ten stanowić będą wszystkie rekordy ze zbioru \textit{testowego} z pominięciem trzeciej wartości jaką jest ocena.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS9.PNG} 
+\end{figure}
+
+Używając modelu\_2 dokonano predykcji wcześniej usuniętej wartości.
+Predykcja zostaje przeprowadzona za pomocą metody  predictAll(user,product). Metoda ta zwraca listę przewidywanych ocen dla par użytkowników i produktów podanych jako parametr.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS10.PNG} 
+\end{figure}
+
+Dokonajmy teraz zestawienia danych pokazując dla każdej z par (id\_użytkownika, id\_przedmiotu) ocenę pierwotną i ocenę wygenerowaną przez model\_2.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS11.PNG} 
+\end{figure}
+
+Miarą oceny jakości modelu niech będzie średni błąd kwadratowy (MSE).
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS12.PNG} 
+\end{figure}
+
+NIETYPOWE PODEJŚCIE
+
+W jednej z prób (wszystkie są dostępne w postaci załącznika \textit{rekomendacja\_podejście\_2.py}) przyjęto większe parametry - rank = 50 oraz iterations = 100. Warto zauważyć, że większa liczba iteracji jednocześnie zapewnia dokładniejszy wynik. Parametry seed oraz ratings zostają niezmienione. Schemat postępowania zostaje zachowany. Zbiorem treningowym jest jednak teraz cały zbiór \textit{oceny3}.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS13.PNG} 
+\end{figure}
+
+Dane testowe stanowi teraz cały zbiór \textit{oceny3} z usunięciem trzeciej wartości jaką jest ocena.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS14.PNG} 
+\end{figure}
+
+\textbf{5. Wybór modelu:}
+
+Z wszystkich modeli wybieramy model\_4:  Średni błąd kwadratowy model\_4 
+\\(MSE)=0.27165466938970756 . Mimo, że jest to nietypowe podejście oceny algorytmu użyjmy go do stworzenia rekomendacji. Wybierzmy zatem użytkownika któremu chcemy zaproponować nowy film. Niech w tym przypadku będzie to użytkownik o id\_użytkownika = 3.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS15.PNG} 
+\end{figure}
+
+Poniższa funkcja wypisuje wszystkie oceny wystawione przez wybranego użytkownika dla poszczególnych filmów (na zdjęciu można zobaczyć tylko kilka przykładowych).
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS16.PNG} 
+\end{figure}
+
+\textbf{6. Rekomendacja:}
+
+Rekomendacja zostanie dokonana za pomocą metody recommendProducts(int user,int num), gdzie:
+\begin{itemize}
+\item user - id\_użytkownika dla którego będzie dokonywana rekomendacja,
+\item num - liczba rekomendacji, którą chcemy otrzymać. Warto zauważyć, że w niektórych przypadkach liczba elementów może być mniejsza.
+\end{itemize}
+
+Funkcja zwraca obiekty, z których każdy zawiera id\_użytkownika, id\_produktu i wynik w polu oceny. Każdy z obiektów reprezentuje jeden zalecany produkt, są one sortowane malejąco według pola z przewidzianą oceną. Pierwszy ze zwróconych obiektów jest tym, który najprawdopodobniej będzie najbardziej odpowiadał użytkownikowi. Warto zauważyć, że wynik w polu oceny nie jest z zakresu 1-5. Jest to bowiem nie ocena, a wskaźnik mówiący jak bardzo produkt jest zalecany.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS17.PNG} 
+\end{figure}
+
+Mając oceny przewidziane dla filmów zastąpiono ich id tytułami:
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{obrazy/ALS18.PNG} 
+\end{figure}
+
+Pozostało tylko zaproponować użytkownikowi nowy film.
+
+
 \chapter{Podsumowanie}
-%TODO napiszemy na koncu
+
+Istnieje wiele modeli rekomendacji w zależności od aspektu na którym się koncentrujemy. Podstawowe założenie mówi natomiast, że użytkownicy wykazujący podobieństwo zachowają się w konkretnej sytuacji w podobny sposób.
+
+Pierwszym z rozważanych w pracy modeli są systemy rekomendujące oparte na treści, które w szczególności ukierunkowane są na spersonalizowane potrzeby użytkownika oraz treść produktu. Systemy te znajdują zastosowanie w analizie tekstu, czego przykładem jest rozważany w pracy algorytm TFIDF. Kolejnym moedlem jest filtrowanie kolaboratywne, które pomija ograniczenia wektorów preferencji, a sam model pozwala na zwięzłe i intuicyjne wyjaśnianie obliczeń prognostycznych. Kierujemy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i opartego na elementach. Trzecim wspomnianym modelem są systemy rekomendujące kontekstowe, gdzie rozważamy problemy trójwymiarowe dodając nowy element jakim jest kontekst.
+
+Na podstawie analizy różnych metod nasuwa się wniosek iż ważnym aspektem wykorzystywanym w rekomendacjach jest faktoryzacja macierzy. Pozwala ona zmniejszyć wymiarowość problemu do najbardziej znaczących cech. Dzięki rekomendacją dużą popularność zyskały metody oparte na algorytmie SVD.
+
+Oczywiście do rozważenia pozostaje wiele innym metod o których w pracy nie wspomniano, są to na przykład systemy oparte na modelach, czy hybrydowe systemy rekomendujące łączące w sobie wiele podejść jednocześnie.
+
+W procesie tworzenia reguł rekomendujących nieodłączną część stanowią elementy rachunku macierzowego, wektorowego, rachunku prawdopodobieństwa, normalizacja danych, czy ocena modeli przez szacowanie błędów obliczeń, co wykazano w niniejszej pracy. 
 
 
-
-\nocite{*} %TODO remove
 \bibliographystyle{plain}
 \bibliography{bibliografia}
-
-
 \end{document}
