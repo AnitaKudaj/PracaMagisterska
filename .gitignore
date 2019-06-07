@@ -4,6 +4,3 @@
 *.toc
 *.out
 *.fdb_latexmk
-*.blg
-*.bcf
-*.run.xml
