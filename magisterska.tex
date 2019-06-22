@@ -18,6 +18,7 @@
 \newtheorem{przyklad}{Przykład}[chapter]{\normalfont}
 \newtheorem{metoda}[df]{Metoda}
 \newtheorem{uwaga}[df]{Uwaga}
+\newtheorem{lemat}[df]{Lemat}
 \newtheorem{problem}{Problem}[chapter]
 \usepackage{graphicx}
 \usepackage{float}
@@ -126,11 +127,12 @@ napisana w~Instytucie Matematyki
 
 
 \chapter{Wstęp}
-Znaczny wzrost ilości informacji dostępnych w~internecie wywołał zapotrzebowanie na systemy, które mogą pomóc użytkownikom znaleźć cenne dla nich dane. W tym kontekście filtrowanie informacji zapewnia konkretne narzędzia - reguły rekomendujące, których celem jest uszeregowanie danych według częściowo ujawnionych preferencji, otrzymanych z~uprzednio przeprowadzonych badaniach, aby w~efekcie zasugerować odbiorcy odpowiedni dla niego produkt. 
+Znaczny wzrost informacji dostępnych w~internecie wywołał zapotrzebowanie na systemy, które mogą pomóc użytkownikom znaleźć cenne dla nich dane. W~tym kontekście filtrowanie informacji zapewnia konkretne narzędzia - reguły rekomendujące, których celem jest uszeregowanie danych według częściowo ujawnionych preferencji, otrzymanych z~uprzednio przeprowadzonych badaniach, aby w~efekcie zasugerować odbiorcy odpowiedni dla niego produkt. 
 
 Celem tej pracy jest przedstawienie matematycznej strony metod systemów rekomendujących poprzez analizę algorytmów ukrytych pod ich nazwami.
 
-Niniejsza praca składa się z~czterech części. Pierwsza część zawiera wykaz oznaczeń, przypomnienie podstawowych definicji z~zakresu algebry liniowej oraz rachunku prawdopodobieństwa i~statystyki wykorzystanych w~dalszych częściach pracy. W trzecim rozdziale przedstawione zostały elementy eksploracji danych stanowiące nieodzowną część systemów rekomendujących. Zaczynając od wstępnego przetwarzania danych oraz definicji i~twierdzeń związanych z~miarami podobieństwa i~technikami redukcji wymiaru, tutaj szczególna uwaga została poświęcona rozkładowi według wartości osobliwych (ang. Singular Value Decomposition), przechodzimy do opisu dwóch metod eksploracji danych - algorytmu k-najbliższych sąsiadów i~algorytmu k-średnich aby zakończyć oceną dokładności i~jakości modeli. Rozdział czwarty opisuje modele tworzenia rekomendacji. Zostały tu zawarte sformułowania definicji związanych z~systemami rekomendującymi, informacje dotyczące systemów opartych na treści, filtrowania kolaboratywnego oraz systemów kontekstowych. Rozdział został wzbogacony o~algorytmy i~przykłady, które pokazują zastosowanie poszczególnych metod. Ponadto znajdziemy tu przedstawienie dekompozycji macierzy ocen metodą SVD. Ostatnia część to praktyczne zastosowanie filtrowania kolaboratywnego. W~rozdziale tym podstawę stanowią informacje na temat Apache Spark oraz algorytmu ALS (ang. Alternating Least Square) z~biblioteki MLlib. Dodatkowo w~ostatniej sekcji rozdziału została umieszczona przykładowa implementacja algorytmu ALS wraz z~komentarzami wyjaśniającymi poszczególne kroki. 
+Niniejsza praca składa się z~czterech części. Rozdział 2. zawiera wykaz oznaczeń, przypomnienie podstawowych definicji z~zakresu algebry liniowej oraz rachunku prawdopodobieństwa i~statystyki wykorzystanych w~dalszych częściach pracy. W~rozdziale 3. przedstawione zostały elementy eksploracji danych stanowiące nieodzowną część systemów rekomendujących. Zaczynamy od wstępnego przetwarzania danych oraz definicji i~twierdzeń związanych z~miarami podobieństwa i~technikami redukcji wymiaru, tutaj szczególna uwaga została poświęcona rozkładowi według wartości osobliwych (ang. Singular Value Decomposition). Następnie przechodzimy do opisu dwóch metod eksploracji danych - algorytmu k-najbliższych sąsiadów i~algorytmu k-średnich aby zakończyć oceną dokładności i~jakości modeli. 
+Rozdział 4. opisuje modele tworzenia rekomendacji. Zostały tu zawarte sformułowania definicji związanych z~systemami rekomendującymi, informacje dotyczące systemów opartych na treści, filtrowania kolaboratywnego oraz systemów kontekstowych. Rozdział został wzbogacony o~algorytmy i~przykłady, które pokazują zastosowanie poszczególnych metod. Ponadto znajdziemy tu przedstawienie dekompozycji macierzy ocen metodą SVD. Ostatni rozdział to praktyczne zastosowanie filtrowania kolaboratywnego. W~rozdziale tym podstawę stanowią informacje na temat Apache Spark oraz algorytmu ALS (ang. Alternating Least Square) z~biblioteki MLlib. Dodatkowo w~ostatniej sekcji rozdziału została umieszczona przykładowa implementacja algorytmu ALS wraz z~komentarzami wyjaśniającymi poszczególne kroki. 
 
 
 
@@ -146,7 +148,7 @@ W niniejszej pracy zostały użyte następujące oznaczenia:
 \\$\mathbb{X}$ - (duże litery z~wyłączeniem $\setN, \: \setR, \: \setK$) jako oznaczenia macierzy,
 \\$[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$ - macierz o~$m$ wierszach i~$n$ kolumnach,
 \\$[a_{ij}]$ - macierz kwadratowa,
-\\$\mathbb{M}_{m \times n}(\setK)$ - zbiór wszystkich macierzy o~wymiarach $m \times n$ i~elementach z~ciała $\setK$,
+\\$\mathbb{M}_{m \times n}(\setK)$ - zbiór wszystkich macierzy o~wymiarach $m$ na $n$ i~elementach z~ciała $\setK$,
 \\$\mathcal{V}$ - przestrzeń liniowa,
 \\$\przestrzen{\mathit{X}}$ - przestrzeń generowana przez zbiór $\mathit{X}$,
 \\$(\Omega, \mathcal{F}, P)$ - przestrzeń probabilistyczna,
@@ -171,7 +173,7 @@ W niniejszej pracy zostały użyte następujące oznaczenia:
 W definicjach poniżej korzystamy z~pojęcia ciała, którego wyjaśnienie odnajdziemy w~książce Tadeusza Poredy i~Jacka Jędrzejewskiego \textit{Algebra liniowa z~elementami geometrii analitycznej} {\citep[Sec 4.4]{alzega}}.
 
 \begin{df}[Macierz {\citep[Sec 8.1 Def. 8.1]{alzega}}]
-Niech $n,m \in \setN$. Macierzą o~$m$ wierszach, $n$ kolumnach (o wymiarach $m \times n$) i~wyrazach w~ciele $\setK$ nazywamy funkcję 
+Niech $n,m \in \setN$. Macierzą o~$m$ wierszach, $n$ kolumnach (o wymiarach $m$ na $n$) i~wyrazach w~ciele $\setK$ nazywamy funkcję 
 $$
 \mathbb{A}: \set{1,2, \ldots ,m}\times \set{1,2, \ldots ,n} \to \setK.
 $$
@@ -188,7 +190,7 @@ $$
 $$
 \end{df}
 \bigskip
-Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczamy zbiór wszystkich macierzy o~wymiarach $m \times n$ i~elementach z~ciała $\setK$.
+Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczamy zbiór wszystkich macierzy o~wymiarach $m$ na $n$ i~elementach z~ciała $\setK$.
 
 \begin{df}[Wyznacznik macierzy {\citep[Sec 10.1, Def. 10.1]{alzega}}]
 Niech $\mathcal{M}(\setK)=\bigcup_{n\in \setN} \mathbb{M}_{n \times n}(\setK)$ oznacza zbiór wszystkich macierzy kwadratowych o~wyrazach z~$\setK$.
@@ -304,7 +306,7 @@ Zachodzą następujące równości:
 \item $(\mathbb{A}^T)^T = \mathbb{A}$,
 \item $(\mathbb{A} + \mathbb{B})^T = \mathbb{A}^T + \mathbb{B}^T$,
 \item $(\lambda \mathbb{A})^T = \lambda \mathbb{A}^T$,
-\item $(\mathbb{A}\mathbb{C})^T = \mathbb{A}^T \mathbb{C}^T$.
+\item $(\mathbb{A}\mathbb{C})^T = \mathbb{C}^T \mathbb{A}^T$.
 \end{itemize}
 \end{tw}
 
@@ -331,7 +333,7 @@ Zachodzą następujące równości:
 W kolejnych definicjach korzystamy z~pojęć przestrzeni liniowej, wymiaru oraz przekształcenia liniowego, których wyjaśnienia możemy odnaleźć w~książce \textit{Algebra liniowa z~elementami geometrii analitycznej} odpowiednio w~{\citep[Sec 7.1]{alzega}}, {\citep[Sec 7.5]{alzega}} oraz {\citep[Sec 9.1]{alzega}}.
 
 \begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
-Wiersze macierzy o~wymiarach $m \times n$ traktować możemy jako wektor z~przestrzeni $\setK^n$, natomiast kolumny jako wektor przestrzeni $\setK^m$.
+Wiersze macierzy o~wymiarach $m$ na $n$ traktować możemy jako wektor z~przestrzeni $\setK^n$, natomiast kolumny jako wektor przestrzeni $\setK^m$.
 \end{uwaga}
 
 \begin{df}[Rząd kolumnowy i~wierszowy macierzy {\citep[Sec 8.1]{alzega}}]
@@ -530,14 +532,14 @@ Zbyt duża ilość zmiennych, które opisują obserwacje, powoduje wzrost prawdo
 
 \begin{df} [Rozkład według wartości osobliwych {\citep{ulafiir}}]%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
-Rozkładem według wartości osobliwych $m\times n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ nazywamy odszukanie takich macierzy $\mathbb{U}, \Sigma, \mathbb{V}$, że:
+Rozkładem według wartości osobliwych $m$ na $n$ - wymiarowej macierzy $\mathbb{X}$, gdzie $m\geq n$ nazywamy odszukanie takich macierzy $\mathbb{U}, \Sigma, \mathbb{V}$, że:
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T,
 $$
 gdzie:
 \begin{itemize}
 \item $\mathbb{U}^T \mathbb{U} =\mathbb{I}, \:  \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m \times m$ oraz $\mathbb{V}$ wymiaru $n \times n$,
-\item $\Sigma$ jest macierzą wymiaru $m \times n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
+\item $\Sigma$ jest macierzą wymiaru $m$ na $n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
 \end{itemize}
 \end{df}
 
@@ -546,11 +548,14 @@ Niezerowe wyrazy macierzy $\Sigma$ nazywamy wartościami osobliwymi macierzy $\m
 Kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$ nazywamy odpowiednio lewymi i~prawymi wektorami szczególnymi macierzy $\mathbb{X}$.
 \end{uwaga}
 
-\begin{tw}
-Zawsze jest możliwe dokonać dekompozycji macierzy $\mathbb{X}$ do postaci $\mathbb{U} \Sigma \mathbb{V}^T$.
+\begin{tw}{\citep{tsvdalra}}
+Niech $\mathbb{X} \in \mathbb{M}_{m \times n} $. Istnieje $m$ na $m$ wymiarowa macierz ortogonalna $\mathbb{U}$, $n$ na $n$ wymiarowa macierz ortogonalna $\mathbb{V}$ oraz $m$ na $n$ wymiarowa macierz diagonalna $\Sigma$, takie, że
+$$
+\mathbb{X} = \mathbb{U} \Sigma \mathbb{V}^T.
+$$
 \end{tw}
 
-\begin{df}[Wartość osobliwa macierzy]
+\begin{df}[Wartość osobliwa macierzy ]
 Wartością osobliwą $\sigma_k$ macierzy $\mathbb{X}$ nazywamy
 $$
 \sigma_k = \sqrt{\lambda_k},
@@ -598,76 +603,87 @@ $\mathrm{Im} \: \mathbb{X} = \przestrzen{\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u
 \end{enumerate}
 \end{tw}
 
-\begin{uwaga}
+\begin{lemat}
 Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12.
 
 Wtedy:
 $$
 \mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T.
 $$
-\end{uwaga}
+\end{lemat}
 \begin{proof}
-Niech $\mathbb{X} \in \mathbb{M}_{3\times 2}$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
+Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
 $$
 \mathbb{U} = \left[
-        \begin{array}{ccc}
-         a_{11} & a_{12} & a_{13} \\
-         a_{21} & a_{22} & a_{23} \\
-         a_{31} & a_{32} & a_{33} \\
+        \begin{array}{cccc}
+         a_{11} & a_{12} & \ldots & a_{1m} \\
+         a_{21} & a_{22} & \ldots & a_{2m} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{m1} & a_{m2} & \ldots & a_{mm} \\
          \end{array}
-      \right], \: \mathbb{V}^T = \left[
-        \begin{array}{cc}
-         b_{11} & b_{12}  \\
-         b_{21} & b_{22}  \\
+      \right], \: \mathbb{V} = \left[
+        \begin{array}{cccc}
+         b_{11} & b_{12} & \ldots & b_{1n}  \\
+         b_{21} & b_{22} & \ldots & b_{2n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         b_{n1} & b_{n2} & \ldots & b_{nn} \\
          \end{array}
       \right], \: \Sigma = \left[
-        \begin{array}{cc}
-         \sigma_{11} & 0 \\
-         0 & \sigma_{22} \\
-         0 & 0 \\
+        \begin{array}{cccc}
+         \sigma_{11} & 0 & \ldots & 0 \\
+         0 & \sigma_{22} & \ldots & 0 \\
+         \vdots & \vdots & \ddots & \sigma_{nn} \\
+         0 & 0 & \ldots & 0 \\
          \end{array}
       \right].$$
       
 Iloczyn $\mathbb{U} \Sigma$ jest równy
 $$\mathbb{U} \Sigma = \left[
-        \begin{array}{ccc}
-         a_{11} & a_{12} & a_{13} \\
-         a_{21} & a_{22} & a_{23} \\
-         a_{31} & a_{32} & a_{33} \\
+        \begin{array}{cccc}
+         a_{11} & a_{12} & \ldots & a_{1m} \\
+         a_{21} & a_{22} & \ldots & a_{2m} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{m1} & a_{m2} & \ldots & a_{mm} \\
          \end{array}
       \right] \cdot \left[
-        \begin{array}{cc}
-         \sigma_{11} & 0 \\
-         0 & \sigma_{22} \\
-         0 & 0 \\
+        \begin{array}{cccc}
+         \sigma_{11} & 0 & \ldots & 0 \\
+         0 & \sigma_{22} & \ldots & 0 \\
+         \vdots & \vdots & \ddots & \sigma_{nn} \\
+         0 & 0 & \ldots & 0 \\
          \end{array}
       \right] = \left[
-        \begin{array}{cc}
-         a_{11} \sigma_{11} & a_{12} \sigma_{22}\\
-         a_{21} \sigma_{11} & a_{22} \sigma_{22} \\
-         a_{31} \sigma_{11} & a_{32} \sigma_{22} \\
+        \begin{array}{cccc}
+         a_{11} \sigma_{11} & a_{12} \sigma_{22} & \ldots & a_{1n} \sigma_{nn} \\
+         a_{21} \sigma_{11} & a_{22} \sigma_{22} & \ldots & a_{2n} \sigma_{nn}\\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{m1} \sigma_{11} & a_{m2} \sigma_{22} & \ldots & a_{mn} \sigma_{nn} \\
          \end{array}
       \right].$$
       
 Zatem :
 $$\mathbb{U} \Sigma \mathbb{V}^T = \left[
-        \begin{array}{cc}
-         a_{11} \sigma_{11} & a_{12} \sigma_{22}\\
-         a_{21} \sigma_{11} & a_{22} \sigma_{22} \\
-         a_{31} \sigma_{11} & a_{32} \sigma_{22} \\
+        \begin{array}{cccc}
+         a_{11} \sigma_{11} & a_{12} \sigma_{22} & \ldots & a_{1n} \sigma_{nn} \\
+         a_{21} \sigma_{11} & a_{22} \sigma_{22} & \ldots & a_{2n} \sigma_{nn}\\
+         \vdots & \vdots & \ddots & \vdots \\
+         a_{m1} \sigma_{11} & a_{m2} \sigma_{22} & \ldots & a_{mn} \sigma_{nn} \\
          \end{array}
       \right] \cdot \left[
-        \begin{array}{cc}
-         b_{11} & b_{12}  \\
-         b_{21} & b_{22}  \\
+        \begin{array}{cccc}
+         b_{11} & b_{21} & \ldots & b_{n1}  \\
+         b_{12} & b_{22} & \ldots & b_{n2} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         b_{1n} & b_{2n} & \ldots & b_{nn} \\
          \end{array}
       \right] = 
       $$
       $$\left[
-        \begin{array}{cc}
-a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12}  & a_{11} \sigma_{11} b_{21} + a_{12} \sigma_{22} b_{22}\\
-a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12}  & a_{21} \sigma_{11} b_{21} + a_{22} \sigma_{22} b_{22}\\
-a_{31} \sigma_{11} b_{11} + a_{32} \sigma_{22} b_{12}  & a_{31} \sigma_{11} b_{21} + a_{32} \sigma_{22} b_{22}\\
+        \begin{array}{ccc}
+a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12} + \ldots + a_{1n} \sigma_{nn} b_{1n} & \ldots &  a_{11} \sigma_{11} b_{n1} + a_{12} \sigma_{22} b_{n2} + \ldots + a_{1n} \sigma_{nn} b_{nn} \\
+a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12} + \ldots + a_{2n} \sigma_{nn} b_{1n} & \ldots & a_{21} \sigma_{11} b_{n1} + a_{22} \sigma_{22} b_{n2} + \ldots + a_{2n} \sigma_{nn} b_{nn} \\
+         \vdots & \ddots & \vdots \\
+a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{nn} b_{1n} & \ldots & a_{m1} \sigma_{11} b_{n1} + a_{m2} \sigma_{22} b_{n2} + \ldots + a_{mn} \sigma_{nn} b_{nn} \\
          \end{array}
       \right].$$
       
@@ -676,76 +692,124 @@ Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sig
 Niech $r=2$.
 
 Mamy, że:
-\begin{enumerate}
-\item
+
+1.
 $\left[ \begin{array}{c}
          a_{11} \\
          a_{21} \\
-         a_{31} \\
+         \vdots \\
+         a_{m1} \\
          \end{array}
       \right] \: \sigma_{11} \: \left[ \begin{array}{c}
          b_{11} \\
          b_{21} \\
+         \vdots \\
+         b_{n1} \\
          \end{array}
       \right]^T = \left[
         \begin{array}{c}
          a_{11} \sigma_{11} \\
          a_{21} \sigma_{11} \\
-         a_{31} \sigma_{11} \\
+         \vdots \\
+         a_{m1} \sigma_{11} \\
          \end{array}
-      \right] [b_{11} \: b_{21}] =  \left[
-        \begin{array}{cc}
-         a_{11} \sigma_{11} b_{11}  & a_{12} \sigma_{22} b_{21}\\
-         a_{21} \sigma_{11} b_{11} & a_{22} \sigma_{22} b_{21} \\
-         a_{31} \sigma_{11} b_{11} & a_{32} \sigma_{22} b_{21} \\
+      \right] [b_{11} \: b_{21} \ldots b_{n1}]$
+      $$ =  \left[
+        \begin{array}{cccc}
+         a_{11} \sigma_{11} b_{11}  & a_{11} \sigma_{11} b_{21} & \ldots & a_{11} \sigma_{11} b_{n1}  \\
+         a_{21} \sigma_{11} b_{11} & a_{21} \sigma_{11} b_{21} & \ldots & a_{21} \sigma_{11} b_{n1} \\
+         \vdots & \ldots & \ddots & \vdots \\
+         a_{m1} \sigma_{11} b_{11} & a_{m1} \sigma_{11} b_{21} & \ldots & a_{m1} \sigma_{11} b_{n1} \\
          \end{array}
-      \right] $,
-\item
+      \right] $$,
+
+2.
 $\left[ \begin{array}{c}
          a_{12} \\
          a_{22} \\
-         a_{32} \\
+         \vdots \\
+         a_{m2} \\
          \end{array}
       \right] \: \sigma_{22} \: \left[ \begin{array}{c}
          b_{12} \\
          b_{22} \\
+         \vdots \\
+         b_{n2} \\
          \end{array}
       \right]^T = \left[
         \begin{array}{c}
          a_{12} \sigma_{22} \\
          a_{22} \sigma_{22} \\
-         a_{32} \sigma_{22} \\
+         \vdots \\
+         a_{m2} \sigma_{22} \\
          \end{array}
-      \right] [b_{12} \: b_{22}] =  \left[
-        \begin{array}{cc}
-         a_{12} \sigma_{22} b_{12}  & a_{12} \sigma_{22} b_{22}\\
-         a_{22} \sigma_{22} b_{12} & a_{22} \sigma_{22} b_{22} \\
-         a_{32} \sigma_{22} b_{12} & a_{32} \sigma_{22} b_{22} \\
+      \right] [b_{12} \: b_{22} \ldots b_{n2}]$
+      $$ =  \left[
+        \begin{array}{cccc}
+         a_{12} \sigma_{22} b_{12}  & a_{12} \sigma_{22} b_{22} & \ldots & a_{12} \sigma_{22} b_{n2}  \\
+         a_{22} \sigma_{22} b_{12} & a_{22} \sigma_{22} b_{22} & \ldots & a_{22} \sigma_{22} b_{n2} \\
+         \vdots & \ldots & \ddots & \vdots \\
+         a_{m2} \sigma_{22} b_{12} & a_{m2} \sigma_{22} b_{22} & \ldots & a_{m2} \sigma_{22} b_{n2} \\
          \end{array}
-      \right]. $
-\end{enumerate}
+      \right] $$,
+$
+\vdots
+$
+      
+n.
+$\left[ \begin{array}{c}
+         a_{1n} \\
+         a_{2n} \\
+         \vdots \\
+         a_{mn} \\
+         \end{array}
+      \right] \: \sigma_{nn} \: \left[ \begin{array}{c}
+         b_{1n} \\
+         b_{2n} \\
+         \vdots \\
+         b_{nn} \\
+         \end{array}
+      \right]^T= \left[
+        \begin{array}{c}
+         a_{1n} \sigma_{nn} \\
+         a_{2n} \sigma_{nn} \\
+         \vdots \\
+         a_{mn} \sigma_{nn} \\
+         \end{array}
+      \right] [b_{1n} \: b_{2n} \ldots b_{nn}] $
+      $$=  \left[
+        \begin{array}{cccc}
+         a_{1n} \sigma_{nn} b_{1n}  & a_{1n} \sigma_{nn} b_{2n} & \ldots & a_{1n} \sigma_{nn} b_{nn}  \\
+         a_{2n} \sigma_{nn} b_{1n} & a_{2n} \sigma_{nn} b_{2n} & \ldots & a_{2n} \sigma_{nn} b_{nn} \\
+         \vdots & \ldots & \ddots & \vdots \\
+         a_{mn} \sigma_{nn} b_{1n} & a_{mn} \sigma_{nn} b_{2n} & \ldots & a_{mn} \sigma_{nn} b_{nn} \\
+         \end{array}.
+      \right] $$
 
-Sumując macierze powstałe w~1 i~2 otrzymujemy:
-$$ \mathbb{X} = \left[
-        \begin{array}{cc}
-a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12}  & a_{11} \sigma_{11} b_{21} + a_{12} \sigma_{22} b_{22}\\
-a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12}  & a_{21} \sigma_{11} b_{21} + a_{22} \sigma_{22} b_{22}\\
-a_{31} \sigma_{11} b_{11} + a_{32} \sigma_{22} b_{12}  & a_{31} \sigma_{11} b_{21} + a_{32} \sigma_{22} b_{22}\\
+Sumując macierze powstałe w~n krokach otrzymujemy:
+\\
+\\$\left[
+        \begin{array}{ccc}
+a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12} + \ldots + a_{1n} \sigma_{nn} b_{1n} & \ldots &  a_{11} \sigma_{11} b_{n1} + a_{12} \sigma_{22} b_{n2} + \ldots + a_{1n} \sigma_{nn} b_{nn} \\
+a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12} + \ldots + a_{2n} \sigma_{nn} b_{1n} & \ldots & a_{21} \sigma_{11} b_{n1} + a_{22} \sigma_{22} b_{n2} + \ldots + a_{2n} \sigma_{nn} b_{nn} \\
+         \vdots & \ddots & \vdots \\
+a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{nn} b_{1n} & \ldots & a_{m1} \sigma_{11} b_{n1} + a_{m2} \sigma_{22} b_{n2} + \ldots + a_{mn} \sigma_{nn} b_{nn} \\
          \end{array}
-      \right].$$
+      \right].$
 
+\bigskip
 Zatem, jeżeli $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, to $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T$.
 \end{proof}
+\bigskip
 
-
-\begin{uwaga}
+\begin{lemat}
 Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12.
 
 Wtedy:
 $$
 ||\mathbb{X}||_F^2 = \sigma_{1}^2+...+\sigma_{r}^2.
 $$
-\end{uwaga}
+\end{lemat}
 
 \begin{proof}
 Niech $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$.
@@ -758,7 +822,7 @@ Z definicji metryki Frobeniusa
 $$
 \norma{\mathbb{U} \Sigma \mathbb{V}^T}_F^2 = \tr{(\mathbb{U} \Sigma \mathbb{V}^T)^T (\mathbb{U} \Sigma \mathbb{V}^T)}.
 $$
-Opierając się na własności $(\mathbb{A}\mathbb{C})^T = \mathbb{A}^T \mathbb{C}^T$ transpozycji macierzy otrzymamy:
+Opierając się na własności $(\mathbb{A}\mathbb{C})^T = \mathbb{C}^T \mathbb{A}^T$ transpozycji macierzy otrzymamy:
 $$
 \norma{\mathbb{U} \Sigma \mathbb{V}^T}_F^2 = \tr{(\mathbb{U} \Sigma \mathbb{V}^T)^T (\mathbb{U} \Sigma \mathbb{V}^T)} = \tr{\mathbb{V} \Sigma^T \mathbb{U}^T \mathbb{U} \Sigma \mathbb{V}^T}.
 $$
@@ -817,14 +881,14 @@ $$
 gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
 \end{tw}
 
-\begin{uwaga}
+\begin{lemat}
 Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12 oraz $\mathbb{X}_k$ będą jak w~twierdzeniu 3.15.
 
 Wtedy:
 $$
 \norma{ \mathbb{X} - \mathbb{X}_k}_F^2 = \sigma_{k+1}^2 + \sigma_{k+2}^2 + \ldots + \sigma_{r}^2.
 $$
-\end{uwaga}
+\end{lemat}
 \begin{proof}
 Niech $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$ oraz $\mathbb{X}_k=\mathbb{U} \Sigma_k \mathbb{V}^T$.
 Mamy zatem
@@ -843,7 +907,7 @@ $$
 \norma{\mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T}_F^2 = 
 \tr{(\mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T)^T (\mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T)}.
 $$
-Opierając się na własności $(\mathbb{A}\mathbb{C})^T = \mathbb{A}^T \mathbb{C}^T$ transpozycji macierzy otrzymamy:
+Opierając się na własności $(\mathbb{A}\mathbb{C})^T = \mathbb{C}^T \mathbb{A}^T$ transpozycji macierzy otrzymamy:
 $$
 \tr{(\mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T)^T (\mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T)} = \tr{\mathbb{V} (\Sigma - \Sigma_k)^T \mathbb{U}^T \mathbb{U} (\Sigma - \Sigma_k) \mathbb{V}^T}.
 $$
@@ -884,7 +948,7 @@ Zauważmy, że z~własności 2. twierdzenia 3.12 mamy
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
 $$
-Po obliczeniach wykonanych w~uwadze 3.17 mamy, że
+Po obliczeniach wykonanych w~lemacie 3.17 mamy, że
 $$
 ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^n \sigma_i^2.
 $$
@@ -1304,23 +1368,23 @@ W filtrowaniu kolaboratywnym wektory cech zostają pominięte, a~predykcja dokon
 \item filtrowanie oparte na użytkownikach
 
 Niech $\mathbf{u}_1 = [o_{1,1}, \ldots, o_{1,n}]$ oraz $\mathbf{u}_2 = [o_{2,1}, \ldots, o_{2,n}]$ będą wektorami opisującymi odpowiednio użytkownika $u_1$ i~$u_2$. Elementami wektorów są wartości funkcji R w~przypadkach, gdzie zarówno użytkownik $u_1$, jak i~$u_2$ ocenili ten sam przedmiot. Główne założenie filtrowania kolaboratywnego opartego na użytkownikach mówi, że jeżeli odległość między wektorami $\mathbf{u}_1$ i~$\mathbf{u}_2$ jest mała oraz użytkownik $u_1$ ocenił pewien przedmiot, dla którego użytkownik $u_2$ jeszcze nie wystawił oceny, to prawdopodobnie ocena użytkownika $u_2$ będzie podobna do oceny użytkownika $u_1$.
-\item filtrowanie oparte na elementach
+\item filtrowanie oparte na przedmiotach
 
-Niech $\mathbf{p}_1 = [o_{1,1}, \ldots, o_{1,n}]$ oraz $\mathbf{p}_2 = [o_{2,1}, \ldots, o_{2,n}]$ będą wektorami opisującymi odpowiednio przedmiot $p_1$ i~$p_2$. Elementami wektorów są wartości funkcji R w~przypadkach, gdzie przedmiot $p_1$, jak i~$p_2$ został oceniony przez tego samego użytkownika. Główne założenie filtrowania kolaboratywnego opartego na elementach mówi, że jeżeli odległość między wektorami $\mathbf{p}_1$ i~$\mathbf{p}_2$ jest mała oraz użytkownik ocenił w~pewien sposób przedmiot $p_1$ w~przeszłości to będzie skłonny w~podobny sposób ocenić przedmiot $p_2$.
+Niech $\mathbf{p}_1 = [o_{1,1}, \ldots, o_{1,n}]$ oraz $\mathbf{p}_2 = [o_{2,1}, \ldots, o_{2,n}]$ będą wektorami opisującymi odpowiednio przedmiot $p_1$ i~$p_2$. Elementami wektorów są wartości funkcji R w~przypadkach, gdzie przedmiot $p_1$, jak i~$p_2$ został oceniony przez tego samego użytkownika. Główne założenie filtrowania kolaboratywnego opartego na przedmiotach mówi, że jeżeli odległość między wektorami $\mathbf{p}_1$ i~$\mathbf{p}_2$ jest mała oraz użytkownik ocenił w~pewien sposób przedmiot $p_1$ w~przeszłości to będzie skłonny w~podobny sposób ocenić przedmiot $p_2$.
 \end{itemize}
 
 Systemy rekomendujące kontekstowe są natomiast systemami rekomendującymi opartymi na treści w~których zostaje uwzględniony dodatkowy wymiar - kontekst.
 \end{uwaga}
 
 
-\section{Systemy rekomendujące oparte na treści - Content-based recommender systems}
+\section{Systemy rekomendujące oparte na treści}
 Rozważania zawarte w~tej sekcji stanowią formalizację treści zawartych w~książce Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}} oraz opierają się na treści kursu autorstwa Andrew Ng: \textit{Recommender Systems} {\citep{rs}}, którego treść została również załączona do pracy na płycie CD.
 \bigskip
 
 Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Metoda ta opiera się na obliczaniu podobieństw oraz wykorzystuje techniki uczenia maszynowego, takie jak klasyfikacja.
 
 \begin{algorytm}
-W metodzie tej celem jest stworzenie rekomendacji i~wygenerowania listy przedmiotów, które mogę być odpowiednie użytkownikowi. Opieramy się na treści rozważanych elementów. Algorytm tego rodzaju rekomendacji możemy przedstawić w~następujących krokach:
+W metodzie tej celem jest stworzenie rekomendacji i~wygenerowania listy przedmiotów, które mogę być odpowiednie użytkownikowi. Opieramy się na treści rozważanych przedmiotów. Algorytm tego rodzaju rekomendacji możemy przedstawić w~następujących krokach:
 \begin{enumerate}
 \item stworzenie wektora własności $\mathbf{w} = [w_1, \ldots, w_n]$, $n \in \setN$, gdzie $\forall_{i \in \set{1, \ldots, n}} \: w_i \in \setWlasnosci$,
 
@@ -1350,7 +1414,7 @@ Rozważania na temat algorytmu TFIDF zawarte w~tym rozdziale zostały przeprowad
 
 W większość systemów rekomendacji opartych na treści używamy gotowych modeli wyszukujących. W~przypadku rozważań przeprowadzanych na dokumentach tekstowych jednym z~najbardziej popularnych jest model przestrzeni wektorowej (\textit{ang. Vector Space Model}) z~algorytmem TFIDF. 
 
-Warto na początku zaznaczyć, że przedmiotem $p_i$ jest tu opisany przez dokument tekstowy (artykuł, książka), natomiast własnościami, które go charakteryzują są słowa. Mając na uwadze te założenia możemy zdefiniować kolejne elementy algorytmu $TFIDF$.
+Warto na początku zaznaczyć, że przedmiotem $p_i$ jest tu opisany przez dokument tekstowy (artykuł, książka), natomiast własnościami, które go charakteryzują są słowa. Mając na uwadze te założenia możemy zdefiniować kolejne etapy algorytmu $TFIDF$.
 \bigskip
 
 Niech $n\in \setN$, $\setPrzedmioty = \set{p_1, p_2, \ldots ,p_n}$ będzie zestawem analizowanych przedmiotów. $W = \set{w_1, w_2, \ldots ,w_n}, \: n\in \setN $ niech będzie zbiorem rozważanych własności.
@@ -1401,7 +1465,7 @@ $$
 \end{df}
 
 \begin{uwaga}
-Każdy z~dokumentów $p_i, \: i\in\set{1,\ldots,n} $ przedstawiamy jako wektor wag własności (słowa) $w_k$ w~przedmiocie $p_i$. Zatem $ p_i = [s_{1i}, s_{2i},...,s_{ni}] $.
+Każdy z~dokumentów $p_i, \: i\in\set{1,\ldots,n} $ przedstawiamy jako wektor wag własności (słowa) $w_k$ w~przedmiocie $p_i$. Zatem $ p_i = [s_{1,i}, s_{2,i},...,s_{n,i}] $.
 \end{uwaga}
 
 
@@ -1554,7 +1618,7 @@ Po przeprowadzeniu podobnych obliczeń dla wszystkich wcześniej nieznanych ocen
 \end{przyklad}
 
 
-\section{Filtrowanie kolaboratywne - Collaborative filtering}
+\section{Filtrowanie kolaboratywne}
 Rozważania na temat filtrowania kolaboratywnego zostały przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}}.
 \bigskip
 
@@ -1572,12 +1636,12 @@ Stworzenie rekomendacji filtrowania kolaboratywnego opartej na użytkownikach wy
 \item wyznaczenie macierzy odległości $\mathbb{U}_1$ między wszystkimi czytelnikami ze zbioru $\setUzytkownicy$,
 \item wyznaczenie macierzy odległości $\mathbb{U}_2$ między czytelnikami poprzez normalizację danych w~celu uzyskania wartości z~przedziału $[0,1]$, wyrazy macierzy przyjmują wartości:
 $$
-u_{ij}^{(2)} = \frac{u_{ij}^{(1)}}{\max_{o_i} \set{o_i : o_i \in \setOceny,\: i \in \setN } - \min_{o_i} \set{o_i : o_i \in \setOceny, \: i~\in \setN}},
+u_{ij}^{(2)} = \frac{u_{ij}^{(1)}}{\max_{o_i} \set{o_i : o_i \in \setOceny,\: i \in \setN } - \min_{o_i} \set{o_i : o_i \in \setOceny, \: i~\in \setN}}, \: i,j \in \setN ,
 $$
-gdzie $u_{ij}^{(1)}$ i~$u_{ij}^{(2)}$ są odpowiednio elementami macierzy $\mathbb{U}_1$ i~$\mathbb{U}_2$ dla $i,j \in \setN$,
+gdzie $u_{ij}^{(1)}$ i~$u_{ij}^{(2)}$ są odpowiednio elementami macierzy $\mathbb{U}_1$ i~$\mathbb{U}_2$,
 \item wyznaczenie macierzy podobieństwa $\mathbb{U}_3$ między użytkownikami - zakładając, że największa wartość prawdopodobieństwa to $1$, macierz podobieństwa przyjmuje wartości:
 $$
-u_{ij}^{(3)} = 1 - u_{ij}^{(2)},
+u_{ij}^{(3)} = 1 - u_{ij}^{(2)}, \: i,j \in \setN ,
 $$
 gdzie $u_{ij}^{(2)}$ i~$u_{ij}^{(3)}$ są odpowiednio elementami macierzy $\mathbb{U}_2$ i~$\mathbb{U}_3$,
 \item wyestymowanie nieznanych wartości funkcji $R$ dla $u_j \in \setUzytkownicy$, $j \in \setN$ oraz $p_i \in \setPrzedmioty$, $i \in \setN$  - niech $u_j$ będzie konkretnie ustalonym użytkownikiem, w~celu obliczenia brakujących wartości funkcji $R$ dla użytkownika $u_j$ obliczmy średnią ważoną wykorzystując oceny i~przyjmując wartości podobieństwa między $u_j$ i~innymi użytkownikami jako wagi.
@@ -1686,7 +1750,7 @@ Możemy więc wnioskować, że w~tym przypadku dla użytkownika $u_3$ książka 
 \end{przyklad}
 
 \subsection{Filtrowanie kolaboratywne oparte na  przedmiotach}
-W przypadku filtrowania kolaboratywnego opartego na elementach wartości podobieństwa między użytkownikami zostaje zastąpiona przez wartości podobieństwa między elementami.
+W przypadku filtrowania kolaboratywnego opartego na przedmiotach wartości podobieństwa między użytkownikami zostaje zastąpiona przez wartości podobieństwa między przedmiotami.
 
 \begin{algorytm}
 W tym rodzaju rekomendacji należy wykonać następujące kroki:
@@ -1706,7 +1770,7 @@ Zatem: $\overline{o^{(p_1)}} = [3, 6, 4]^T$, $\overline{o^{(p_2)}} =[6, 5, 6]^T$
 
 Następnie używając wzoru na podobieństwo kosinusowe obliczamy podobieństwo między wybranymi książkami
 $$
-sim(p_1,p_2) = \frac{\overline{o^{(p_1)}} \cdot \overline{o^{(p_2)}}}{|o^{(p_1)}||o^{(p_2)}|} = \frac{3 \cdot 6 + 6 \cdot 5 + 4 \cdot 6}{\sqrt{6^2 + 3^2 + 6^2 + 4^2} \sqrt{6^2 + 6^2 + 5^2 + 6^2}} = 0,6339.
+\similarity{p_1}{p_2} = \frac{\overline{o^{(p_1)}} \cdot \overline{o^{(p_2)}}}{|o^{(p_1)}||o^{(p_2)}|} = \frac{3 \cdot 6 + 6 \cdot 5 + 4 \cdot 6}{\sqrt{6^2 + 3^2 + 6^2 + 4^2} \sqrt{6^2 + 6^2 + 5^2 + 6^2}} = 0,6339.
 $$
 Postępując w~analogiczny sposób otrzymamy macierz podobieństwa:
 \begin{center}
@@ -1737,7 +1801,38 @@ Na podstawie przeprowadzonych obliczeń zakładamy, że ocena jaką wystawiłby 
 Powtarzając powyższe obliczenia dla każdej z~pozycji wcześniej nieocenionej przez wybranego użytkownika otrzymamy wszystkie brakujące opinie. Następnie bazując na zdobytych danych z~łatwością odnajdziemy pozycję najbardziej odpowiednią do zarekomendowania użytkownikowi.
 \end{przyklad}
 
-\section{Systemy rekomendujące kontekstowe - Context–aware recommender systems}
+\subsection{Algorytmy eksploracji danych w~filtrowaniu kolaboratywnym}
+Rozważania w~tej sekcji zostały oparte na publikacji \textit{A comprehensive survey of neighborhood-based recommendation methods} {\citep[Sec 2.1]{acsonbrs}}.
+
+Metodami rekomendującymi opartymi na użytkownikach dokonujemy predykcji oceny $o_{u_j,p_i}$, $ j,i \in \setN$, użytkownika $u_j$ dla przedmiotu $p_i$. Uwzględniamy oceny, jakie zostały nadane przedmiotowi $p_i$ przez innych użytkowników oraz podobieństwo między nimi i~użytkownikiem $u_j$.
+Przewidując oceny dla konkretnego użytkownika, zbiór rozważanych użytkowników możemy zawęzić uwzględniając w~obliczeniach najbardziej podobnych rozważanemu. 
+
+Załóżmy, że dla każdej pary użytkowników $u_j$ i~$u_k$ znamy wartość podobieństwa między nimi, którą będziemy tu oznaczać $w_{u_j,u_k}$. Metodą k - najbliższych sąsiadów wyznaczamy użytkowników wykazujących największe podobieństwo do użytkownika $u_j$, ich zbiór oznaczymy jako $\mathcal{N}(u_j)$. Zauważmy jednak, że do estymacji oceny $o_{u_j,p_i}$ mogą zostać uwzględnieni tylko użytkownicy, którzy ocenili przedmiot $p_i$. Dlatego też będziemy rozważać użytkowników najbardziej podobnych $u_j$, którzy dokonali oceny przedmiotu $p_i$. Zbiór takich użytkowników oznaczmy jako $\mathcal{N}_{p_i}(u_j)$.
+
+Ocena $o_{u_j,p_i}$ może zostać wyliczona jako średnia ocen użytkowników ze zbioru $\mathcal{N}_{p_i}(u_j)$:
+$$
+o_{u_j,p_i} = \frac{1}{|\mathcal{N}_{p_i}(u_j)|} \sum_{u_i \in \mathcal{N}_{p_i}(u_j)} o_{u_i,p_i}.
+$$
+
+Podejście to nie uwzględnia jednak wartości podobieństwa występujących między użytkownikami, co jest w~tym przypadku bardzo istotne.
+
+Możemy więc wykorzystać w~tym przypadku średnią ważoną, której zastosowanie pokazaliśmy już w~sekcji 4.2.1.
+
+W konsekwencji, estymacja nowej oceny odbywa się następująco
+$$
+o_{u_j,p_i} = \frac{\sum_{u_i \in \mathcal{N}_{p_i}(u_j)} w_{u_j,u_i} o_{u_i,p_i}}{\sum_{u_i \in \mathcal{N}_{p_i}(u_j)} |w_{u_j,u_i}|}.
+$$
+
+W przypadku, gdy rozważamy przypadek filtrowania opartego na przedmiotach zakładamy, że zbiór $\mathcal{N}_{u_j}(p_i)$ oznacza zbiór przedmiotów ocenionych przez użytkownika $u_j$, które są najbardziej podobnymi do przedmiotu $p_i$. Estymacja oceny użytkownika $u_j$ dla przedmiotu $p_i$ jest uzyskana, podobnie jak w~przypadku opartym na użytkownikach, poprzez obliczenie średniej ważonej ocen nadanych przez użytkownika $u_j$ przedmiotom ze zbioru $\mathcal{N}_{u_j}(p_i)$:
+$$
+o_{u_j,p_i} = \frac{\sum_{p_j \in \mathcal{N}_{u_j}(p_i)} w_{p_j,p_i} o_{u_i,p_j}}{\sum_{p_j \in \mathcal{N}_{u_j}(p_i)} |w_{p_j,p_i}|}.
+$$
+
+Autorzy artykułu: \textit{Scalable Collaborative Filtering Using Cluster-based Smoothing} {\citep{cgfucbs}} przedstawiają wykorzystanie algorytmu k-średnich jako etapu wstępnego przetwarzania, który pomaga nam uzyskania informacje na temat klastrów. Odległość użytkownika do środków klastrów służy jako krok wstępnego wyboru sąsiadów. 
+
+Innym zastosowaniem opartym na metodzie klastrowania jest zastąpienie brakujących wartości dla użytkowników w~klastrze przez wartości środków klastra.
+
+\section{Systemy rekomendujące kontekstowe}
 Rozważania w~tej sekcji zostały również przeprowadzone na podstawie książki Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}}.
 \bigskip
 
@@ -1783,7 +1878,7 @@ $$
 
 Podejście to jest równoważne z~wyprowadzeniu SVD macierzy $\mathbb{O}$:
 $$
-\mathbb{T} = \mathbb{U} \Sigma \mathbb{V}^T,
+\mathbb{O} = \mathbb{U} \Sigma \mathbb{V}^T,
 $$
 gdzie:
 \begin{itemize}
@@ -1809,7 +1904,7 @@ o_{u,i} = \mathbf{p}_u \mathbf{q}_i^T.
 $$
 
 Główny problem jaki pojawia się przy implementacji metody SVD jest brak dużej liczby wyrazów macierzy $\mathbb{O}$. 
-Rozwiązaniem tego problemy jest odnalezienie brakujących elementów macierzy $\mathbb{P}$ i~$\mathbb{Q}$ używając znanych ocen oraz równania:
+Rozwiązaniem tego problemy jest odnalezienie brakujących elementów macierzy $\mathbb{P}$ i~$\mathbb{Q}$ używając znanych ocen oraz minimalizując równanie:
 $$
 \e{\mathbb{P}, \mathbb{Q}} = \sum_{o_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2 + \lambda(\norm{\mathbf{p}_u}^2 + \norm{\mathbf{q}_i}^2),
 $$
@@ -1817,7 +1912,7 @@ gdzie $\lambda$ jest parametrem kontroli poziomu regularyzacji.
 
 To samo podejście może zostać zastosowane w~przypadku obliczania podobieństwa między użytkownikami lub przedmiotami w~metodzie filtrowania opartego na treści.
 
-Rozwiązujemy tutaj następujący problem:
+Minimalizujemy tu problem postaci:
 $$
 \e{\mathbb{P}, \mathbb{Q}} = \sum_{z_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2,
 $$
@@ -1828,14 +1923,31 @@ gdzie:
 \item $z_{ui}$ jest średnią ocen $o_{ui}$ znormalizowaną do zakresu $[-1,1]$.
 \end{itemize}
 
+\section{Ocena jakości modeli w~regułach rekomendujących}
+W wielu przypadkach celem reguł rekomendującym nie jest przedstawienie przewidywanych ocen użytkowników, ale przewidywanie podjęcia działania. W~przypadku sklepów internetowych, pierwszym krokiem jest nakłonienie użytkownika do zakupu przedmiotu, a~w~kolejnym kroku zarekomendowanie produktów, które najbardziej odpowiadają jego preferencjom.
+
+W ocenie takiego systemu wybieramy użytkownika testowego ukrywając kilka jego wyborów. Następnie próbujemy przewidzieć zestaw elementów, które użytkownika zainteresują lub nie. Możliwe wyniki takiego doświadczenia odzwierciedla tabela:
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|r|r|r|} \hline
+ & Zarekomendowane & Niezarekomendowane\\
+\hline
+Wybrane przez użytkownika & $TP$ & $FN$ \\
+\hline
+Niewybrane przez użytkownika & $FP$ & $TN$  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
 \chapter{Eksperymenty / cześć praktyczne}
 
-Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego, w~którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom, i~którego zadaniem jest predykcja ocen użytkowników dla elementów przez nich nieocenionych. 
+Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego, w~którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom, i~którego zadaniem jest predykcja ocen użytkowników dla przedmiotów przez nich nieocenionych. 
 
-Załóżmy, że mamy $n$ użytkowników i~$m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w~której wyrazy $o_{i,j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ elementowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
+Załóżmy, że mamy $n$ użytkowników i~$m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w~której wyrazy $o_{i,j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ przedmiotowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
 
 
-\section{ALS z~Apache Spark i~MLlib}
+\section{Tworzenie rekomendacji z~użyciem ALS i~filtrowania kolaboratywnego}
 \subsection{Apache Spark}
 Apache Spark to ciesząca się ostatnio dużą popularnością platforma obliczeniowa stworzona w~celu przetwarzania dużych zbiorów danych (BigData). Powstała ona w~odpowiedzi na MapReduce wykorzystywaną przez Apache Hadoop. Wspomniany MapReduce przetwarza dane w~trybie wsadowym co oznacza, że podczas każdej operacji są one wczytywane i~zapisywane na dysku (HDFS), przez co spada znacznie jego wydajność przy algorytmach iteracyjnych. W~przypadku Apache Spark i~głównej jego idei jaką jest 
 Resilient Distributed Dataset zbiory danych są wczytywane do pamięci i~dzięki temu są wykorzystywane przez kolejne kroki algorytmu bez konieczności ponownego wczytywania ich na dysk. Zwiększa to znacznie wydajność i~szybkość wykonywania operacji.
@@ -2073,7 +2185,7 @@ Celem niniejszej pracy było przedstawienie modeli reguł rekomendujących za po
 
 W rozdziale 3. zaprezentowano wybrane elementy eksploracji danych spotykane w~systemach rekomendujących, ze szczególnym naciekiem na rozkład według wartości osobliwych, warunki równoważne temu rozkładowi oraz twierdzenie Eckart - Younga.
 
-W rozdziale 4. zaprezentowano trzy podstawowe metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~ a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na elementach. Trzecim wspomnianym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Dla każdego z~modeli został zaproponowany algorytm systematyzujący metodę rozwiązania problemu oraz przykład przedstawiający jego zastosowanie.
+W rozdziale 4. zaprezentowano trzy podstawowe metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~ a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na przedmiotach. Trzecim wspomnianym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Dla każdego z~modeli został zaproponowany algorytm systematyzujący metodę rozwiązania problemu oraz przykład przedstawiający jego zastosowanie.
 
 W rozdziale 5. zaprezentowano algorytm filtrowania kolaboratywnego w~kontekście uczenia maszynowego. Problem, którego rozwiązanie chcieliśmy uzyskać - na podstawie zbiorów użytkowników, filmów i~ocen zaproponować użytkownikowi kolejną pozycję ze zbioru, która będzie dla niego interesująca. Próbą rozwiązania tego problemu było przygotowanie implementacji algorytmu filtrowania kolaboratywnego przy zastosowaniu języka Python i~technologii Big Data - Spark. Schemat wyprowadzony w~rozdziale 4. znacznie ułatwił zrozumienie kolejnych kroków i~metod implementowanych w~kodzie. Ostatecznie, efekty uzyskane przy użyciu utworzonego programu zostały uznane za zadowalające. Program pozwala na znalezienie ustalonej liczby pozycji, które są odpowiednie do zaproponowania wybranemu użytkownikowi. 
 
