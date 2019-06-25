@@ -563,7 +563,7 @@ $$
 gdzie $\lambda_k, \: k \in \setN$ jest nieujemną wartością własną macierzy $\mathbb{X}^T \mathbb{X}$.
 \end{df}
 \begin{uwaga}
-Należy zauważyć, że macierz $\mathbb{X}^T \mathbb{X}$ jest macierzą symetryczną, a~jej wartości własne należą do zbiory liczb $\setR_{+} \cup \set{0}$.
+Należy zauważyć, że macierz $\mathbb{X}^T \mathbb{X}$ jest macierzą symetryczną, a~jej wartości własne należą do zbioru liczb $\setR_{+} \cup \set{0}$.
 
 W przypadku gdy wyrazy macierzy $\mathbb{X}$ są liczbami ze zbioru liczb zespolonych szukamy wartości własnych macierzy $\mathbb{X}^*\mathbb{X}$, gdzie $\mathbb{X}^*$ jest sprzężeniem hermitowskim macierzy, tzn. złożeniem operacji transpozycji i~sprzężenia zespolonego ($\mathbb{X}^* = \overline{\mathbb{X}^T}$).
 \end{uwaga}
@@ -593,7 +593,7 @@ $$\mathbb{U}=[\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u}_m], \: \mathbb{V} = [\mat
       \right],$$
 oraz 
 $\sigma_{1}\geq \sigma_{2} \geq ... \geq \sigma_{r} > \sigma_{r+1} = ... = \sigma_{n} = 0$. Przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i~$\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$.
-$Im(\mathbb{X})$ i~$Ker(\mathbb{X})$ oznaczają zakres i~jądro macierzy.
+$\mathrm{Im}(\mathbb{X})$ i~$\mathrm{Ker}(\mathbb{X})$ oznaczają zakres i~jądro macierzy.
 Wtedy:
 \begin{enumerate}
 \item $\rz{\mathbb{X}} = r$, $\mathrm{Ker} \: \mathbb{X} = \przestrzen{\mathbf{v}_{r+1},...,\mathbf{v}_n}$, 
@@ -612,7 +612,7 @@ $$
 $$
 \end{lemat}
 \begin{proof}
-Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
+Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$, $m \geq n$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
 $$
 \mathbb{U} = \left[
         \begin{array}{cccc}
@@ -687,9 +687,9 @@ a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{
          \end{array}
       \right].$$
       
-Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T$.
+Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{ii} \cdot \mathbf{v}_i^T$.
 
-Niech $r=2$.
+Niech $r=n$.
 
 Mamy, że:
 
@@ -798,7 +798,7 @@ a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{
       \right].$
 
 \bigskip
-Zatem, jeżeli $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, to $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T$.
+Zatem, z~dowolności $\mathbb{U}$, $\Sigma$ i~$\mathbb{V}$, jeżeli $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, to $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{ii} \cdot \mathbf{v}_i^T$.
 \end{proof}
 \bigskip
 
@@ -838,13 +838,13 @@ Skoro $\mathbb{V}^T \mathbb{V} = \mathbb{I}$, to
 $$
 \tr{\mathbb{V}^T \mathbb{V} \Sigma^T \Sigma} = \tr{\Sigma^T \Sigma}.
 $$
-Bezpośrednio możemy więc sformułować, że
+Bezpośrednio możemy więc policzyć, że
 $$
 \norma{ \mathbb{X}}_F^2 = \sigma_{1}^2 + \sigma_{2}^2 + \ldots + \sigma_{r}^2.
 $$
 \end{proof}
 
-\begin{tw}[Twierdzenie Eckart - Younga {\citep{ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
+\begin{tw}[Twierdzenie Eckart - Younga {\citep{tsvdalra, ulafiir}}]%Using Linear Algebra for Intelligent Information Retrival.pdf
 Niech $\mathbb{X} \in \mathbb{M}_{m \times n}(\setR),\: m \geq n, \:  m,n \in \setN$. $\mathbb{U}, \Sigma, \mathbb{V}$ niech będą takie, że $\mathbb{U} \in \mathbb{M}_{m \times m}(\setR), \: \Sigma \in \mathbb{M}_{m \times n}(\setR), \: \mathbb{V} \in \mathbb{M}_{n \times n}(\setR), \: \mathbb{X}=\mathbb{U}\Sigma \mathbb{V}^T, \: \mathbb{U}^T \mathbb{U} = \mathbb{I}, \: \mathbb{V}^T \mathbb{V} =\mathbb{I}$ oraz:
 $$
 \mathbb{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_m], \: \Sigma = \left[
@@ -930,7 +930,7 @@ $$
 $$
 \end{proof}
 
-\begin{proof}{[Twierdzenia 3.15 {\citep[Tw. 4.21]{tsvdalra}}]} 
+\begin{proof}{[Twierdzenia 3.15]} 
 
 Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o~wartościach rzeczywistych, gdzie $m \geqslant n$.
 Załóżmy, że
@@ -1805,7 +1805,7 @@ Powtarzając powyższe obliczenia dla każdej z~pozycji wcześniej nieocenionej 
 Rozważania w~tej sekcji zostały oparte na publikacji \textit{A comprehensive survey of neighborhood-based recommendation methods} {\citep[Sec 2.1]{acsonbrs}}.
 
 Metodami rekomendującymi opartymi na użytkownikach dokonujemy predykcji oceny $o_{u_j,p_i}$, $ j,i \in \setN$, użytkownika $u_j$ dla przedmiotu $p_i$. Uwzględniamy oceny, jakie zostały nadane przedmiotowi $p_i$ przez innych użytkowników oraz podobieństwo między nimi i~użytkownikiem $u_j$.
-Przewidując oceny dla konkretnego użytkownika, zbiór rozważanych użytkowników możemy zawęzić uwzględniając w~obliczeniach najbardziej podobnych rozważanemu. 
+Przewidując oceny dla konkretnego użytkownika, zbiór rozważanych użytkowników możemy zawęzić uwzględniając w~obliczeniach najbardziej podobnych rozważanemu. Podejście to stosujemy, gdy wektory opisujące użytkowników są wektorami o dużym wymiarze.
 
 Załóżmy, że dla każdej pary użytkowników $u_j$ i~$u_k$ znamy wartość podobieństwa między nimi, którą będziemy tu oznaczać $w_{u_j,u_k}$. Metodą k - najbliższych sąsiadów wyznaczamy użytkowników wykazujących największe podobieństwo do użytkownika $u_j$, ich zbiór oznaczymy jako $\mathcal{N}(u_j)$. Zauważmy jednak, że do estymacji oceny $o_{u_j,p_i}$ mogą zostać uwzględnieni tylko użytkownicy, którzy ocenili przedmiot $p_i$. Dlatego też będziemy rozważać użytkowników najbardziej podobnych $u_j$, którzy dokonali oceny przedmiotu $p_i$. Zbiór takich użytkowników oznaczmy jako $\mathcal{N}_{p_i}(u_j)$.
 
@@ -1940,6 +1940,24 @@ Niewybrane przez użytkownika & $FP$ & $TN$  \\
 \end{center}
 \end{table}
 
+
+Problem, który często pojawia się w~ocenie takiego modelu to odpowiednie wykorzystanie zbioru danych w~kontekście jego konstrukcji oraz estymacji oceny jego jakości.
+
+Bardzo często używaną i~wartą wspomnienia techniką, która pozwala na rozwiązanie tego problemu jest k-krotna kroswalidacja (ang. k-fold cross-validation).
+
+\begin{algorytm}[k-krotna kroswalidacja{\citep[Sec 4.8.4]{edmia}}]
+Kroki w~technice k-krotnej kroswalidacji są następujące:
+\begin{enumerate}
+\item Podzielenie zbioru danych $\mathit{D}$ na $k$ równych i~rozłącznych podzbiorów $\mathit{D}_1, \mathit{D}_2, \ldots, \mathit{D}_k$.
+\item Wybór $k-1$ z~podzbiorów i~wytrenowanie na nich modelu.
+\item Testowanie modelu przez użycie $k$-tego zbioru - pominiętego w~poprzednim kroku.
+\item Powtarzanie kroków 1. i~2. do momentu, gdy każdy z~$k$ zbiorów zostanie przyjęty jako zbiór testowy.
+\item Dokonanie kroswalidacyjnego oszacowania poprawności klasyfikatora - zsumowanie liczby poprawnych klasyfikacji dla wszystkich $k$ klastrów i~podzielenie przez liczność oryginalnego zbioru danych. 
+
+\end{enumerate}
+
+\end{algorytm}
+
 \chapter{Eksperymenty / cześć praktyczne}
 
 Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego, w~którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom, i~którego zadaniem jest predykcja ocen użytkowników dla przedmiotów przez nich nieocenionych. 
@@ -2000,6 +2018,7 @@ Otrzymujemy macierze $\mathbb{U}$ i~$\mathbb{P}$.
 
 \subsection{Implementacja algorytmu}
 Poniższa implementacja została stworzona na podstawie dokumentacji Apache Spark {\citep{apache}}. Dane użyte w~implementacji zostały zaczerpnięte ze strony internetowej grouplens.org {\citep{dane}}. Wszystkie element graficzne umieszczone w~rozdziale pochodzą ze źródła własnego i~stanowią części kodu, którego całość została załączona do pracy w~plikach \textit{rekomendacja\_podejscie\_1.py} i~\textit{rekomendacja\_podejscie\_2.py} (płyta CD).
+
 \bigskip
 \textbf{1. Biblioteki:}
 \\Załadowanie bibliotek pyspark i~ MLlib.
@@ -2181,15 +2200,15 @@ Pozostało tylko zaproponować użytkownikowi nowy film.
 
 \chapter{Podsumowanie}
 
-Celem niniejszej pracy było przedstawienie modeli reguł rekomendujących za pomocą teorii matematycznej. 
+Rosnącą popularność systemów rekomendujących przypisujemy szeregowi funkcji, które pełnią. Pozwalają one nie tylko na efektywne wyszukanie konkretnych przedmiotów, ale także na tworzenie propozycji dla użytkowników. Interesującymi są fakty, że dwie trzecie z~filmów oglądanych na portalu Netflix zostało użytkownikom zarekomendowane przez stronę, a $35 \% $ sprzedaży w~sklepie Amazon wynika z~polecanych produktów. Do znanych portali, wykorzystujących silniki rekomendujące, należy również Google News. Modele rekomendacji zyskały w~ostatnim czasie bardzo dużą popularność, zarówno w~świecie internetowym, jak i~środowiskach naukowych. Ciągle jednak zauważa się brak źródeł, które opisują zagadnienia rekomendacji w~ujęciu algorytmów matematycznych. Celem niniejszej pracy było więc przedstawienie matematycznych modeli reguł rekomendujących, ich charakteryzacja oraz wskazanie praktycznych zastosowań.
 
-W rozdziale 3. zaprezentowano wybrane elementy eksploracji danych spotykane w~systemach rekomendujących, ze szczególnym naciekiem na rozkład według wartości osobliwych, warunki równoważne temu rozkładowi oraz twierdzenie Eckart - Younga.
+W rozdziale 3. zaprezentowano wybrane elementy eksploracji danych spotykane w~systemach rekomendujących. Na podstawie analizy rożnych metod nasunął się wniosek, iż ważnym aspektem wykorzystywanym w~rekomendacjach jest faktoryzacja macierzy. Pozwala ona na zmniejszenie wymiarowości problemu do najbardziej znaczących cech. Istotnym wkładem własnym, który został zaprezentowany w~tym rozdziale było przeanalizowanie modelu SVD, wyprowadzenie warunków równoważnych temu rozkładowi w~postaci lematów, ich udowodnienie oraz analiza twierdzenia Eckard-Younga i~uzupełnienie jego dowodu.
 
-W rozdziale 4. zaprezentowano trzy podstawowe metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~ a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na przedmiotach. Trzecim wspomnianym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Dla każdego z~modeli został zaproponowany algorytm systematyzujący metodę rozwiązania problemu oraz przykład przedstawiający jego zastosowanie.
+W rozdziale 4. zaprezentowano trzy podstawowe metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na przedmiotach. Trzecim wspomnianym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Po szczegółowej analizie każdego z~systemów rekomendujących, zaproponowaliśmy algorytm systematyzujący metodę rozwiązania problemu, który uwzględnienia elementy obliczeń matematycznych kryjące się pod modelem. Przedstawiliśmy również przykłady przedstawiające zastosowania algorytmów.
 
-W rozdziale 5. zaprezentowano algorytm filtrowania kolaboratywnego w~kontekście uczenia maszynowego. Problem, którego rozwiązanie chcieliśmy uzyskać - na podstawie zbiorów użytkowników, filmów i~ocen zaproponować użytkownikowi kolejną pozycję ze zbioru, która będzie dla niego interesująca. Próbą rozwiązania tego problemu było przygotowanie implementacji algorytmu filtrowania kolaboratywnego przy zastosowaniu języka Python i~technologii Big Data - Spark. Schemat wyprowadzony w~rozdziale 4. znacznie ułatwił zrozumienie kolejnych kroków i~metod implementowanych w~kodzie. Ostatecznie, efekty uzyskane przy użyciu utworzonego programu zostały uznane za zadowalające. Program pozwala na znalezienie ustalonej liczby pozycji, które są odpowiednie do zaproponowania wybranemu użytkownikowi. 
+W rozdziale 5. zaprezentowaliśmy implementację jednego z~rozważanych modeli w~kontekście uczenia maszynowego. Problem, którego rozwiązanie chcieliśmy uzyskać - na podstawie zbiorów użytkowników, filmów i~ocen zaproponować użytkownikowi kolejną pozycję ze zbioru, która będzie dla niego interesująca. Próbą rozwiązania tego problemu było przygotowanie algorytmu filtrowania kolaboratywnego przy zastosowaniu języka Python i~technologii Big Data - Spark. Schemat wyprowadzony w~rozdziale 4. znacznie ułatwił zrozumienie kolejnych kroków i~metod w~kodzie. Ostatecznie, efekty uzyskane przy użyciu utworzonego programu zostały uznane za zadowalające. Program pozwala na znalezienie ustalonej liczby pozycji, które są odpowiednie do zaproponowania wybranemu użytkownikowi. 
 
-Na podstawie analizy rożnych metod nasunął się wniosek, iż ważnym aspektem wykorzystywanym w~rekomendacjach jest faktoryzacja macierzy, która pozwala zmniejszyć wymiarowość problemu do najbardziej znaczących cech. Istotnym wkładem własnym, który został zaprezentowany w~pracy było przeanalizowanie modelu SVD, wyprowadzenie warunków równoważnych temu rozkładowi oraz dowód twierdzenia Eckard-Younga. Dodatkowo wartościowym dopełnieniem tematu są zaproponowane algorytmy i~przygotowanie skryptu zawierającego implementację jednej z~rozważanych metod.
+Niniejsza praca nie zawiera oczywiście informacji na temat wszystkich istniejących systemów rekomendujących. Warte uwagi są na przykład systemy oparte na modelach, czy hybrydowe systemy rekomendujące łączące w~sobie wiele podejść jednocześnie. Rozważania tutaj zawarte są jednak podstawą do zrozumienia zagadnienia rekomendacji, a sam algorytm przedstawia zarys praktycznego podejścia do analizowanej kwestii.
 
 \bibliographystyle{plain}
 \bibliography{bibliografia}

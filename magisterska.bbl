@@ -77,6 +77,7 @@ Walesiak M., Gantar E.:
 \newblock Wydawnictwo Naukowe PWN, 2009.
 
 \bibitem{woin}
+Paszke W.:
 {\em Wartosci osobliwe i norma $H_{\infty}$.}
 \newblock Uniwersytet Zielonogórski Instytut Sterowania i Systemów Informatycznych.
 
@@ -90,19 +91,12 @@ Xue G., Lin C., Yang Q, Xi W., Zeng H. Yul Y., Chen Z.:
 \\ {\em Przewodnik biblioteki MLlib:}
 \\ \nolinkurl{https://spark.apache.org/docs/latest/ml-guide.html}
 \\ {\em Informacje o filtrowaniu kolaboratywnym:}
-\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/mllib-collaborative-filtering.html}
-\\ \nolinkurl{http://spark.apache.org/docs/latest/ml-collaborative-filtering.html?fbclid=IwAR05mYhbkFUTfBE0NScVhNaK1GiM4o8R4nqW1iiDePpp85_OBvKM5QiJ58Y}
-\\ {\em Informacje o metodzie predictAll(user\_product):}
-\\ \nolinkurl{https://spark.apache.org/docs/2.2.0/api/python/pyspark.mllib.html#pyspark.mllib.recommendation.MatrixFactorizationModel.predictAll}
-\\ {\em Informacje o metodzie train(ratings, rank, iterations=5, lambda=0.01, blocks=-1, nonnegative=False, seed=None) :}
-\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/api/python/pyspark.mllib.html#pyspark.mllib.recommendation.ALS}
-\\ \nolinkurl{https://spark.apache.org/docs/2.1.0/api/python/_modules/pyspark/mllib/recommendation.html#ALS.train}
-\\ {\em Informacje o metodzie recommendProducts(int uzytkownik,int numer):}
-\\ \nolinkurl{https://spark.apache.org/docs/2.2.0/api/java/org/apache/spark/mllib/recommendation/MatrixFactorizationModel.html#recommendProducts-int-int-}
+\\ \nolinkurl{https://spark.apache.org/docs/2.1.0}
+\\ \nolinkurl{https://spark.apache.org/docs/2.2.0}
 \\ \newblock (dostęp 24.05.2019).
 
 \bibitem{dane}
-{\em Źródło danych:}
+{\em Zestaw danych o filmach, użytkownikach i ocenach ze strony internetowej grouplens.org:}
 \\ \nolinkurl{https://grouplens.org/datasets/movielens/}
 \newblock (dostęp 25.05.2019).
 
