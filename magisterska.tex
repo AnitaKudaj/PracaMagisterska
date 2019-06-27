@@ -131,8 +131,7 @@ Znaczny wzrost informacji dostępnych w~internecie wywołał zapotrzebowanie na 
 
 Celem tej pracy jest przedstawienie matematycznej strony metod systemów rekomendujących poprzez analizę algorytmów ukrytych pod ich nazwami.
 
-Niniejsza praca składa się z~czterech części. Rozdział 2. zawiera wykaz oznaczeń, przypomnienie podstawowych definicji z~zakresu algebry liniowej oraz rachunku prawdopodobieństwa i~statystyki wykorzystanych w~dalszych częściach pracy. W~rozdziale 3. przedstawione zostały elementy eksploracji danych stanowiące nieodzowną część systemów rekomendujących. Zaczynamy od wstępnego przetwarzania danych oraz definicji i~twierdzeń związanych z~miarami podobieństwa i~technikami redukcji wymiaru, tutaj szczególna uwaga została poświęcona rozkładowi według wartości osobliwych (ang. Singular Value Decomposition). Następnie przechodzimy do opisu dwóch metod eksploracji danych - algorytmu k-najbliższych sąsiadów i~algorytmu k-średnich aby zakończyć oceną dokładności i~jakości modeli. 
-Rozdział 4. opisuje modele tworzenia rekomendacji. Zostały tu zawarte sformułowania definicji związanych z~systemami rekomendującymi, informacje dotyczące systemów opartych na treści, filtrowania kolaboratywnego oraz systemów kontekstowych. Rozdział został wzbogacony o~algorytmy i~przykłady, które pokazują zastosowanie poszczególnych metod. Ponadto znajdziemy tu przedstawienie dekompozycji macierzy ocen metodą SVD. Ostatni rozdział to praktyczne zastosowanie filtrowania kolaboratywnego. W~rozdziale tym podstawę stanowią informacje na temat Apache Spark oraz algorytmu ALS (ang. Alternating Least Square) z~biblioteki MLlib. Dodatkowo w~ostatniej sekcji rozdziału została umieszczona przykładowa implementacja algorytmu ALS wraz z~komentarzami wyjaśniającymi poszczególne kroki. 
+Niniejsza praca składa się z~czterech części. Rozdział 2. zawiera wykaz oznaczeń, przypomnienie podstawowych definicji z~zakresu algebry liniowej oraz rachunku prawdopodobieństwa i~statystyki wykorzystanych w~dalszych częściach pracy. W~rozdziale 3. przedstawione zostały elementy eksploracji danych stanowiące nieodzowną część systemów rekomendujących. Zaczynamy od wstępnego przetwarzania danych oraz definicji i~twierdzeń związanych z~miarami podobieństwa i~technikami redukcji wymiaru, tutaj szczególna uwaga została poświęcona rozkładowi według wartości osobliwych (ang. Singular Value Decomposition). Następnie przechodzimy do opisu dwóch metod eksploracji danych - algorytmu k-najbliższych sąsiadów i~algorytmu k-średnich, aby zakończyć oceną dokładności i~jakości modeli. Rozdział 4. opisuje modele tworzenia rekomendacji. Zostały tu zawarte sformułowania definicji związanych z~systemami rekomendującymi, informacje dotyczące systemów opartych na treści, filtrowania kolaboratywnego oraz systemów kontekstowych. Rozdział został wzbogacony o~algorytmy i~przykłady, które pokazują zastosowanie poszczególnych metod. Ponadto znajdziemy tu przedstawienie dekompozycji macierzy ocen metodą SVD. Ostatni rozdział to praktyczne zastosowanie filtrowania kolaboratywnego. W~rozdziale tym podstawę stanowią informacje na temat Apache Spark oraz algorytmu ALS (ang. Alternating Least Square) z~biblioteki MLlib. Dodatkowo w~ostatniej sekcji rozdziału została umieszczona przykładowa implementacja algorytmu ALS wraz z~komentarzami wyjaśniającymi poszczególne kroki. 
 
 
 
@@ -163,7 +162,6 @@ W niniejszej pracy zostały użyte następujące oznaczenia:
 \\$\ro{\mathrm{X}}{\mathrm{Y}}$ - współczynnik korelacji zmiennych losowych $\mathrm{X},\mathrm{Y}$,
 \\$\distance{x}{y}$ - odległość punktów $x$ i~$y$,
 \\$\distanceee{x}{y}$ - odległość euklidesowa punktów $x$ i~$y$,
-\\$\distancee{x}{y}$ - odległość Minkowskiego punktów $x$ i~$y$,
 \\$\similarity{X}{Y}$ - współczynnik podobieństwa wektorów $X$ i~$Y$,
 \\$\rop{\mathrm{X}}{\mathrm{Y}}$ - współczynnik korelacji Pearsona,
 \\$\J{\mathit{A}}{\mathit{B}}$ - indeks Jaccarda,
@@ -190,7 +188,12 @@ $$
 $$
 \end{df}
 \bigskip
-Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczamy zbiór wszystkich macierzy o~wymiarach $m$ na $n$ i~elementach z~ciała $\setK$.
+Przez $\mathbb{M}_{m \times n}(\setK)$ oznaczamy zbiór wszystkich macierzy o~wymiarach $m$ na $n$ i~elementach z~ciała $\setK$. Przykładowymi sposobami zapisu macierzy są:
+$$
+[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}, \: (a_{ij})_{j = 1, \ldots, n}^{i = 1, \ldots , m}, \: [a_{ij}]_{j \leq n}^{i = 1 \leq m}, \: (a_{ij})_{j \leq n}^{i = 1 \leq m}, \: [a_{ij}], \: (a_{ij}),
+$$
+przy czym sposobów $[a_{ij}], \: (a_{ij})$ używamy, gdy liczba kolumn i~wierszy danej macierzy jest ustalona. 
+W tej pracy używać będziemy zapisu $[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$ oraz zapisu $[a_{ij}]$ w~przypadku macierzy kwadratowych.
 
 \begin{df}[Wyznacznik macierzy {\citep[Sec 10.1, Def. 10.1]{alzega}}]
 Niech $\mathcal{M}(\setK)=\bigcup_{n\in \setN} \mathbb{M}_{n \times n}(\setK)$ oznacza zbiór wszystkich macierzy kwadratowych o~wyrazach z~$\setK$.
@@ -219,16 +222,6 @@ $\mathbb{A}_{ij}$ jest macierzą powstałą z~macierzy $\mathbb{A}$ przez skreś
 Funkcję $\mathrm{det}$ nazywamy wyznacznikiem, natomiast wartość tej funkcji dla macierzy $\mathbb{A}$ wyznacznikiem macierzy $\mathbb{A}$.
 \end{df}
 
-\begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
-Przykładowe sposoby zapisu macierzy:
-$$
-[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}, \: (a_{ij})_{j = 1, \ldots, n}^{i = 1, \ldots , m}, \: [a_{ij}]_{j \leq n}^{i = 1 \leq m}, \: (a_{ij})_{j \leq n}^{i = 1 \leq m}, \: [a_{ij}], \: (a_{ij}).
-$$
-
-Sposobów $[a_{ij}], \: (a_{ij})$ używamy, gdy liczba kolumn i~wierszy danej macierzy jest ustalona. 
-
-W tej pracy używać będziemy zapisu $[a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$ oraz zapisu $[a_{ij}]$ w~przypadku macierzy kwadratowych.
-\end{uwaga}
 
 \begin{df}[Macierz transponowana {\citep[Sec 8.1 ]{alzega}}]
 Niech $\mathbb{A} = [a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$, będzie macierzą ze zbioru $\mathbb{M}_{m \times n}(\setK)$.
@@ -238,6 +231,17 @@ b_{ji} = a_{ij}
 $$ 
 dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$. Piszemy wtedy $\mathbb{B} = \mathbb{A}^T$.
 \end{df}
+
+\begin{tw}[Własności transpozycji macierzy {\citep[Sec 5.1 Tw. 5.1]{ealIII}}]
+Niech $\mathbb{A} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{B} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
+Zachodzą następujące równości:
+\begin{itemize}
+\item $(\mathbb{A}^T)^T = \mathbb{A}$,
+\item $(\mathbb{A} + \mathbb{B})^T = \mathbb{A}^T + \mathbb{B}^T$,
+\item $(\lambda \mathbb{A})^T = \lambda \mathbb{A}^T$,
+\item $(\mathbb{A}\mathbb{C})^T = \mathbb{C}^T \mathbb{A}^T$.
+\end{itemize}
+\end{tw}
 
 \begin{uwaga}[Rodzaje macierzy {\citep[Sec 8.1, Sec 10.4]{alzega}}]
 Poniżej zostały zdefiniowane niektóre rodzaje macierzy.
@@ -255,60 +259,14 @@ $$
 \end{itemize}
 \end{uwaga}
 
-\begin{df}[Mnożenie macierzy {\citep[Sec 9.3 Def 9.13]{alzega}}]
-Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ i~$\mathbb{B} \in \mathbb{M}_{k \times m} (\setK)$. Przyjmując następujące notacje:
-$$
-\mathbb{A} = \left[
-        \begin{array}{cccc}
-         a_{11} & a_{12} & \cdots & a_{1n} \\
-         a_{21} & a_{22} & \cdots & a_{2n} \\
-         \vdots & \vdots & \ddots & \vdots \\
-         a_{m1} & a_{m2} & \cdots & a_{mn} \\
-         \end{array}
-      \right],
-      \qquad
-\mathbb{B} = \left[
-        \begin{array}{cccc}
-         b_{11} & b_{12} & \cdots & b_{1m} \\
-         b_{21} & b_{22} & \cdots & b_{2m} \\
-         \vdots & \vdots & \ddots & \vdots \\
-         b_{k1} & b_{k2} & \cdots & b_{km} \\
-         \end{array}
-      \right]
-$$
-iloczynem macierzy $\mathbb{B}$ i~$\mathbb{A}$ nazywamy taką macierz $\mathbb{C} = [c_{lj}]_{j = 1, \ldots, n}^{l = 1, \ldots , k}$, że
-$$
-\forall_{l \in 1, \ldots, k, \: j \in 1, \ldots, n} \:c_{lj} = \sum_{i=1}^m b_{li} \cdot a_{ij}.
-$$
-Piszemy wtedy $\mathbb{C} = \mathbb{B} \cdot \mathbb{A}$.
-\end{df}
-
-\begin{df}[Suma macierzy {\citep[Sec 8.1]{alzega}}]
-Niech $\mathbb{A}, \mathbb{B} \in \mathbb{M}_{m \times n} (\setK)$.
-Sumą macierzy $(\mathbb{B} + \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
-$$
-\forall_{i \in 1, \ldots, m, \: j \in 1, \ldots, n} \: c_{ij} = b_{ij} + a_{ij}.
-$$
-\end{df}
-
-\begin{df}[Iloczyn macierzy przez element ciała {\citep[Sec 8.1]{alzega}}]
-Niech $\mathbb{A} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
-Iloczynem macierzy przez element z~ciała $(\lambda \cdot \mathbb{A})$ nazywamy macierz $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ taką, że
-$$
-\forall_{i \in 1, \ldots, m, \: j \in 1, \ldots, n} \: c_{ij} = \lambda \cdot a_{ij}.
-$$
-\end{df}
-
-\begin{tw}[Własności transpozycji macierzy {\citep[Sec 5.1 Tw. 5.1]{ealIII}}]
-Niech $\mathbb{A} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{B} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
-Zachodzą następujące równości:
+\begin{uwaga}
+Podstawowymi działaniami wykonywanymi na macierzach, których będziemy używać w dalszych częściach tej pracy są:
 \begin{itemize}
-\item $(\mathbb{A}^T)^T = \mathbb{A}$,
-\item $(\mathbb{A} + \mathbb{B})^T = \mathbb{A}^T + \mathbb{B}^T$,
-\item $(\lambda \mathbb{A})^T = \lambda \mathbb{A}^T$,
-\item $(\mathbb{A}\mathbb{C})^T = \mathbb{C}^T \mathbb{A}^T$.
+\item mnożenie macierzy {\citep[Sec 9.3 Def 9.13]{alzega}},
+\item suma macierzy {\citep[Sec 8.1]{alzega}},
+\item iloczyn macierzy przez element ciała {\citep[Sec 8.1]{alzega}}.
 \end{itemize}
-\end{tw}
+\end{uwaga}
 
 \begin{df}[Ślad macierzy]{\citep[Sec 6.4]{ealIII}}
 Śladem macierzy  $\mathbb{A} = [a_{ij}]$ nazywamy wielkość:
@@ -330,35 +288,10 @@ Zachodzą następujące równości:
 \end{itemize}
 \end{tw}
 
-W kolejnych definicjach korzystamy z~pojęć przestrzeni liniowej, wymiaru oraz przekształcenia liniowego, których wyjaśnienia możemy odnaleźć w~książce \textit{Algebra liniowa z~elementami geometrii analitycznej} odpowiednio w~{\citep[Sec 7.1]{alzega}}, {\citep[Sec 7.5]{alzega}} oraz {\citep[Sec 9.1]{alzega}}.
-
-\begin{uwaga}[{\citep[Sec 8.1]{alzega}}]
-Wiersze macierzy o~wymiarach $m$ na $n$ traktować możemy jako wektor z~przestrzeni $\setK^n$, natomiast kolumny jako wektor przestrzeni $\setK^m$.
-\end{uwaga}
-
-\begin{df}[Rząd kolumnowy i~wierszowy macierzy {\citep[Sec 8.1]{alzega}}]
-Niech $\mathbb{A} \in \mathbb{M}_{m\times n}(\setK)$. Rzędem kolumnowym macierzy $\mathbb{A}$ nazywamy wymiar przestrzeni $\setK^n$ generowanej przez kolumny macierzy $\mathbb{A}$. Rząd ten oznaczamy symbolem $\rk{\mathbb{A}}$. Rzędem wierszowym macierzy $\mathbb{A}$ nazywamy wymiar podprzestrzeni generowany przez wiersze macierzy $\mathbb{A}$ i~oznaczamy go $\rw{\mathbb{A}}$.
-\end{df}
-
-Rząd wierszowy i~kolumnowy danej macierzy są sobie równe. 
+W kolejnych definicjach korzystamy z~pojęć przestrzeni liniowej, wymiaru oraz przekształcenia liniowego, których wyjaśnienia możemy odnaleźć w~książce \textit{Algebra liniowa z~elementami geometrii analitycznej} odpowiednio w~{\citep[Sec 7.1]{alzega}}, {\citep[Sec 7.5]{alzega}} oraz {\citep[Sec 9.1]{alzega}}. Dodatkowo wykorzystamy także pojęcia rzędu kolumnowego i wierszowego macierzy, których definicje także odnajdziemy w powyższej publikacji, w~{\citep[Sec 8.1]{alzega}}.
 
 \begin{df}[Rząd macierzy {\citep[Sec 8.1]{alzega}}]
 Rzędem macierzy $\mathbb{A}$ nazywamy wspólną wartość rzędu kolumnowego i~wierszowego macierzy $\mathbb{A}$. Rząd macierzy oznaczamy symbolem $\rz{\mathbb{A}}$.
-\end{df}
-
-Niech $\mathcal{V}$ i~$\mathcal{W}$ będą przekształceniami liniowymi nad ciałek $\setK$.
-\begin{df}[Jądro przekształcenia liniowego {\citep[Sec 8.1]{alzega}}]
-Jądrem przekształcenia liniowego $A: \mathcal{V}\to \mathcal{W}$ nazywamy zbór:
-$$
-\mathrm{Ker} \: A = \set{ \mathbf{x} \in \mathcal{V} : A(\mathbf{x}) = 0}.
-$$
-\end{df}
-
-\begin{df}[Obraz przekształcenia liniowego {\citep[Sec 8.1]{alzega}}]
-Obrazem przekształcenia liniowego $A: \mathcal{V}\to \mathcal{W}$ nazywamy zbór:
-$$
-\mathrm{Im} \: A = \set{ \mathbf{y} \in \mathcal{W} : \exists_{\mathbf{x} \in \mathcal{V}} \: y = A(\mathbf{x})}.
-$$
 \end{df}
 
 \begin{df}[Przestrzeń generowana przez zbiór {\citep[Sec 7.1 Def 7.13]{alzega}}]
@@ -415,8 +348,10 @@ Najmniejszą $\sigma$-algebrę $\sigma(\mathcal{I})$ generowaną przez klasę zb
 Odwzorowanie $\mathrm{X}: \Omega \to \setR^n$ nazywamy zmienną losową o~wartościach w~$\setR^n$, jeśli dla każdego $\mathit{A} \in \sigmacialo{\setR^n}$ zbiór $\mathrm{X}^{-1}(\mathit{A}) \in \mathcal{F}$.
 \end{df}
 
-\begin{df}[Wartość oczekiwana {\citep[Sec 5.6 Def. 2]{jakubowski}}]
-Wartością oczekiwaną zmiennej losowej $\mathrm{X}$ o~wartościach w~$\setR$ nazywamy liczbę:
+\begin{df}[Charakterystyki liczbowe zmiennej losowej {\citep{jakubowski}}, {\citep{wztp}}]
+${}$
+\begin{itemize}
+\item Wartością oczekiwaną zmiennej losowej $\mathrm{X}$ o~wartościach w~$\setR$ nazywamy liczbę:
 $$
 \e{\mathrm{X}} = \int_{\Omega} \mathrm{X} dP,
 $$
@@ -424,33 +359,31 @@ jeżeli $\mathrm{X}$ jest $P$-całkowalna, tzn. jeżeli zachodzi:
 $$
 \e{\mathrm{X}} = \int_{\Omega} |\mathrm{X}| dP < \infty.
 $$
-\end{df}
-\begin{df}[Kowariancja {\citep[Sec 2.8 Def.2.32]{wztp}}]
-Kowariancją zmiennych losowych $\mathrm{X},\mathrm{Y}$ nazywamy liczbę:
+
+\item Kowariancją zmiennych losowych $\mathrm{X},\mathrm{Y}$ nazywamy liczbę:
 $$
 \Covariance{\mathrm{X}}{\mathrm{Y}} = \e{(\mathrm{X}-\e{\mathrm{X}})(\mathrm{Y}-\e{\mathrm{Y}})}.
 $$
-\end{df}
 
-\begin{df}[Wariancja zmiennej losowej {\citep[Sec 2.8 Def.2.28]{wztp}}]
-Wariancją zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
+\item Wariancją zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
 \variance{\mathrm{X}}=\e{(\mathrm{X}-\e{\mathrm{X}})^2},
 $$
 jeżeli wyznaczona wartość oczekiwana istnieje.
-\end{df} 
-\begin{df}[Odchylenie standardowe {\citep[Sec 2.8 Def.2.28]{wztp}}]
-Odchyleniem standardowym zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
+
+\item Odchyleniem standardowym zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
 \standard{\mathrm{X}}=\sqrt{\variance{\mathrm{X}}}.
 $$
-\end{df}
-\begin{df}[Współczynnik korelacji {\citep{wztp}}]
-Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $\mathrm{X}$ i~$\mathrm{Y}$ zdefiniowaną następująco:
+
+\item Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $\mathrm{X}$ i~$\mathrm{Y}$ zdefiniowaną następująco:
 $$
 \ro{\mathrm{X}}{\mathrm{Y}} = \frac{\Covariance{\mathrm{X}}{\mathrm{Y}}}{\standard{\mathrm{X}} \standard{\mathrm{Y}}}.
 $$
+
+\end{itemize}
 \end{df}
+
 
 
 \chapter{Elementy eksploracji danych wykorzystywane w~systemach rekomendujących}
@@ -472,25 +405,12 @@ Najprostszym i~jednocześnie najczęściej używanym kryterium jest odległość
 
 \begin{df}[Odległość euklidesowa \citep{rsh}]%Spodzieja S.: Wstęp do analizy matematycznej funkcje jednej zmiennej.
 
-Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością euklidesową $\mathbf{x}$ i~$\mathbf{y}$ nazywamy:
+Niech $\mathbf{x},\mathbf{y} \in \setR^n $, $n \in\setN$. Odległością euklidesową między $\mathbf{x}$ i~$\mathbf{y}$ nazywamy:
 $$
 \distanceee{x}{y} = \sqrt{\sum_{k=1}^n(\mathbf{x}_k-\mathbf{y}_k)^2}.
 $$
 \end{df}
 
-Warto również wspomnieć o~uogólnionej wersji odległości euklidesowej - odległości Minkowskiego.
-\begin{uwaga}
-Odległość Minkowskiego wyrażamy wzorem:
-$$
-\distancee{x}{y} = (\sum_{k=1}^n|x_k-y_k|^r)^{\frac{1}{r}}.
-$$
-W zależności od wartości stopnia odległości $r$ odległość Minkowskiego przyjmuje konkretne nazwy:
-\begin{itemize}
-\item $r=1$ - odległość manhatan,
-\item $r=2$ - wspomniana wcześniej odległość euklidesowa,
-\item $r \to \infty $ - supremum. 
-\end{itemize}
-\end{uwaga}
 Kolejnym podejściem, gdzie poszczególne elementy są postrzegane jako $n$ - wymiarowe wektory, a~podobieństwo między nimi jest obliczane na podstawie kąta, który tworzą jest odległość kosinusowa.
 
 \begin{df}[Odległość kosinusowa \citep{rsh}] %https://pqstat.pl/?mod_f=macpod
@@ -528,7 +448,7 @@ $$
 \end{df}
 
 \subsection{Redukcja wymiaru}
-Zbyt duża ilość zmiennych, które opisują obserwacje, powoduje wzrost prawdopodobności, że zmienne te są ze sobą skorelowane, a~informacje wnoszone przez część zmiennych są redundantne. W~poniższym rozdziale przyjrzymy się najczęściej wybieranemu algorytmom redukcji wymiarów w~kontekście reguł rekomendujących. Jest to rozkład według wartości osobliwych (ang. Singular Value Decomposition (SVD)).
+Zbyt duża ilość zmiennych, które opisują obserwacje, powoduje wzrost ryzyka, że zmienne te są ze sobą skorelowane, a~informacje wnoszone przez część zmiennych są redundantne. W~poniższym rozdziale przyjrzymy się najczęściej wybieranemu algorytmowi redukcji wymiarów w~kontekście reguł rekomendujących. Jest to rozkład według wartości osobliwych (ang. Singular Value Decomposition (SVD)).
 
 \begin{df} [Rozkład według wartości osobliwych {\citep{ulafiir}}]%https://pl.wikipedia.org/wiki/Rozk%C5%82ad_wed%C5%82ug_warto%C5%9Bci_osobliwych
 %Using Linear Algebra for Intelligent Information Retrival.pdf
@@ -538,7 +458,7 @@ $$
 $$
 gdzie:
 \begin{itemize}
-\item $\mathbb{U}^T \mathbb{U} =\mathbb{I}, \:  \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m \times m$ oraz $\mathbb{V}$ wymiaru $n \times n$,
+\item $\mathbb{U}^T \mathbb{U} =\mathbb{I}, \:  \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m$ na $m$ oraz $\mathbb{V}$ wymiaru $n$ na $n$,
 \item $\Sigma$ jest macierzą wymiaru $m$ na $n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
 \end{itemize}
 \end{df}
@@ -549,7 +469,7 @@ Kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$ nazywamy odpowiednio lewymi i~prawy
 \end{uwaga}
 
 \begin{tw}{\citep{tsvdalra}}
-Niech $\mathbb{X} \in \mathbb{M}_{m \times n} $. Istnieje $m$ na $m$ wymiarowa macierz ortogonalna $\mathbb{U}$, $n$ na $n$ wymiarowa macierz ortogonalna $\mathbb{V}$ oraz $m$ na $n$ wymiarowa macierz diagonalna $\Sigma$, takie, że
+Niech $\mathbb{X} \in \mathbb{M}_{m \times n} $, gdzie $m\geq n$. Istnieje wtedy rozkład według wartości osobliwych:
 $$
 \mathbb{X} = \mathbb{U} \Sigma \mathbb{V}^T.
 $$
@@ -563,7 +483,7 @@ $$
 gdzie $\lambda_k, \: k \in \setN$ jest nieujemną wartością własną macierzy $\mathbb{X}^T \mathbb{X}$.
 \end{df}
 \begin{uwaga}
-Należy zauważyć, że macierz $\mathbb{X}^T \mathbb{X}$ jest macierzą symetryczną, a~jej wartości własne należą do zbioru liczb $\setR_{+} \cup \set{0}$.
+Należy zauważyć, że macierz $\mathbb{X}^T \mathbb{X}$ jest macierzą symetryczną, zatem jej wartości własne należą do zbioru liczb $\setR_{+} \cup \set{0}$.
 
 W przypadku gdy wyrazy macierzy $\mathbb{X}$ są liczbami ze zbioru liczb zespolonych szukamy wartości własnych macierzy $\mathbb{X}^*\mathbb{X}$, gdzie $\mathbb{X}^*$ jest sprzężeniem hermitowskim macierzy, tzn. złożeniem operacji transpozycji i~sprzężenia zespolonego ($\mathbb{X}^* = \overline{\mathbb{X}^T}$).
 \end{uwaga}
@@ -593,25 +513,23 @@ $$\mathbb{U}=[\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u}_m], \: \mathbb{V} = [\mat
       \right],$$
 oraz 
 $\sigma_{1}\geq \sigma_{2} \geq ... \geq \sigma_{r} > \sigma_{r+1} = ... = \sigma_{n} = 0$. Przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i~$\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$.
-$\mathrm{Im}(\mathbb{X})$ i~$\mathrm{Ker}(\mathbb{X})$ oznaczają zakres i~jądro macierzy.
 Wtedy:
 \begin{enumerate}
-\item $\rz{\mathbb{X}} = r$, $\mathrm{Ker} \: \mathbb{X} = \przestrzen{\mathbf{v}_{r+1},...,\mathbf{v}_n}$, 
-$\mathrm{Im} \: \mathbb{X} = \przestrzen{\mathbf{u}_1,\mathbf{u}_2,...,\mathbf{u}_r}$,
+\item $\rz{\mathbb{X}} = r$, 
 \item $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T,$
 \item $||\mathbb{X}||_F^2 = \sigma_{1}^2+...+\sigma_{r}^2$.
 \end{enumerate}
 \end{tw}
 
 \begin{lemat}
-Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12.
+Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11.
 
 Wtedy:
 $$
 \mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_i \cdot \mathbf{v}_i^T.
 $$
 \end{lemat}
-\begin{proof}
+\begin{proof}(opracowanie własne)
 Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$, $m \geq n$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
 $$
 \mathbb{U} = \left[
@@ -751,7 +669,7 @@ $\left[ \begin{array}{c}
          \vdots & \ldots & \ddots & \vdots \\
          a_{m2} \sigma_{22} b_{12} & a_{m2} \sigma_{22} b_{22} & \ldots & a_{m2} \sigma_{22} b_{n2} \\
          \end{array}
-      \right] $$,
+      \right], $$
 $
 \vdots
 $
@@ -803,7 +721,7 @@ Zatem, z~dowolności $\mathbb{U}$, $\Sigma$ i~$\mathbb{V}$, jeżeli $\mathbb{X}=
 \bigskip
 
 \begin{lemat}
-Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12.
+Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11.
 
 Wtedy:
 $$
@@ -811,7 +729,7 @@ $$
 $$
 \end{lemat}
 
-\begin{proof}
+\begin{proof}(opracowanie własne)
 Niech $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$.
 Mamy zatem 
 $$
@@ -858,7 +776,7 @@ $$
          \end{array}
       \right], \: \mathbb{V} = [\mathbf{v}_1, \ldots, \mathbf{v}_n],
 $$
-gdzie przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i~$\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$. (Istnienie powyższych macierzy wynika z~twierdzenia 3.8 .) 
+gdzie przez $\mathbf{u}_1, \ldots, \mathbf{u}_m$ i~$\mathbf{v}_1, \ldots, \mathbf{v}_n$ oznaczamy kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$. (Istnienie powyższych macierzy wynika z~twierdzenia 3.7 .) 
 
 Zdefiniujmy dla $k \in \set{1, \ldots, n}$:
 $$
@@ -882,14 +800,13 @@ gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
 \end{tw}
 
 \begin{lemat}
-Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.12 oraz $\mathbb{X}_k$ będą jak w~twierdzeniu 3.15.
-
+Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11 oraz $\mathbb{X}_k$ będą jak w~twierdzeniu 3.14.
 Wtedy:
 $$
 \norma{ \mathbb{X} - \mathbb{X}_k}_F^2 = \sigma_{k+1}^2 + \sigma_{k+2}^2 + \ldots + \sigma_{r}^2.
 $$
 \end{lemat}
-\begin{proof}
+\begin{proof}(opracowanie własne)
 Niech $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$ oraz $\mathbb{X}_k=\mathbb{U} \Sigma_k \mathbb{V}^T$.
 Mamy zatem
 $$
@@ -930,7 +847,7 @@ $$
 $$
 \end{proof}
 
-\begin{proof}{[Twierdzenia 3.15]} 
+\begin{proof}{[Twierdzenia 3.14]} 
 
 Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o~wartościach rzeczywistych, gdzie $m \geqslant n$.
 Załóżmy, że
@@ -944,11 +861,11 @@ $$
 $$
 gdzie $\mathbf{u}_i$ i~$\mathbf{v}_i$ oznaczają odpowiednio $i$-te kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$.
 
-Zauważmy, że z~własności 2. twierdzenia 3.12 mamy
+Zauważmy, że z~własności 2. twierdzenia 3.11 mamy
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
 $$
-Po obliczeniach wykonanych w~lemacie 3.17 mamy, że
+Po obliczeniach wykonanych w~lemacie 3.16 mamy, że
 $$
 ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^n \sigma_i^2.
 $$
