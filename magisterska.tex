@@ -849,7 +849,7 @@ $$
 
 \begin{proof}{[Twierdzenia 3.14]} 
 
-Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o~wartościach rzeczywistych, gdzie $m \geqslant n$.
+Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o~wartościach rzeczywistych, gdzie $m \geqslant n, \: \rz{\mathbb{X}} = r$.
 Załóżmy, że
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T
@@ -863,16 +863,16 @@ gdzie $\mathbf{u}_i$ i~$\mathbf{v}_i$ oznaczają odpowiednio $i$-te kolumny maci
 
 Zauważmy, że z~własności 2. twierdzenia 3.11 mamy
 $$
-||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
 $$
 Po obliczeniach wykonanych w~lemacie 3.16 mamy, że
 $$
-||\sum_{i=k+1}^n \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^n \sigma_i^2.
+||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^r \sigma_i^2.
 $$
 Niech $\mathbb{B}_k \in \mathbb{M}_{m \times n}(\setR), \: \rz{\mathbb{B}_k} = k$. 
 Stąd należy udowodnić, że
 $$
-||\mathbb{X} - \mathbb{X}_k||_F^2 = \sum_{i=k+1}^n \sigma_i^2 \leqslant ||\mathbb{X} - \mathbb{B}_k||_F^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = \sum_{i=k+1}^r \sigma_i^2 \leqslant ||\mathbb{X} - \mathbb{B}_k||_F^2.
 $$
 Niech $\mathbb{X}^{`} = \mathbb{X}-\mathbb{B}_k, \mathbb{X}^{``} = \mathbb{B}_k$.
 Wtedy $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. 
@@ -899,7 +899,7 @@ $$
 $$
 Stąd
 $$
-||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^r \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_{k+1}(\mathbb{X})^2 \geq \sum_{i = k+1}^r \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2 .
+||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^r \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_{i+k}(\mathbb{X})^2 \geq \sum_{i = k+1}^r \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2 .
 $$
 Ostatecznie
 $$
