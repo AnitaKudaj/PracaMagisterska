@@ -630,7 +630,7 @@ $\left[ \begin{array}{c}
          \vdots & \ldots & \ddots & \vdots \\
          a_{m1} \sigma_{11} b_{11} & a_{m1} \sigma_{11} b_{21} & \ldots & a_{m1} \sigma_{11} b_{n1} \\
          \end{array}
-      \right] $$,
+      \right], $$
 
 2.
 $\left[ \begin{array}{c}
@@ -692,8 +692,8 @@ $\left[ \begin{array}{c}
          a_{2n} \sigma_{nn} b_{1n} & a_{2n} \sigma_{nn} b_{2n} & \ldots & a_{2n} \sigma_{nn} b_{nn} \\
          \vdots & \ldots & \ddots & \vdots \\
          a_{mn} \sigma_{nn} b_{1n} & a_{mn} \sigma_{nn} b_{2n} & \ldots & a_{mn} \sigma_{nn} b_{nn} \\
-         \end{array}.
-      \right] $$
+         \end{array}
+      \right]. $$
 
 Sumując macierze powstałe w~n krokach otrzymujemy:
 \\
@@ -832,7 +832,7 @@ Skoro $\mathbb{V}^T \mathbb{V} = \mathbb{I}$, to
 $$
 \tr{\mathbb{V}^T \mathbb{V} (\Sigma - \Sigma_k)^T (\Sigma - \Sigma_k)} = \tr{(\Sigma - \Sigma_k)^T (\Sigma - \Sigma_k) }.
 $$
-Bezpośrednio możemy więc sformułować, że
+Bezpośrednio możemy więc policzyć, że
 $$
 \norma{ \mathbb{X} - \mathbb{X}_k}_F^2 = \sigma_{k+1}^2 + \sigma_{k+2}^2 + \ldots + \sigma_{r}^2.
 $$
@@ -1289,7 +1289,7 @@ Systemy rekomendujące kontekstowe są natomiast systemami rekomendującymi opar
 Rozważania zawarte w~tej sekcji stanowią formalizację treści zawartych w~książce Gorakala S. K.: \textit{Building Recommendation Engines} {\citep[Sec 3]{bre}} oraz opierają się na treści kursu autorstwa Andrew Ng: \textit{Recommender Systems} {\citep{rs}}, którego treść została również załączona do pracy na płycie CD.
 \bigskip
 
-Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu. Metoda ta opiera się na obliczaniu podobieństw oraz wykorzystuje techniki uczenia maszynowego, takie jak klasyfikacja.
+Systemy oparte na treści wyróżnia ukierunkowanie na spersonalizowany poziom użytkownika oraz treść produktu.
 
 \begin{algorytm}
 W metodzie tej celem jest stworzenie rekomendacji i~wygenerowania listy przedmiotów, które mogę być odpowiednie użytkownikowi. Opieramy się na treści rozważanych przedmiotów. Algorytm tego rodzaju rekomendacji możemy przedstawić w~następujących krokach:
@@ -1792,7 +1792,7 @@ gdzie:
 \begin{itemize}
 \item $\mathbb{U}$ jest lewą macierzą wektorów szczególnych,
 \item $\mathbb{V}$ jest prawą macierzą wektorów szczególnych,
-\item $\Sigma$ jest $(m\times n)$-wymiarową macierzą wartości osobliwych.
+\item $\Sigma$ jest $m$ na $n$-wymiarową macierzą wartości osobliwych.
 \end{itemize}
 
 Przez $\Sigma_k, \mathbb{U}_k, \mathbb{V}_k$ oznaczmy macierze uzyskane w~wyniku wyboru $k$ największych wartości osobliwych oraz ich odpowiednich wektorów. 
@@ -1870,7 +1870,7 @@ Kroki w~technice k-krotnej kroswalidacji są następujące:
 
 Rozważany problem rekomendacji może być sformułowany jako problem uczenia maszynowego, w~którym znane są oceny jakie użytkownicy wystawili pewnym przedmiotom, i~którego zadaniem jest predykcja ocen użytkowników dla przedmiotów przez nich nieocenionych. 
 
-Załóżmy, że mamy $n$ użytkowników i~$m$ przedmiotów. Otrzymujemy $n \times m$ - wymiarową macierz $\mathbb{O}$, w~której wyrazy $o_{i,j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ przedmiotowi $p_j$, $j \in \set{1, \ldots, m}$, $i \in \set{1, \ldots, n}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
+Załóżmy, że mamy $m$ użytkowników i~$n$ przedmiotów. Otrzymujemy $m$ na $n$ - wymiarową macierz $\mathbb{O}$, w~której wyrazy $o_{i,j}$ są wartościami funkcji $R(u_i,p_j)$ wystawioną przez użytkownika $u_i$ przedmiotowi $p_j$, $j \in \set{1, \ldots, n}$, $i \in \set{1, \ldots, m}$. Naszym celem jest wypełnić macierz $\mathbb{O}$ brakującymi ocenami. 
 
 
 \section{Tworzenie rekomendacji z~użyciem ALS i~filtrowania kolaboratywnego}
@@ -2066,6 +2066,15 @@ Dane testowe stanowi teraz cały zbiór \textit{oceny3} z~usunięciem trzeciej w
 
 \begin{figure}[H]
 \includegraphics[scale=0.5]{obrazy/ALS14.PNG} 
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.52]{obrazy/ALS19.PNG} 
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.52]{obrazy/ALS20.PNG} 
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.52]{obrazy/ALS21.PNG} 
 \end{figure}
 
 \textbf{5. Wybór modelu:}
