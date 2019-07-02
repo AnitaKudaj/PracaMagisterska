@@ -519,19 +519,12 @@ Wtedy:
 \end{enumerate}
 \end{tw}
 
-\begin{uwaga}(Związek między wartościami osobliwymi $\sigma_i$ i macierzą $\Sigma$.)
-Załóżmy, że $\rz{\mathbb{X}} = r$. 
-Elementy $\sigma_{1}, \ldots, \sigma_{n}$ macierzy $$\Sigma = \left[
-        \begin{array}{cccc}
-         \sigma_{1} & 0 & \ldots & 0 \\
-         0 & \sigma_{2} & \ldots & 0 \\
-         \ldots & \ldots& \ddots & \ldots \\
-         0 & 0 & \ldots & \sigma_{n} \\
-         \vdots & \vdots & \ddots & \vdots \\
-         0 & 0 & \ldots & 0 \\
-         \end{array}
-      \right] $$
-są wartościami osobliwymi macierzy $\mathbb{X}$ spełniającymi warunek $\sigma_{1}\geq \sigma_{2} \geq ... \geq \sigma_{r} > \sigma_{r+1} = ... = \sigma_{n} = 0$. Zauważmy również, że $ \forall_{k>r} \: \sigma_k = 0$.
+\begin{uwaga}
+Zauważmy, iż powyższe twierdzenie pokazuje silny związek pomiędzy wartościami osobliwymi macierzy, a jej postacią SVD. Mianowicie przekątna macierzy $\Sigma$ jest skonstruowana z kolejnych (w porządku malejącym) wartości osobliwych tejże macierzy.
+\end{uwaga}
+
+\begin{uwaga}
+Przyjmuje się następującą notację, że jeśli macierz $\mathbb{X}$ posiada dokładnie $n$ wartości osobliwych to dla dowolnego $m > n$ $\sigma_m = 0$.
 \end{uwaga}
 
 \begin{lemat}
@@ -620,7 +613,7 @@ a_{m1} \sigma_{1} b_{11} + a_{m2} \sigma_{2} b_{12} + \ldots + a_{mn} \sigma_{n}
       
 Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{i} \cdot \mathbf{v}_i^T$.
 
-Zauważmy, że bez straty ogólności możemy przyjąć $r=n$.
+Zauważmy, że bez straty ogólności możemy przyjąć $r=n$. W innym przypadku odpowiednie ostatnie składniki sumowania będą równe zeru.
 
 Mamy, że:
 
@@ -804,14 +797,14 @@ $$
 Aby udowodnić twierdzenie Eckart - Younga wprowadźmy twierdzenie Weylsa:
 
 \begin{tw}[Twierdzenie Weylsa {\citep[Tw. 4.17]{tsvdalra}}]
-Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setR)$ oraz $i,j \in \setN$ będą takie, że $i+j-1 \in \setN$. Wtedy:
+Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setR)$ oraz $i,j \in \setN$. Wtedy:
 $$
 \sigma_{i+j-1}(\mathbb{X} + \mathbb{Y}) \leq \sigma_i(\mathbb{X}) + \sigma_j(\mathbb{Y}).
 $$
 \end{tw}
 
 \begin{lemat}
-Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11 oraz $\mathbb{X}_k$ będą jak w~twierdzeniu 3.14.
+Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11 oraz $\mathbb{X}_k$ będą jak w~twierdzeniu 3.16.
 Wtedy:
 $$
 \norma{ \mathbb{X} - \mathbb{X}_k}_F^2 = \sigma_{k+1}^2 + \sigma_{k+2}^2 + \ldots + \sigma_{r}^2.
@@ -858,7 +851,7 @@ $$
 $$
 \end{proof}
 
-\begin{proof}{[Twierdzenia 3.15]} 
+\begin{proof}{[Twierdzenia 3.16]} 
 
 Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$, gdzie $m \geqslant n, \: \rz{\mathbb{X}} = r$.
 Załóżmy, że
@@ -875,7 +868,7 @@ gdzie $\mathbf{u}_i$ i~$\mathbf{v}_i$ oznaczają odpowiednio $i$-te kolumny maci
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
 $$
-Po obliczeniach analogicznych jak w~dowodzie lematu 3.17 mamy, że
+Po obliczeniach analogicznych jak w~dowodzie lematu 3.18 mamy, że
 $$
 ||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^r \sigma_i^2.
 $$
@@ -911,9 +904,12 @@ $$
 ||\mathbb{X} - \mathbb{B}_k||_F^2 \stackrel{*}{=} \sum_{i=1}^{\infty} \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{\infty} \sigma_{i+k}(\mathbb{X})^2 = \sum_{i=1}^{r-k} \sigma_{i+k}(\mathbb{X})^2 \geq \sum_{i = k+1}^r \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2,
 $$
 gdzie $*$ jest sumą pozornie nieskończoną.
-\\Ostatecznie
+\\Zatem z dowolności wyboru $\mathbb{B}_k$ oraz korzystając z faktu, że $\rz{\mathbb{X}_k} = k$ otrzymujemy
+%$$
+%||\mathbb{X} - \mathbb{B}_k||_F^2 \geqslant ||\mathbb{X}-\mathbb{X}_k||_F^2.
+%$$
 $$
-||\mathbb{X} - \mathbb{B}_k||_F^2 \geqslant ||\mathbb{X}-\mathbb{X}_k||_F^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = \min \limits_{\rz{\mathbb{B}} \leqslant k } ||\mathbb{X} - \mathbb{B}||_F^2 = \sigma_{k+1}^2 + ... + \sigma_{n}^2.
 $$
 \end{proof}
 
@@ -1053,7 +1049,7 @@ $$
 \begin{uwaga}{\citep[Sec 4.1.1]{rsh}}
 Funkcja kwadratowa jest funkcją wypukłą co pozwala na dość częste zastępowanie średniego błędu kwadratowego przez średnią kwadratową błędów (Root Mean Squared Error (RMSE)):
 $$
-RMSE = \sqrt{MSE}
+\mathit{RMSE}(\widehat{r}_i,r_i) = \sqrt{\mathit{MSE}(\widehat{r}_i,r_i)}
 $$
 Normalized RMSE (NRMSE) oraz Normalized MAE (NMAE) są znormalizownymi, przez użycie zakresu wartości $r_{max} - r_{min}$, wersjami błędów RMSE i~MAE.
 \end{uwaga}
@@ -1120,9 +1116,9 @@ Oznaczmy przez $e_{ij}$ koszt błędnego zaklasyfikowania do klasy $E_j$ rekordu
 Koszt poprawnej klasyfikacji oznaczmy przez $e_{ii}$ oraz załóżmy, że $\forall_{i}$ $ e_{ii} = 0$.
 Dodatkowo niech $f_{t}$ oznacza liczbę wszystkich przykładów testowych, $f_{p}$ liczbę poprawnie zaklasyfikowanych rekordów testowych oraz $f_{p} = \sum_{i=1}^m f_{ii}$, $f_{b}$ niech natomiast oznacza liczbę błędnych klasyfikacji i~$f_{b} = f_{t} - f_{p}$.
 
-Kosztem błędnej klasyfikacji $E(f_{ij})$ nazywamy sumę:
+Kosztem błędnej klasyfikacji $E([f_{ij}])$ nazywamy sumę:
 $$
-E(f_{ij}) = \sum_{i=1}^m \sum_{j=1}^m f_{ij} \cdot e_{ij}.
+E([f_{ij}]) = \sum_{i=1}^m \sum_{j=1}^m f_{ij} \cdot e_{ij}.
 $$
 \end{df}
 
