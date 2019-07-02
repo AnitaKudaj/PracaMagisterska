@@ -169,9 +169,11 @@ W niniejszej pracy zostały użyte następujące oznaczenia:
 \section{Elementy algebry liniowej}
 
 W definicjach poniżej korzystamy z~pojęcia ciała, którego wyjaśnienie odnajdziemy w~książce Tadeusza Poredy i~Jacka Jędrzejewskiego \textit{Algebra liniowa z~elementami geometrii analitycznej} {\citep[Sec 4.4]{alzega}}.
+\bigskip
 
+W tej sekcji przez $n$, $m$ i $l$ oznaczać będziemy liczby ze zbioru $\setN$. 
 \begin{df}[Macierz {\citep[Sec 8.1 Def. 8.1]{alzega}}]
-Niech $n,m \in \setN$. Macierzą o~$m$ wierszach, $n$ kolumnach (o wymiarach $m$ na $n$) i~wyrazach w~ciele $\setK$ nazywamy funkcję 
+Macierzą o~$m$ wierszach, $n$ kolumnach i~wyrazach w~ciele $\setK$ nazywamy funkcję 
 $$
 \mathbb{A}: \set{1,2, \ldots ,m}\times \set{1,2, \ldots ,n} \to \setK.
 $$
@@ -202,9 +204,9 @@ Funkcję:
 $$
 \mathrm{det} : \mathcal{M}(\setK) \to \setK
 $$ 
-określamy następująco:
+określoną następująco:
 \begin{itemize}
-\item jeżeli $\mathbb{A}=[a_{11}]$, to $\wyznacznik{\mathbb{A}}=a_{11}$,
+\item jeżeli $\mathbb{A}=[a_{11}]\in \mathbb{M}_{1 \times 1}(\setK)$, to $\wyznacznik{\mathbb{A}}=a_{11}$,
 \item jeżeli $\mathbb{A} = \left[
         \begin{array}{cccc}
          a_{11} & a_{12} & \cdots & a_{1n} \\
@@ -212,14 +214,14 @@ określamy następująco:
          \vdots & \vdots & \ddots & \vdots \\
          a_{n1} & a_{n2} & \cdots & a_{nn} \\
          \end{array}
-      \right]$, gdy $n>1$, to
+      \right] \in \mathbb{M}_{n \times n}(\setK)$, gdy $n>1$, to
 $$
 \wyznacznik{\mathbb{A}} = \sum_{i=1}^n (-1)^{1+i} \cdot a_{i1} \cdot \wyznacznik{\mathbb{A}_{i1}},
 $$
 gdzie 
-$\mathbb{A}_{ij}$ jest macierzą powstałą z~macierzy $\mathbb{A}$ przez skreślenie $i$-tego wiersza i~$j$-tej kolumny.
+$\mathbb{A}_{ij}$ jest macierzą powstałą z~macierzy $\mathbb{A}$ przez "skreślenie $i$-tego wiersza i~$j$-tej kolumny"
 \end{itemize}
-Funkcję $\mathrm{det}$ nazywamy wyznacznikiem, natomiast wartość tej funkcji dla macierzy $\mathbb{A}$ wyznacznikiem macierzy $\mathbb{A}$.
+nazywamy wyznacznikiem macierzy, natomiast wartość tej funkcji dla macierzy $\mathbb{A}$ wyznacznikiem macierzy $\mathbb{A}$.
 \end{df}
 
 
@@ -227,13 +229,13 @@ Funkcję $\mathrm{det}$ nazywamy wyznacznikiem, natomiast wartość tej funkcji 
 Niech $\mathbb{A} = [a_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$, będzie macierzą ze zbioru $\mathbb{M}_{m \times n}(\setK)$.
 Macierz $\mathbb{B} = [b_{ij}]_{j = 1, \ldots, m}^{i = 1, \ldots , n}$ nazywamy macierzą transponowaną macierzy $\mathbb{A}$, jeśli 
 $$
-b_{ji} = a_{ij}
+b_{ji} = a_{ij}.
 $$ 
-dla każdego $i \in \set{1, \ldots, n}$ oraz $j \in \set{1, \ldots ,m}$. Piszemy wtedy $\mathbb{B} = \mathbb{A}^T$.
+Piszemy wtedy $\mathbb{B} = \mathbb{A}^T$.
 \end{df}
 
 \begin{tw}[Własności transpozycji macierzy {\citep[Sec 5.1 Tw. 5.1]{ealIII}}]
-Niech $\mathbb{A} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{B} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{C} \in \mathbb{M}_{m \times n} (\setK)$ oraz $\lambda \in \setK$.
+Niech $\mathbb{A} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{B} \in \mathbb{M}_{n \times m} (\setK)$, $\mathbb{C} \in \mathbb{M}_{m \times l} (\setK)$ oraz $\lambda \in \setK$.
 Zachodzą następujące równości:
 \begin{itemize}
 \item $(\mathbb{A}^T)^T = \mathbb{A}$,
@@ -296,7 +298,8 @@ Rzędem macierzy $\mathbb{A}$ nazywamy wspólną wartość rzędu kolumnowego i~
 
 
 \begin{df}[Wartość własna macierzy kwadratowej {\citep[Sec 13.1]{ealIII}}]
-Liczbę $\lambda \in \setK$ nazywamy wartością własną macierzy kwadratowej $\mathbb{A}$, jeżeli istnieje niezerowy wektor $\mathbf{x}$ taki, że
+Liczbę 
+\\$\lambda\in \setK$ nazywamy wartością własną macierzy kwadratowej $\mathbb{A} \in \mathbb{M}_{n \times n} (\setK)$, jeżeli istnieje niezerowy wektor $\mathbf{x} \in \setR^n$ taki, że
 $$
 \mathbb{A}\mathbf{x}=\lambda\mathbf{x}.
 $$
@@ -353,14 +356,15 @@ $$
 
 \item Kowariancją zmiennych losowych $\mathrm{X},\mathrm{Y}$ nazywamy liczbę:
 $$
-\Covariance{\mathrm{X}}{\mathrm{Y}} = \e{(\mathrm{X}-\e{\mathrm{X}})(\mathrm{Y}-\e{\mathrm{Y}})}.
+\Covariance{\mathrm{X}}{\mathrm{Y}} = \e{(\mathrm{X}-\e{\mathrm{X}})(\mathrm{Y}-\e{\mathrm{Y}})},
 $$
+jeżeli odpowiednie wartości oczekiwane istnieją.
 
 \item Wariancją zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
 \variance{\mathrm{X}}=\e{(\mathrm{X}-\e{\mathrm{X}})^2},
 $$
-jeżeli wyznaczona wartość oczekiwana istnieje.
+jeżeli $\e{(\mathrm{X}-\e{\mathrm{X}})^2} < \infty$.
 
 \item Odchyleniem standardowym zmiennej losowej $\mathrm{X}$ nazywamy liczbę:
 $$
@@ -369,9 +373,9 @@ $$
 
 \item Współczynnikiem korelacji nazywamy charakterystykę ilościową stopnia zależności dwóch zmiennych losowych $\mathrm{X}$ i~$\mathrm{Y}$ zdefiniowaną następująco:
 $$
-\ro{\mathrm{X}}{\mathrm{Y}} = \frac{\Covariance{\mathrm{X}}{\mathrm{Y}}}{\standard{\mathrm{X}} \standard{\mathrm{Y}}}.
+\ro{\mathrm{X}}{\mathrm{Y}} = \frac{\Covariance{\mathrm{X}}{\mathrm{Y}}}{\sqrt{\variance{\mathrm{X}}\cdot \variance{\mathrm{Y}}}},
 $$
-
+jeżeli odpowiednie wariancje i kowariancja istnieją oraz $\variance{\mathrm{X}} \cdot \variance{\mathrm{Y}}>0$.
 \end{itemize}
 \end{df}
 
@@ -411,8 +415,9 @@ $$
 $$ 
 gdzie $\mathrm{sim}: \setR^n \times \setR^n \to \setR$ wyznacza współczynnik podobieństwa wektorów $\mathbf{x}$ i~$\mathbf{y}$ według formuły:
 $$
-\similarity{\mathbf{x}}{\mathbf{y}} = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}}.
+\similarity{\mathbf{x}}{\mathbf{y}} = \frac{\sum_{k=1}^n x_k y_k}{\sqrt{\sum_{k=1}^n x_k}\sqrt{\sum_{k=1}^n y_k}},
 $$
+jeżeli $(\sum_{k=1}^n x_k \cdot \sum_{k=1}^n y_k) > 0$.
 \end{df}
 Innym podejściem, które pozwala na modelowanie podobieństwa między zmiennymi losowymi jest korelacja Pearsona, którą definiujemy następująco:
 
@@ -425,8 +430,9 @@ $$
 $$
 Wówczas współczynnikiem korelacji Pearsona nazywamy:
 $$
-\rop{\mathrm{X}}{\mathrm{Y}} = \frac{\sum_{k=1}^n(x_k - \overline{x})(y_k - \overline{y})}{\sqrt{\sum_{k=1}^n(x_k - \overline{x})^2} \sqrt{\sum_{k=1}^n(y_k - \overline{y})^2 }}.
+\rop{\mathrm{X}}{\mathrm{Y}} = \frac{\sum_{k=1}^n(x_k - \overline{x})(y_k - \overline{y})}{\sqrt{\sum_{k=1}^n(x_k - \overline{x})^2} \sqrt{\sum_{k=1}^n(y_k - \overline{y})^2 }},
 $$
+jeżeli $(\sum_{k=1}^n(x_k - \overline{x})^2 \cdot \sum_{k=1}^n(y_k - \overline{y})^2)>0$.
 \end{df}
 
 Przy innych rodzajach danych do opisu podobieństwa można użyć Indeku Jaccarda (współczynnik podobieństwa Jaccarda).  Współczynnik ten mierzy podobieństwo między dwoma zbiorami, a~definiujemy go niestepujący:
@@ -450,7 +456,8 @@ $$
 gdzie:
 \begin{itemize}
 \item $\mathbb{U}^T \mathbb{U} =\mathbb{I}, \:  \mathbb{V}^T \mathbb{V} = \mathbb{I}$, $\mathbb{U}$ jest wymiaru $m$ na $m$ oraz $\mathbb{V}$ wymiaru $n$ na $n$,
-\item $\Sigma$ jest macierzą wymiaru $m$ na $n$, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
+\item $\Sigma = [\sigma_{ij}]_{j = 1, \ldots, n}^{i = 1, \ldots , m}$
+, gdzie $\sigma_{ij} = 0$, gdy $i \neq j$.	
 \end{itemize}
 \end{df}
 
@@ -512,6 +519,21 @@ Wtedy:
 \end{enumerate}
 \end{tw}
 
+\begin{uwaga}(Związek między wartościami osobliwymi $\sigma_i$ i macierzą $\Sigma$.)
+Załóżmy, że $\rz{\mathbb{X}} = r$. 
+Elementy $\sigma_{1}, \ldots, \sigma_{n}$ macierzy $$\Sigma = \left[
+        \begin{array}{cccc}
+         \sigma_{1} & 0 & \ldots & 0 \\
+         0 & \sigma_{2} & \ldots & 0 \\
+         \ldots & \ldots& \ddots & \ldots \\
+         0 & 0 & \ldots & \sigma_{n} \\
+         \vdots & \vdots & \ddots & \vdots \\
+         0 & 0 & \ldots & 0 \\
+         \end{array}
+      \right] $$
+są wartościami osobliwymi macierzy $\mathbb{X}$ spełniającymi warunek $\sigma_{1}\geq \sigma_{2} \geq ... \geq \sigma_{r} > \sigma_{r+1} = ... = \sigma_{n} = 0$. Zauważmy również, że $ \forall_{k>r} \: \sigma_k = 0$.
+\end{uwaga}
+
 \begin{lemat}
 Niech $\mathbb{X}$ będzie jak w~twierdzeniu 3.11.
 
@@ -521,7 +543,7 @@ $$
 $$
 \end{lemat}
 \begin{proof}(opracowanie własne)
-Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$, $m \geq n$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, gdzie macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
+Niech $\mathbb{X} \in \mathbb{M}_{m \times n}$, $m \geq n$ oraz $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, niech macierze $\mathbb{U}, \Sigma, \mathbb{V}$ mają postać:
 $$
 \mathbb{U} = \left[
         \begin{array}{cccc}
@@ -539,9 +561,9 @@ $$
          \end{array}
       \right], \: \Sigma = \left[
         \begin{array}{cccc}
-         \sigma_{11} & 0 & \ldots & 0 \\
-         0 & \sigma_{22} & \ldots & 0 \\
-         \vdots & \vdots & \ddots & \sigma_{nn} \\
+         \sigma_{1} & 0 & \ldots & 0 \\
+         0 & \sigma_{2} & \ldots & 0 \\
+         \vdots & \vdots & \ddots & \sigma_{n} \\
          0 & 0 & \ldots & 0 \\
          \end{array}
       \right].$$
@@ -556,27 +578,27 @@ $$\mathbb{U} \Sigma = \left[
          \end{array}
       \right] \cdot \left[
         \begin{array}{cccc}
-         \sigma_{11} & 0 & \ldots & 0 \\
-         0 & \sigma_{22} & \ldots & 0 \\
-         \vdots & \vdots & \ddots & \sigma_{nn} \\
+         \sigma_{1} & 0 & \ldots & 0 \\
+         0 & \sigma_{2} & \ldots & 0 \\
+         \vdots & \vdots & \ddots & \sigma_{n} \\
          0 & 0 & \ldots & 0 \\
          \end{array}
       \right] = \left[
         \begin{array}{cccc}
-         a_{11} \sigma_{11} & a_{12} \sigma_{22} & \ldots & a_{1n} \sigma_{nn} \\
-         a_{21} \sigma_{11} & a_{22} \sigma_{22} & \ldots & a_{2n} \sigma_{nn}\\
+         a_{11} \sigma_{1} & a_{12} \sigma_{2} & \ldots & a_{1n} \sigma_{n} \\
+         a_{21} \sigma_{1} & a_{22} \sigma_{2} & \ldots & a_{2n} \sigma_{n}\\
          \vdots & \vdots & \ddots & \vdots \\
-         a_{m1} \sigma_{11} & a_{m2} \sigma_{22} & \ldots & a_{mn} \sigma_{nn} \\
+         a_{m1} \sigma_{1} & a_{m2} \sigma_{2} & \ldots & a_{mn} \sigma_{n} \\
          \end{array}
       \right].$$
       
 Zatem :
 $$\mathbb{U} \Sigma \mathbb{V}^T = \left[
         \begin{array}{cccc}
-         a_{11} \sigma_{11} & a_{12} \sigma_{22} & \ldots & a_{1n} \sigma_{nn} \\
-         a_{21} \sigma_{11} & a_{22} \sigma_{22} & \ldots & a_{2n} \sigma_{nn}\\
+         a_{11} \sigma_{1} & a_{12} \sigma_{2} & \ldots & a_{1n} \sigma_{n} \\
+         a_{21} \sigma_{1} & a_{22} \sigma_{2} & \ldots & a_{2n} \sigma_{n}\\
          \vdots & \vdots & \ddots & \vdots \\
-         a_{m1} \sigma_{11} & a_{m2} \sigma_{22} & \ldots & a_{mn} \sigma_{nn} \\
+         a_{m1} \sigma_{1} & a_{m2} \sigma_{2} & \ldots & a_{mn} \sigma_{n} \\
          \end{array}
       \right] \cdot \left[
         \begin{array}{cccc}
@@ -589,16 +611,16 @@ $$\mathbb{U} \Sigma \mathbb{V}^T = \left[
       $$
       $$\left[
         \begin{array}{ccc}
-a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12} + \ldots + a_{1n} \sigma_{nn} b_{1n} & \ldots &  a_{11} \sigma_{11} b_{n1} + a_{12} \sigma_{22} b_{n2} + \ldots + a_{1n} \sigma_{nn} b_{nn} \\
-a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12} + \ldots + a_{2n} \sigma_{nn} b_{1n} & \ldots & a_{21} \sigma_{11} b_{n1} + a_{22} \sigma_{22} b_{n2} + \ldots + a_{2n} \sigma_{nn} b_{nn} \\
+a_{11} \sigma_{1} b_{11} + a_{12} \sigma_{2} b_{12} + \ldots + a_{1n} \sigma_{n} b_{1n} & \ldots &  a_{11} \sigma_{1} b_{n1} + a_{12} \sigma_{2} b_{n2} + \ldots + a_{1n} \sigma_{n} b_{nn} \\
+a_{21} \sigma_{1} b_{11} + a_{22} \sigma_{2} b_{12} + \ldots + a_{2n} \sigma_{n} b_{1n} & \ldots & a_{21} \sigma_{1} b_{n1} + a_{22} \sigma_{2} b_{n2} + \ldots + a_{2n} \sigma_{n} b_{nn} \\
          \vdots & \ddots & \vdots \\
-a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{nn} b_{1n} & \ldots & a_{m1} \sigma_{11} b_{n1} + a_{m2} \sigma_{22} b_{n2} + \ldots + a_{mn} \sigma_{nn} b_{nn} \\
+a_{m1} \sigma_{1} b_{11} + a_{m2} \sigma_{2} b_{12} + \ldots + a_{mn} \sigma_{n} b_{1n} & \ldots & a_{m1} \sigma_{1} b_{n1} + a_{m2} \sigma_{2} b_{n2} + \ldots + a_{mn} \sigma_{n} b_{nn} \\
          \end{array}
       \right].$$
       
-Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{ii} \cdot \mathbf{v}_i^T$.
+Z drugiej strony pokażemy że $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{i} \cdot \mathbf{v}_i^T$.
 
-Niech $r=n$.
+Zauważmy, że bez straty ogólności możemy przyjąć $r=n$.
 
 Mamy, że:
 
@@ -609,7 +631,7 @@ $\left[ \begin{array}{c}
          \vdots \\
          a_{m1} \\
          \end{array}
-      \right] \: \sigma_{11} \: \left[ \begin{array}{c}
+      \right] \: \sigma_{1} \: \left[ \begin{array}{c}
          b_{11} \\
          b_{21} \\
          \vdots \\
@@ -617,18 +639,18 @@ $\left[ \begin{array}{c}
          \end{array}
       \right]^T = \left[
         \begin{array}{c}
-         a_{11} \sigma_{11} \\
-         a_{21} \sigma_{11} \\
+         a_{11} \sigma_{1} \\
+         a_{21} \sigma_{1} \\
          \vdots \\
-         a_{m1} \sigma_{11} \\
+         a_{m1} \sigma_{1} \\
          \end{array}
       \right] [b_{11} \: b_{21} \ldots b_{n1}]$
       $$ =  \left[
         \begin{array}{cccc}
-         a_{11} \sigma_{11} b_{11}  & a_{11} \sigma_{11} b_{21} & \ldots & a_{11} \sigma_{11} b_{n1}  \\
-         a_{21} \sigma_{11} b_{11} & a_{21} \sigma_{11} b_{21} & \ldots & a_{21} \sigma_{11} b_{n1} \\
+         a_{11} \sigma_{1} b_{11}  & a_{11} \sigma_{1} b_{21} & \ldots & a_{11} \sigma_{1} b_{n1}  \\
+         a_{21} \sigma_{1} b_{11} & a_{21} \sigma_{1} b_{21} & \ldots & a_{21} \sigma_{1} b_{n1} \\
          \vdots & \ldots & \ddots & \vdots \\
-         a_{m1} \sigma_{11} b_{11} & a_{m1} \sigma_{11} b_{21} & \ldots & a_{m1} \sigma_{11} b_{n1} \\
+         a_{m1} \sigma_{1} b_{11} & a_{m1} \sigma_{1} b_{21} & \ldots & a_{m1} \sigma_{1} b_{n1} \\
          \end{array}
       \right], $$
 
@@ -639,7 +661,7 @@ $\left[ \begin{array}{c}
          \vdots \\
          a_{m2} \\
          \end{array}
-      \right] \: \sigma_{22} \: \left[ \begin{array}{c}
+      \right] \: \sigma_{2} \: \left[ \begin{array}{c}
          b_{12} \\
          b_{22} \\
          \vdots \\
@@ -647,18 +669,18 @@ $\left[ \begin{array}{c}
          \end{array}
       \right]^T = \left[
         \begin{array}{c}
-         a_{12} \sigma_{22} \\
-         a_{22} \sigma_{22} \\
+         a_{12} \sigma_{2} \\
+         a_{22} \sigma_{2} \\
          \vdots \\
-         a_{m2} \sigma_{22} \\
+         a_{m2} \sigma_{2} \\
          \end{array}
       \right] [b_{12} \: b_{22} \ldots b_{n2}]$
       $$ =  \left[
         \begin{array}{cccc}
-         a_{12} \sigma_{22} b_{12}  & a_{12} \sigma_{22} b_{22} & \ldots & a_{12} \sigma_{22} b_{n2}  \\
-         a_{22} \sigma_{22} b_{12} & a_{22} \sigma_{22} b_{22} & \ldots & a_{22} \sigma_{22} b_{n2} \\
+         a_{12} \sigma_{2} b_{12}  & a_{12} \sigma_{2} b_{22} & \ldots & a_{12} \sigma_{2} b_{n2}  \\
+         a_{22} \sigma_{2} b_{12} & a_{22} \sigma_{2} b_{22} & \ldots & a_{22} \sigma_{2} b_{n2} \\
          \vdots & \ldots & \ddots & \vdots \\
-         a_{m2} \sigma_{22} b_{12} & a_{m2} \sigma_{22} b_{22} & \ldots & a_{m2} \sigma_{22} b_{n2} \\
+         a_{m2} \sigma_{2} b_{12} & a_{m2} \sigma_{2} b_{22} & \ldots & a_{m2} \sigma_{2} b_{n2} \\
          \end{array}
       \right], $$
 $
@@ -672,7 +694,7 @@ $\left[ \begin{array}{c}
          \vdots \\
          a_{mn} \\
          \end{array}
-      \right] \: \sigma_{nn} \: \left[ \begin{array}{c}
+      \right] \: \sigma_{n} \: \left[ \begin{array}{c}
          b_{1n} \\
          b_{2n} \\
          \vdots \\
@@ -680,18 +702,18 @@ $\left[ \begin{array}{c}
          \end{array}
       \right]^T= \left[
         \begin{array}{c}
-         a_{1n} \sigma_{nn} \\
-         a_{2n} \sigma_{nn} \\
+         a_{1n} \sigma_{n} \\
+         a_{2n} \sigma_{n} \\
          \vdots \\
-         a_{mn} \sigma_{nn} \\
+         a_{mn} \sigma_{n} \\
          \end{array}
       \right] [b_{1n} \: b_{2n} \ldots b_{nn}] $
       $$=  \left[
         \begin{array}{cccc}
-         a_{1n} \sigma_{nn} b_{1n}  & a_{1n} \sigma_{nn} b_{2n} & \ldots & a_{1n} \sigma_{nn} b_{nn}  \\
-         a_{2n} \sigma_{nn} b_{1n} & a_{2n} \sigma_{nn} b_{2n} & \ldots & a_{2n} \sigma_{nn} b_{nn} \\
+         a_{1n} \sigma_{n} b_{1n}  & a_{1n} \sigma_{n} b_{2n} & \ldots & a_{1n} \sigma_{n} b_{nn}  \\
+         a_{2n} \sigma_{n} b_{1n} & a_{2n} \sigma_{n} b_{2n} & \ldots & a_{2n} \sigma_{n} b_{nn} \\
          \vdots & \ldots & \ddots & \vdots \\
-         a_{mn} \sigma_{nn} b_{1n} & a_{mn} \sigma_{nn} b_{2n} & \ldots & a_{mn} \sigma_{nn} b_{nn} \\
+         a_{mn} \sigma_{n} b_{1n} & a_{mn} \sigma_{n} b_{2n} & \ldots & a_{mn} \sigma_{n} b_{nn} \\
          \end{array}
       \right]. $$
 
@@ -699,15 +721,15 @@ Sumując macierze powstałe w~n krokach otrzymujemy:
 \\
 \\$\left[
         \begin{array}{ccc}
-a_{11} \sigma_{11} b_{11} + a_{12} \sigma_{22} b_{12} + \ldots + a_{1n} \sigma_{nn} b_{1n} & \ldots &  a_{11} \sigma_{11} b_{n1} + a_{12} \sigma_{22} b_{n2} + \ldots + a_{1n} \sigma_{nn} b_{nn} \\
-a_{21} \sigma_{11} b_{11} + a_{22} \sigma_{22} b_{12} + \ldots + a_{2n} \sigma_{nn} b_{1n} & \ldots & a_{21} \sigma_{11} b_{n1} + a_{22} \sigma_{22} b_{n2} + \ldots + a_{2n} \sigma_{nn} b_{nn} \\
+a_{11} \sigma_{1} b_{11} + a_{12} \sigma_{2} b_{12} + \ldots + a_{1n} \sigma_{n} b_{1n} & \ldots &  a_{11} \sigma_{1} b_{n1} + a_{12} \sigma_{2} b_{n2} + \ldots + a_{1n} \sigma_{n} b_{nn} \\
+a_{21} \sigma_{1} b_{11} + a_{22} \sigma_{2} b_{12} + \ldots + a_{2n} \sigma_{n} b_{1n} & \ldots & a_{21} \sigma_{1} b_{n1} + a_{22} \sigma_{2} b_{n2} + \ldots + a_{2n} \sigma_{n} b_{nn} \\
          \vdots & \ddots & \vdots \\
-a_{m1} \sigma_{11} b_{11} + a_{m2} \sigma_{22} b_{12} + \ldots + a_{mn} \sigma_{nn} b_{1n} & \ldots & a_{m1} \sigma_{11} b_{n1} + a_{m2} \sigma_{22} b_{n2} + \ldots + a_{mn} \sigma_{nn} b_{nn} \\
+a_{m1} \sigma_{1} b_{11} + a_{m2} \sigma_{2} b_{12} + \ldots + a_{mn} \sigma_{n} b_{1n} & \ldots & a_{m1} \sigma_{1} b_{n1} + a_{m2} \sigma_{2} b_{n2} + \ldots + a_{mn} \sigma_{n} b_{nn} \\
          \end{array}
       \right].$
 
 \bigskip
-Zatem, z~dowolności $\mathbb{U}$, $\Sigma$ i~$\mathbb{V}$, jeżeli $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, to $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{ii} \cdot \mathbf{v}_i^T$.
+Zatem, z~dowolności $\mathbb{U}$, $\Sigma$ i~$\mathbb{V}$, jeżeli $\mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T$, to $\mathbb{X} = \sum_{i=1}^r \mathbf{u}_i \cdot\sigma_{i} \cdot \mathbf{v}_i^T$.
 \end{proof}
 \bigskip
 
@@ -781,13 +803,11 @@ $$
 
 Aby udowodnić twierdzenie Eckart - Younga wprowadźmy twierdzenie Weylsa:
 
-\begin{tw}[Twierdzenie Weylsa {\citep{wayls}}]
-Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setK)$.
-Dodatkowo niech odpowiednio $\sigma_1(\mathbb{X}) \geq \sigma_2(\mathbb{X})\geq \ldots \geq \sigma_r(\mathbb{X})\geq 0$, $\sigma_1(\mathbb{Y}) \geq \sigma_2(\mathbb{Y})\geq \ldots \geq \sigma_r(\mathbb{Y})\geq 0$ i~$\sigma_1(\mathbb{Z}) \geq \sigma_2(\mathbb{Z})\geq \ldots \geq \sigma_r(\mathbb{Z})\geq 0$ będą kolejnymi wartościami osobliwymi macierzy $\mathbb{X}, \mathbb{Y}, \: \mathbb{Z}=\mathbb{X} + \mathbb{Y}$. Wtedy:
+\begin{tw}[Twierdzenie Weylsa {\citep[Tw. 4.17]{tsvdalra}}]
+Niech $\mathbb{X}, \mathbb{Y} \in \mathbb{M}_{m \times n}(\setR)$ oraz $i,j \in \setN$ będą takie, że $i+j-1 \in \setN$. Wtedy:
 $$
-\sigma_{i+j-1}(\mathbb{Z}) \leq \sigma_i(\mathbb{X}) + \sigma_j(\mathbb{Y}),
+\sigma_{i+j-1}(\mathbb{X} + \mathbb{Y}) \leq \sigma_i(\mathbb{X}) + \sigma_j(\mathbb{Y}).
 $$
-gdzie $1 \leq i,j \leq r$, $i+j\leq r+1$.
 \end{tw}
 
 \begin{lemat}
@@ -838,25 +858,24 @@ $$
 $$
 \end{proof}
 
-\begin{proof}{[Twierdzenia 3.14]} 
+\begin{proof}{[Twierdzenia 3.15]} 
 
-Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$ będzie macierzą o~wartościach rzeczywistych, gdzie $m \geqslant n, \: \rz{\mathbb{X}} = r$.
+Niech $\mathbb{X} \in \mathbb{M}_{m\times n}(\setR)$, gdzie $m \geqslant n, \: \rz{\mathbb{X}} = r$.
 Załóżmy, że
 $$
 \mathbb{X}=\mathbb{U} \Sigma \mathbb{V}^T
 $$
 jest rozkładem według wartości osobliwych macierzy $\mathbb{X}$.
-Chcemy pokazać, że najlepszym przybliżeniem macierzy $\mathbb{X}$ w~normie Frobeniusa (oznaczamy $||\cdot||_F$) jest
+Chcemy pokazać, że najlepszym przybliżeniem, przy ustalonym rzędzie $k \in \set{1, \ldots, r-1}$, macierzy $\mathbb{X}$ w~normie Frobeniusa jest
 $$
 \mathbb{X}_k = \sum_{i=1}^k \mathbf{u}_i\cdot \sigma_i \cdot \mathbf{v}_i^T,
 $$
 gdzie $\mathbf{u}_i$ i~$\mathbf{v}_i$ oznaczają odpowiednio $i$-te kolumny macierzy $\mathbb{U}$ i~$\mathbb{V}$.
-
-Zauważmy, że z~własności 2. twierdzenia 3.11 mamy
+\\Zauważmy, że z~własności 2. twierdzenia 3.11 mamy
 $$
 ||\mathbb{X} - \mathbb{X}_k||_F^2 = ||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2.
 $$
-Po obliczeniach wykonanych w~lemacie 3.16 mamy, że
+Po obliczeniach analogicznych jak w~dowodzie lematu 3.17 mamy, że
 $$
 ||\sum_{i=k+1}^r \mathbf{u}_i \cdot \sigma_i \cdot \mathbf{v}_i^T||_F^2 =\sum_{i=k+1}^r \sigma_i^2.
 $$
@@ -867,8 +886,7 @@ $$
 $$
 Niech $\mathbb{X}^{`} = \mathbb{X}-\mathbb{B}_k, \mathbb{X}^{``} = \mathbb{B}_k$.
 Wtedy $\mathbb{X} = \mathbb{X}^{`} + \mathbb{X}^{``}$. 
-
-Korzystając z~Twierdzenia Weylsa otrzymujemy
+\\Korzystając z~Twierdzenia Weylsa, dla dowolnych $i,j \in \setN$, otrzymujemy
 $$
 \sigma_{i+j-1}(\mathbb{X})\leq \sigma_{i}(\mathbb{X}^{`}) + \sigma_j(\mathbb{X}^{``}).
 $$ 
@@ -876,9 +894,9 @@ Stąd
 $$
 \sigma_{i+j-1}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_j(\mathbb{B}_k).
 $$ 
-Niech $i \in \set{1, \ldots, r-k}$ oraz $j= k+1$. Wtedy
+Z powyższego, dla $j= k+1$, mamy
 $$
-\forall_{i \in \set{1, \ldots, r-k}} \: \sigma_{i+k}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_{k+1}(\mathbb{B}_k).
+\sigma_{i+k}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_{k+1}(\mathbb{B}_k).
 $$ 
 Zauważmy, że
 $$
@@ -886,13 +904,14 @@ $$
 $$
 wtedy
 $$
-\forall_{i \in \set{1, \ldots, r-k}} \: \sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{i+k}(\mathbb{X}).
+\forall_{i,j \in \setN} \: \sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{i+k}(\mathbb{X}).
 $$
 Stąd
 $$
-||\mathbb{X} - \mathbb{B}_k||_F^2 = \sum_{i=1}^r \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{r-k} \sigma_{i+k}(\mathbb{X})^2 \geq \sum_{i = k+1}^r \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2 .
+||\mathbb{X} - \mathbb{B}_k||_F^2 \stackrel{*}{=} \sum_{i=1}^{\infty} \sigma_i(\mathbb{X}-\mathbb{B}_k)^2 \geq \sum_{i=1}^{\infty} \sigma_{i+k}(\mathbb{X})^2 = \sum_{i=1}^{r-k} \sigma_{i+k}(\mathbb{X})^2 \geq \sum_{i = k+1}^r \sigma_i(\mathbb{X})^2 = ||\mathbb{X}-\mathbb{X}_k||_F^2,
 $$
-Ostatecznie
+gdzie $*$ jest sumą pozornie nieskończoną.
+\\Ostatecznie
 $$
 ||\mathbb{X} - \mathbb{B}_k||_F^2 \geqslant ||\mathbb{X}-\mathbb{X}_k||_F^2.
 $$
@@ -924,17 +943,17 @@ Algorytm $k$-najbliższych sąsiadów ($k$-NN) jest powszechnie używanym algory
 Przyporządkowanie nowych elementów zostaje przeprowadzone na podstawie porównania obserwacji z~$k$ najbardziej podobnymi jej obiektami ze zbioru treningowego. Podstawowa założenie algorytmu mówi, że jeżeli nowy rekord znajduje się w~pewnym otoczeniu, to na podstawie $k$ - najbliższych mu obserwacji zostanie przyporządkowana do niego klasa, której pojawienie się w~rozważanym zbiorze jest najliczniejsze.
 
 Niech $q$ będzie punktem dla którego chcemy odnaleźć jego klasę $l$. 
-\\$\mathit{X}=\set{\set{x_1,l_1\},\ldots,\{x_n,l_n}}$ niech będzie zbiorem treningowym, gdzie $x_j$ jest $j$-tym elementem zbioru obserwacji, natomiast $l_j$ etykietką klasy do której obserwacja należy, $j\in\set{1,\ldots,n}$.
+\\$\mathit{X}=\set{(x_1,l_1),\ldots,(x_n,l_n)}$ niech będzie zbiorem treningowym, gdzie $x_j$ jest $j$-tą obserwacją, natomiast $l_j$ etykietką klasy do której obserwacja przynależy.
 
 Przeprowadzając algorytm $k$-NN zaczynamy od wyboru podzbioru
 $$
-\mathit{Y}=\set{\set{y_1,l_1},\ldots,\set{y_k,l_k}}, 
+\mathit{Y}=\set{(y_1,l_1),\ldots,(y_k,l_k)}, 
 $$
-$k\in\set{1,\ldots,n}$ takiego, że $\mathit{Y} \in \mathit{X}$ oraz 
+$k\in\set{1,\ldots,n}$ takiego, że $\mathit{Y} \subset \mathit{X}$ oraz 
 $$
-\sum_1^k \distance{q}{y_k}
+\sum_1^k \distance{q}{y_k} \to \min.
 $$ 
-jest minimalna. $\mathit{Y}$ zawiera więc $k$ punktów z~$\mathit{X}$, które leżą najbliżej rozważanego punktu $q$. Następnie do punktu $q$ zostaje przyporządkowana klasa taka, że $$
+$\mathit{Y}$ zawiera więc $k$ punktów z~$\mathit{X}$, które leżą najbliżej rozważanego punktu $q$. Następnie do punktu $q$ zostaje przyporządkowana klasa taka, że $$
 l=\f{\set{l_1,\ldots,l_k}}.
 $$
 \begin{center}
@@ -960,7 +979,7 @@ Głównym celem algorytmu jest podział pewnego zbioru $\mathit{X}$:
 $$
 \mathit{X} = \set{\mathbf{x}_i = (\mathbf{x}_{i1},\ldots,\mathbf{x}_{id}) : i~\in \set{1,\ldots,N}},
 $$
-gdzie $\mathbf{x}_i$ jest $d$ - wymiarowym wektorem cech opisującym obiekt na podzbiory.
+gdzie $\mathbf{x}_i$ jest $d$ - wymiarowym wektorem cech opisującym obiekt, na podzbiory.
 
 W wyniku grupowania $n$ - elementowego zbioru $\mathit{X}$ na $k$ podgrup otrzymujemy macierz podziału $\mathbb{A}$ o~wymiarach $k\times n$ . Każdy z~elementów tej macierzy $a_{ik}$ oznacza stopień w~jakim wektor $\mathbf{x}_k$ przynależy do grupy. Na wstępie algorytmu ustalamy wartość parametru $k$ jako liczbę grup, które chcemy wyodrębnione. Wybieramy $k$ reprezentantów, które stanowią prototypy grup.
 \begin{center}
@@ -1009,26 +1028,26 @@ Najczęściej używanymi miarami dokładności modelu są:
 \item średni błąd kwadratowy (Mean Squared Error).
 \end{itemize}
 
-Niech dla elementu $i$ ze zbioru $\mathit{P} = \set{x_1, \ldots, x_n}$ będzie dostarczona predykcja $\widehat{r}_i$. Aby ocenić jakość jej wyniku należy porównać ją ze znaną wartością $r_i$.
+Niech dla $i$-tego elementu ze zbioru $\mathit{P} = \set{r_1, \ldots, r_n}$ będzie dostarczona predykcja $\widehat{r}_i$. Aby ocenić jakość jej wyniku należy porównać ją ze znaną wartością $r_i$.
 
 \begin{df}[Błąd średni {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem nazywamy wartość wyrażenia:
 $$
-ME = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}(\widehat{r}_i-r_i).
+\mathit{ME}(\widehat{r}_i,r_i) = \frac{1}{\stackrel{=}{\mathit{P}}}\sum_{r_i \in \mathit{P}}(\widehat{r}_i-r_i).
 $$
 \end{df}
 
 \begin{df}[Średni błąd bezwzględny  {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem bezwzględnym nazywamy wartość wyrażenia:
 $$
-MAE = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}|\widehat{r}_i-r_i|.
+\mathit{MAE}(\widehat{r}_i,r_i) = \frac{1}{\stackrel{=}{\mathit{P}}}\sum_{r_i \in \mathit{P}}|\widehat{r}_i-r_i|.
 $$
 \end{df}
 
 \begin{df}[Średni błąd kwadratowy  {\citep[Sec 4.1.1]{rsh}}]
 Średnim błędem kwadratowym nazywamy wartość wyrażenia:
 $$
-MSE = \frac{1}{|\mathit{P}|}\sum_{x_i \in \mathit{P}}(\widehat{r}_i-r_i)^2.
+\mathit{MSE}(\widehat{r}_i,r_i) = \frac{1}{\stackrel{=}{\mathit{P}}}\sum_{r_i \in \mathit{P}}(\widehat{r}_i-r_i)^2.
 $$
 \end{df}
 \begin{uwaga}{\citep[Sec 4.1.1]{rsh}}
@@ -1041,19 +1060,19 @@ Normalized RMSE (NRMSE) oraz Normalized MAE (NMAE) są znormalizownymi, przez u�
 Kolejnym rodzajem powszechnie używanego błędu, który pozwala na użycie sum ważonych, jest średni błąd RMSE (Average RMSE).
 
 \begin{df}[Średni błąd RMSE {\citep[Sec 4.1.1]{rsh}}]
-Niech $w_i>0$ będzie wagę dla elementu $i$ oraz niech $\sum w_i = 1$.
+Niech wektor $[w_1, \ldots, w_n]$ będzie wektorem wag $i$-tych elementów, $w_i>0$ oraz niech $\sum_{i=1}^n w_i = 1$.
 
 Średnim błędem RMSE nazywamy wartość wyrażenia:
 $$
-ARMSE = \sqrt{\sum_{x_i\in \mathit{P}}w_{i}(\widehat{r}_i-r_i)^2}.
+\mathit{ARMSE}(\widehat{r}_i,r_i) = \sqrt{\sum_{r_i\in \mathit{P}}w_{i}(\widehat{r}_i-r_i)^2}.
 $$
 \end{df}
 \subsection{Ocena jakości modelu}
 Ocenę jakości modelu przeprowadza się na zbiorze testowym. Dla każdego z~rekordów jest znana jego etykieta. Rekordy te są poddawane działaniu modelu, a~następnie etykiety przypisane rekordom przez model są porównywalne z~rzeczywistymi wartościami etykiet.
 
-W następnym kroku zliczana jest liczba rekordów poprawnie i~niepoprawnie zaklasyfikowanych przez model, a~wynik testu zostaje przestawiony w~postaci macierzy pomyłek.
+W następnym kroku zliczana jest liczba rekordów poprawnie i~niepoprawnie zaklasyfikowanych przez model, a~wynik testu zostaje przedstawiony w~postaci macierzy pomyłek.
 \begin{df}[Macierz pomyłek {\citep[Sec 4.8.1]{edmia}}]
-Macierzą pomyłek nazywamy macierz kwadratową $ m \times m$ ($m$ oznacza liczbę etykiet), gdzie wiersze opisują etykiety praktyczne, natomiast kolumny etykiety przyporządkowane rekordom przez model. Element macierzy - $f_{i,j}$ oznacza liczbę rekordów z~etykietą $E_i$, którym została przypisana etykieta $E_j$.
+Macierzą pomyłek nazywamy macierz kwadratową $m$ na $m$ ($m$ oznacza liczbę etykiet), gdzie wiersze opisują etykiety praktyczne, natomiast kolumny etykiety przyporządkowane rekordom przez model. Element macierzy - $f_{ij}$ oznacza liczbę rekordów z~etykietą $E_i$, którym została przypisana etykieta $E_j$.
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|r|r|r|} \hline
@@ -1101,9 +1120,9 @@ Oznaczmy przez $e_{ij}$ koszt błędnego zaklasyfikowania do klasy $E_j$ rekordu
 Koszt poprawnej klasyfikacji oznaczmy przez $e_{ii}$ oraz załóżmy, że $\forall_{i}$ $ e_{ii} = 0$.
 Dodatkowo niech $f_{t}$ oznacza liczbę wszystkich przykładów testowych, $f_{p}$ liczbę poprawnie zaklasyfikowanych rekordów testowych oraz $f_{p} = \sum_{i=1}^m f_{ii}$, $f_{b}$ niech natomiast oznacza liczbę błędnych klasyfikacji i~$f_{b} = f_{t} - f_{p}$.
 
-Kosztem błędnej klasyfikacji $E(f_{b})$ nazywamy sumę:
+Kosztem błędnej klasyfikacji $E(f_{ij})$ nazywamy sumę:
 $$
-E(f_{b}) = \sum_{i=1}^m \sum_{j=1}^m f_{ij} \cdot e_{ij}.
+E(f_{ij}) = \sum_{i=1}^m \sum_{j=1}^m f_{ij} \cdot e_{ij}.
 $$
 \end{df}
 
@@ -1117,11 +1136,11 @@ $$
 \begin{df}[Błąd klasyfikacji {\citep[Sec 4.8.1]{edmia}}]
 Błędem klasyfikacji nazywamy stosunek liczby błędnie zaklasyfikowanych rekordów testowych do łącznej liczby rekordów testowych:
 $$
-BK = \frac{f_b}{f_t}=\frac{\sum_{i=1}^m \sum_{j=1}^m f_{ij}}{f_t}=1 - TR.
+BK = \frac{f_b}{f_t}=\frac{f_t-f_p}{f_t}=1 - TR.
 $$
 \end{df}
 \begin{uwaga}{\citep[Sec 4.8.1]{edmia}}
-Innymi miarami, które można wywnioskować bezpośrednio z~macierzy pomyłek dla klasyfikacji binarnej (tabla 3.2) są:
+Innymi miarami, które można wywnioskować bezpośrednio z~macierzy pomyłek dla klasyfikacji binarnej (tabela 3.2) są:
 \begin{itemize}
 \item współczynnik $TP$ (czułość):
 $$
@@ -1368,7 +1387,7 @@ $$
 \begin{df}[Waga własności w~przedmiocie]
 Wagą własności $w_k$ w~przedmiocie $p_i$ nazywamy wartość:
 $$
-s_{k,i} = \frac{TFIDF(w_k, p_i)}{\sqrt{ \sum_{j=1}^{|W|}{TFIDF(w_j, p_i)}^2}}.
+s_{k,i} = \frac{TFIDF(w_k, p_i)}{\sqrt{ \sum_{j=1}^{\stackrel{=}{\mathit{W}}}{TFIDF(w_j, p_i)}^2}}.
 $$
 \end{df}
 
@@ -1385,7 +1404,7 @@ W tym kroku tworzymy profil użytkownika pasujący do profilu produktu rozważaj
 \begin{algorytm}[{\citep[Sec 3]{bre}}]
 Generowanie profilu użytkownika odbywa się w~dwu krokach:
 \begin{enumerate}
-\item Stworzenie macierzy $\mathbb{A} \in \mathbb{M}_{|\setPrzedmioty| \times |\setUzytkownicy| }$, gdzie wyrazy macierzy przyjmują wartości ze zbioru $\set{0,1}$:
+\item Stworzenie macierzy $\mathbb{A} \in \mathbb{M}_{\stackrel{=}{\setPrzedmioty} \times \stackrel{=}{\setUzytkownicy} }$, gdzie wyrazy macierzy przyjmują wartości ze zbioru $\set{0,1}$:
 \begin{itemize}
 \item $a_{ij} = 0$, gdy użytkownik $j$ nie ocenił przedmiotu $i$,
 \item $a_{ij} = 1$, gdy użytkownik $j$ ocenił przedmiotu $i$.
@@ -1765,7 +1784,7 @@ wyróżniamy tutaj dwa podejścia:
 \section{Dekompozycja macierzy ocen - SVD}
 Poniższe rozważania zostały przeprowadzone na podstawie publikacji Desrosiers K. i~Karypis G. \textit{A comprehensive survey of neighborhood-based recommendation methods} {\citep[Sec 4.1.1]{acsonbrs}}.
 
-Ideą aproksymacji macierzy preferencji $\mathbb{O}$ w~normie Frobeniusa jest aproksymacja macierzy preferencji $\mathbb{O}$ o~wymiarach $|\mathit{P}| \times |\mathit{U}|$ i~$\rz{\mathbb{O}} = n$ przez macierz $\widehat{\mathbb{O}}$ taką, że $\rz{\widehat{\mathbb{O}}} = k$, $k<n$. 
+Ideą aproksymacji macierzy preferencji $\mathbb{O}$ w~normie Frobeniusa jest aproksymacja macierzy preferencji $\mathbb{O}$ o~wymiarach $\mathit{\stackrel{=}{P}}$ na $\stackrel{=}{\mathit{U}}$ i~$\rz{\mathbb{O}} = n$ przez macierz $\widehat{\mathbb{O}}$ taką, że $\rz{\widehat{\mathbb{O}}} = k$, $k<n$. 
 
 Zatem
 $$
@@ -1822,7 +1841,7 @@ To samo podejście może zostać zastosowane w~przypadku obliczania podobieństw
 
 Minimalizujemy tu problem postaci:
 $$
-\e{\mathbb{P}, \mathbb{Q}} = \sum_{z_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2,
+\e{\mathbb{P}, \mathbb{Q}} = \sum_{z_{u,i} \in \mathbb{O}}(o_{u,i} - \mathbf{p}_u\mathbf{q}_i^T)^2 \to \min,
 $$
 gdzie:
 \begin{itemize}
@@ -1896,7 +1915,7 @@ $$
 $$
 gdzie 
 \begin{itemize}
-\item $o_{i,j}$ są znanymi elementami macierzy $\mathbb{O}$ wystawionymi przez użytkowników,
+\item $o_{i,j}$ są znanymi elementami macierzy $\mathbb{O}$ wystawionymi przez użytkowników (nieznane elementy zostają pominięte),
 \item $\lambda (\sum_{u_i} \norm{\mathbf{u}_i}^2 + \sum_{p_j} \norm{\mathbf{p}_j}^2)$ jest czynnikiem powszechnie stosowanym w~funkcji straty zapobiegającym przeuczeniu modelu .
 \end{itemize}
 
@@ -2117,11 +2136,11 @@ Pozostało tylko zaproponować użytkownikowi nowy film.
 
 \chapter{Podsumowanie}
 
-Rosnącą popularność systemów rekomendujących przypisujemy szeregowi funkcji, które pełnią. Pozwalają one nie tylko na efektywne wyszukanie konkretnych przedmiotów, ale także na tworzenie propozycji dla użytkowników. Interesującymi są fakty, że dwie trzecie z~filmów oglądanych na portalu Netflix zostało użytkownikom zarekomendowane przez stronę, a $35 \% $ sprzedaży w~sklepie Amazon wynika z~polecanych produktów. Do znanych portali, wykorzystujących silniki rekomendujące, należy również Google News. Modele rekomendacji zyskały w~ostatnim czasie bardzo dużą popularność, zarówno w~świecie internetowym, jak i~środowiskach naukowych. Ciągle jednak zauważa się brak źródeł, które opisują zagadnienia rekomendacji w~ujęciu algorytmów matematycznych. Celem niniejszej pracy było więc przedstawienie matematycznych modeli reguł rekomendujących, ich charakteryzacja oraz wskazanie praktycznych zastosowań.
+Popularność systemów rekomendujących przypisujemy rosnącej liczbie ich zastosowań. Pozwalają one nie tylko na efektywne wyszukanie konkretnych przedmiotów, ale także na tworzenie propozycji dla użytkowników. Interesującymi są fakty, że dwie trzecie z~filmów oglądanych na portalu Netflix zostało użytkownikom zarekomendowane przez stronę, a $35 \% $ sprzedaży w~sklepie Amazon wynika z~polecanych produktów. Do znanych portali, wykorzystujących silniki rekomendujące, należy również Google News. Modele rekomendacji zyskały w~ostatnim czasie bardzo dużą popularność, zarówno w~świecie internetowym, jak i~środowiskach naukowych. Ciągle jednak zauważa się brak źródeł, które opisują zagadnienia rekomendacji w~ujęciu algorytmów matematycznych. Celem niniejszej pracy było więc przedstawienie matematycznych modeli reguł rekomendujących, ich charakteryzacja oraz wskazanie praktycznych zastosowań.
 
-W rozdziale 3. zaprezentowano wybrane elementy eksploracji danych spotykane w~systemach rekomendujących. Na podstawie analizy rożnych metod nasunął się wniosek, iż ważnym aspektem wykorzystywanym w~rekomendacjach jest faktoryzacja macierzy. Pozwala ona na zmniejszenie wymiarowości problemu do najbardziej znaczących cech. Istotnym wkładem własnym, który został zaprezentowany w~tym rozdziale było przeanalizowanie modelu SVD, wyprowadzenie warunków równoważnych temu rozkładowi w~postaci lematów, ich udowodnienie oraz analiza twierdzenia Eckard-Younga i~uzupełnienie jego dowodu.
+W rozdziale 3. zaprezentowano wybrane elementy eksploracji danych spotykane w~systemach rekomendujących. Na podstawie analizy rożnych metod nasunął się wniosek, iż ważnym aspektem wykorzystywanym w~rekomendacjach jest faktoryzacja macierzy. Pozwala ona na zmniejszenie wymiarowości problemu do najbardziej znaczących cech. Istotnym wkładem własnym, który został zaprezentowany w~tym rozdziale było przeanalizowanie własności rozkładu SVD, wyprowadzenie warunków równoważnych temu rozkładowi w~postaci wykazanych lematów oraz analiza twierdzenia Eckard-Younga i~uzupełnienie szczegółów jego dowodu.
 
-W rozdziale 4. zaprezentowano trzy podstawowe metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na przedmiotach. Trzecim wspomnianym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Po szczegółowej analizie każdego z~systemów rekomendujących, zaproponowaliśmy algorytm systematyzujący metodę rozwiązania problemu, który uwzględnienia elementy obliczeń matematycznych kryjące się pod modelem. Przedstawiliśmy również przykłady przedstawiające zastosowania algorytmów.
+W rozdziale 4. zaprezentowano trzy najczęściej spotykane metody systemów rekomendujących. Pierwszym były systemy rekomendujące oparte na treści, ukierunkowane na spersonalizowane potrzeby użytkownika oraz treść produktu. Reguły te znajdują zastosowanie w~analizie tekstu, czego przykładem był przedstawiony w~pracy algorytm TFIDF. Kolejnym rozważanym modelem w~rozdziale było filtrowanie kolaboratywne, które pomijało ograniczenia wektorów preferencji, a~sam model pozwalał na zwięzłe i~intuicyjne wyjaśnianie obliczeń prognostycznych. Kierowaliśmy się tu ocenami użytkowników wyszukując rekomendacji za pomocą dwóch podejść - filtrowania opartego na użytkownikach i~opartego na przedmiotach. Trzecim omówionym modelem były systemy rekomendujące kontekstowe, gdzie rozważany problem był trójwymiarowy, z~dodatkowym elementem jakim był kontekst. Po szczegółowej analizie każdego z~systemów rekomendujących, zaproponowaliśmy algorytm systematyzujący metodę rozwiązania problemu, który uwzględnienia elementy obliczeń matematycznych kryjące się pod modelem. Przedstawiliśmy również przykłady przedstawiające zastosowania algorytmów.
 
 W rozdziale 5. zaprezentowaliśmy implementację jednego z~rozważanych modeli w~kontekście uczenia maszynowego. Problem, którego rozwiązanie chcieliśmy uzyskać - na podstawie zbiorów użytkowników, filmów i~ocen zaproponować użytkownikowi kolejną pozycję ze zbioru, która będzie dla niego interesująca. Próbą rozwiązania tego problemu było przygotowanie algorytmu filtrowania kolaboratywnego przy zastosowaniu języka Python i~technologii Big Data - Spark. Schemat wyprowadzony w~rozdziale 4. znacznie ułatwił zrozumienie kolejnych kroków i~metod w~kodzie. Ostatecznie, efekty uzyskane przy użyciu utworzonego programu zostały uznane za zadowalające. Program pozwala na znalezienie ustalonej liczby pozycji, które są odpowiednie do zaproponowania wybranemu użytkownikowi. 
 

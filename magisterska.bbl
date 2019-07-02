@@ -1,14 +1,15 @@
 \begin{thebibliography}{10}
 
+\bibitem{rs}
+Andrew Ng :
+{\em Kurs Recommender Systems}
+\\ \nolinkurl{www.youtube.com/watch?v=giIXNoiqO_U&list=PL-6SiIrhTAi6x4Oq28s7yy94ubLzVXabj}
+\\ \newblock (dostęp 19.05.2019).
+
 \bibitem{ealIII}
 Banaszak G., Gajda W.:
 {\em Elementy algebry liniowej część I i II.}
 \newblock Wydawnictwo Naukowe - Techniczne, 2002.
-
-\bibitem{wayls}
-Bystrov V., COMISEF:
-\newblock http://comisef.wikidot.com/concept:eigenvalue-and-singular-value-inequalities
-\newblock (dostęp 07.05.2019).
 
 \bibitem{acsonbrs}
 Desrosiers K., Karypis G.:
@@ -17,7 +18,7 @@ Desrosiers K., Karypis G.:
 
 \bibitem{bre}
 Gorakala S. K.:
-{\em Building Recommendation Engines.}
+{\em Building recommendation engines.}
 \newblock Packt, 2016.
 
 \bibitem{jakubowski}
@@ -34,11 +35,6 @@ Kidziński Ł.:
 Krzyśko M.:
 {\em Wykład z teorii prawdopodobieństwa.}
 \newblock Wydawnictwo Naukowe - Techniczne, 2000.
-
-\bibitem{rs}
-{\em Kurs Recommender Systems, Andrew Ng :}
-\\ \nolinkurl{www.youtube.com/watch?v=giIXNoiqO_U&list=PL-6SiIrhTAi6x4Oq28s7yy94ubLzVXabj}
-\\ \newblock (dostęp 19.05.2019).
 
 \bibitem{mcvals}
 Lublin M. Pere~Y. Haoming~L., Bangzheng~H.:
@@ -57,7 +53,7 @@ Morzy T.:
 
 \bibitem{ascgdpds}
 Nowak~Brzezińska A.:
-\newblock Analiza skupień. konspekt do zajęć: Statystyczne metody analizy
+\newblock Analiza skupień. Konspekt do zajęć: Statystyczne metody analizy
   danych.
 \newblock Uniwersytet Śląski, 2012.
 
@@ -72,7 +68,7 @@ Poreda T., Jędrzejewski J.:
 \newblock Politechnika Łódzka, 2011.
 
 \bibitem{rsh}
-Ricci F. and Rokach L. and Shapira B. and Kantor P.:
+Ricci F., Rokach L., Shapira B., Kantor P.:
 {\em Recommender Systems Handbook.}
 \newblock Springer, 2011.
 
@@ -83,7 +79,7 @@ Paszke W.:
 
 \bibitem{cgfucbs}
 Xue G., Lin C., Yang Q, Xi W., Zeng H. Yul Y., Chen Z.:
-{\em Scalable Collaborative Filtering Using Cluster-based Smoothing.}
+{\em Scalable collaborative filtering using cluster-based smoothing.}
 \newblock ACM SIGIR Conference, Brazil, 2005.
 
 \bibitem{apache}
