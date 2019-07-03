@@ -889,7 +889,7 @@ $$
 $$ 
 Z powyższego, dla $j= k+1$, mamy
 $$
-\sigma_{i+k}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_{k+1}(\mathbb{B}_k).
+\forall_{i \in \setN} \: \sigma_{i+k}(\mathbb{X})\leq \sigma_{i}(\mathbb{X} - \mathbb{B}_k) + \sigma_{k+1}(\mathbb{B}_k).
 $$ 
 Zauważmy, że
 $$
@@ -897,7 +897,7 @@ $$
 $$
 wtedy
 $$
-\forall_{i,j \in \setN} \: \sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{i+k}(\mathbb{X}).
+\forall_{i \in \setN} \: \sigma_i(\mathbb{X}-\mathbb{B}_k)\geq \sigma_{i+k}(\mathbb{X}).
 $$
 Stąd
 $$
@@ -909,7 +909,7 @@ gdzie $*$ jest sumą pozornie nieskończoną.
 %||\mathbb{X} - \mathbb{B}_k||_F^2 \geqslant ||\mathbb{X}-\mathbb{X}_k||_F^2.
 %$$
 $$
-||\mathbb{X} - \mathbb{X}_k||_F^2 = \min \limits_{\rz{\mathbb{B}} \leqslant k } ||\mathbb{X} - \mathbb{B}||_F^2 = \sigma_{k+1}^2 + ... + \sigma_{n}^2.
+||\mathbb{X} - \mathbb{X}_k||_F^2 = \min \limits_{\rz{\mathbb{B}_k} \leqslant k } ||\mathbb{X} - \mathbb{B}_k||_F^2 = \sigma_{k+1}^2 + ... + \sigma_{n}^2.
 $$
 \end{proof}
 
