@@ -1679,7 +1679,7 @@ W przypadku filtrowania kolaboratywnego opartego na przedmiotach wartości podob
 W tym rodzaju rekomendacji należy wykonać następujące kroki:
 \begin{enumerate}
 \item wybór przedmiotów $p_i, p_k \in \setPrzedmioty$, $i,k \in \setN$, dla których znamy wartość funkcji $R(p_i,u_j)$ oraz wartość funkcji $R(p_k,u_j)$, gdzie $u_j$ jest użytkownikiem, który wystawia ocenę w~obu przypadkach,
-\item stworzenie wektorów ocen $\overline{o^{(p_i)}}$ i~$\overline{o^{(p_k)}}$ dla przedmiotów $p_i$ i~$p_k$ wybranych w~kroku 2., których elementy stanowią stanowią wartości funkcji $R$ dla użytkownika $u_j$,
+\item stworzenie wektorów ocen $\overline{o^{(p_i)}}$ i~$\overline{o^{(p_k)}}$ dla przedmiotów $p_i$ i~$p_k$ wybranych w~kroku 1., których elementy stanowią wartości funkcji $R$ dla użytkownika $u_j$,
 \item wyznaczenie odległości między przedmiotami $p_i$ i~$p_k$ - najczęstszymi stosowanymi podejściami do obliczania odległości jest podobieństwo kosinusów,
 \item wyznaczenie macierzy podobieństwa $\mathbb{P}$ między wszystkimi przedmiotami $\setPrzedmioty$,
 \item wyestymowanie nieznanych wartości funkcji $R$ dla $u_j \in \setUzytkownicy$ dla $j \in \setN$ oraz $p_i \in \setPrzedmioty$ dla $i \in \setN$  - niech $p_i$ będzie konkretnie ustalonym przedmiotem oraz $u_j$ będzie konkretnie ustalonym użytkownikiem. W~celu obliczenia brakujących wartości funkcji $R$ dla $u_j$ i~$p_i$ obliczmy średnią ważoną wykorzystując oceny oraz przyjmując wartości podobieństwa między $p_i$ i~innymi przedmiotami ocenionymi przez użytkownika jako wagi.
